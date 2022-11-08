@@ -1,7 +1,7 @@
 import React from "react";
 import {View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-const SettingsScreen= ()=>{
+const CarritoScreen= ()=>{
   return (
       <View>
           <Text 
@@ -10,8 +10,8 @@ const SettingsScreen= ()=>{
               marginTop: "30%",
               textAlign: "center",
           }}
-            >Settings Screen</Text>
+            >Resumen de compra:</Text>
       </View>
   ); 
 }
-export default SettingsScreen;
+export default CarritoScreen;

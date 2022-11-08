@@ -8,7 +8,8 @@ import { AntDesign } from '@expo/vector-icons';
  
 //screens
 import HomeScreen from "./screens/HomeScreen";
-import SettingsScreen from "./screens/SettingsScreen";
+import MenuProductos from "./screens/MenuProductos";
+import CarritoScreen from "./screens/CarritoScreen";
 import StackScreen from "./screens/StackScreen";
 
 const Tab = createBottomTabNavigator();
@@ -21,7 +22,7 @@ function MyTabs () {
     }}>
         <Tab.Screen 
         name = "Menú" 
-        component = {HomeScreen} 
+        component = {MenuProductos} 
         options={{
             tabBarLabel: "Menú",
             tabBarIcon: ({color,size}) => (
@@ -30,7 +31,7 @@ function MyTabs () {
         }}/>
         <Tab.Screen 
         name = "Carrito" 
-        component = {SettingsScreen} 
+        component = {CarritoScreen} 
         options = {{
         tabBarLabel : "Carrito de compras",
         tabBarIcon: ({color,size}) => (
