@@ -9,7 +9,7 @@ const estilos = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    padding: 5,
+  
     //marginLeft: 30,
     //marginTop: 20,
     //marginRight: 20,
