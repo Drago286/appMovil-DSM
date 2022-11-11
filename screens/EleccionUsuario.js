@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, View, TextInput , Button} from "react-native";
+import { Text, TouchableOpacity, View, TextInput , Button, Pressable} from "react-native";
 import { IconButton, MD3Colors } from 'react-native-paper';
 import estilos from "../MyDrawer/style";
 
@@ -18,19 +18,10 @@ const EleccionUsuario = ({ navigation }) => {
        // flexDirection : "row",
       }}
     >
-        <Button
-        title="Cliente"
-        style={estilos.boton}
-        onPress={() => screenCliente()}
-        />
-         <Button
-        title="Administrador"
-        style={estilos.boton}
-        />
-      <TouchableOpacity style={estilos.boton} onPress={() => screenCliente()}>
+      <TouchableOpacity style={estilos.botonEleccionUsuario} onPress={() => screenCliente()}>
         <Text style={estilos.textoBoton}>Cliente</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={estilos.boton}>
+      <TouchableOpacity style={estilos.botonEleccionUsuario}>
         <Text style={estilos.textoBoton}>Administrador</Text>
       </TouchableOpacity>
     </View>

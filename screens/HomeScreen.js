@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { IconButton,MD3Colors } from "react-native-paper";
+import React, { useState, useEffect } from "react";
+import { IconButton, MD3Colors } from "react-native-paper";
 
 import {
   View,
@@ -9,15 +9,58 @@ import {
   TextInput,
   Button,
   Pressable,
+  Alert,
 } from "react-native";
 
 import estilos from "../MyDrawer/style";
 
+const baseURL = "http://10.12.13.66:8000/api/";
+
 const HomeScreen = ({ navigation }) => {
   const [valorMesa, inputMesa] = useState("");
+  const [mesas, setMesas] = useState([]);
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const response = await fetch(baseURL + "mesas", {
+          method: "GET",
+        });
+        const data = await response.json();
+        setMesas(data);
+      } catch (error) {
+        //console.log(error);
+        console.log("error u.u");
+      }
+    })();
+  }, []);
+
+  const buscarMesa = () => {
+    for (var i in mesas) {
+      if (mesas[i].numero == valorMesa) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  };
 
   const screenMenuProductos = () => {
-    navigation.navigate("MyTabs");
+    if (valorMesa == "") {
+      Alert.alert(
+        "Oops!",
+        "Por favor, indique un número de mesa antes de continuar",
+        [{ text: "Entendido!" }]
+      );
+    } else {
+      var x = buscarMesa();
+      if (x === true) {
+        Alert.alert("😊", "Mesa disponible", [{ text: "Continuar" }]);
+        navigation.navigate("MyTabs", { valorMesa });
+      } else {
+        Alert.alert("😥", "Mesa no disponible", [{ text: "cerrar" }]);
+      }
+    }
   };
   const volver = () => {
     navigation.navigate("EleccionUsuario");
@@ -35,7 +78,6 @@ const HomeScreen = ({ navigation }) => {
         iconColor={MD3Colors.error50}
         size={30}
         onPress={() => volver()}
-        
       />
       <Text
         style={{
@@ -55,41 +97,21 @@ const HomeScreen = ({ navigation }) => {
           inputMesa(text);
         }}
       ></TextInput>
-      <View
-        style={{
-          flex: 1,
-       flexDirection: 'row',
-       marginHorizontal: 20,
-        marginTop: 5,
-        }}
-      >
+      <View style={estilos.viewHorizontal}>
         <View>
-          <TouchableOpacity style={styles.boton}>
+          <TouchableOpacity style={estilos.boton2}>
             <Text
               style={estilos.textoBoton}
               onPress={() => screenMenuProductos()}
-            >Continuar</Text>
+            >
+              Continuar
+            </Text>
           </TouchableOpacity>
         </View>
-        <View>
-          <TouchableOpacity style={styles.boton}>
-            <Text style={estilos.textoBoton}>Buscar</Text>
-          </TouchableOpacity>
-        </View>
+        <View></View>
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-  boton: {
-    ...estilos.boton,
-  },
-});
 export default HomeScreen;
