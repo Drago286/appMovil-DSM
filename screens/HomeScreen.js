@@ -14,7 +14,7 @@ import {
 
 import estilos from "../MyDrawer/style";
 
-const baseURL = "http://10.12.13.66:8000/api/";
+const baseURL = "http://192.168.1.86:8000/api/";
 
 const HomeScreen = ({ navigation }) => {
   const [valorMesa, inputMesa] = useState("");

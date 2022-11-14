@@ -9,6 +9,7 @@ import EleccionUsuario from "./screens/EleccionUsuario";
 import MenuProductos from "./screens/MenuProductos";
 import HomeScreen from "./screens/HomeScreen";
 import CarritoScreen from "./screens/CarritoScreen";
+import AdministradorScreen from "./screens/AdministradorScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -59,7 +60,7 @@ export default function App() {
   return (
     <>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MyTabs">
+        <Stack.Navigator initialRouteName="EleccionUsuarior">
           <Stack.Screen
             name="EleccionUsuario"
             component={EleccionUsuario}
@@ -85,6 +86,16 @@ export default function App() {
             name="MyTabs"
             component={MyTabs}
             options={{ headerShown: false }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="AdministradorScreen"
+            component={AdministradorScreen}
+            options={{
+              title: "Menú Administrador",
+              headerStyle: {
+                backgroundColor: "#67b5a3",
+              },
+            }}
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

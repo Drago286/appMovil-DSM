@@ -8,6 +8,11 @@ const EleccionUsuario = ({ navigation }) => {
   const screenCliente = () => {
     navigation.navigate("HomeScreen");
   };
+  const screenAdministrador = () => {
+    navigation.navigate("AdministradorScreen");
+  };
+
+   
   
 
   return (
@@ -21,7 +26,7 @@ const EleccionUsuario = ({ navigation }) => {
       <TouchableOpacity style={estilos.botonEleccionUsuario} onPress={() => screenCliente()}>
         <Text style={estilos.textoBoton}>Cliente</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={estilos.botonEleccionUsuario}>
+      <TouchableOpacity style={estilos.botonEleccionUsuario} onPress ={() => screenAdministrador()}>
         <Text style={estilos.textoBoton}>Administrador</Text>
       </TouchableOpacity>
     </View>
