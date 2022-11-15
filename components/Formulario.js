@@ -205,7 +205,6 @@ const Formulario = (props) => {
               multiline
               placeholder="Ingrese descripción"
               placeholderTextColor={"#666"}
-              keyboardType="email-address"
               value={descripcion}
               onChangeText={setDescripcion}
             />
