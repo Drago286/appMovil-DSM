@@ -19,14 +19,35 @@ import Formulario from "../components/Formulario";
 import Producto from "../components/producto";
 const baseURL = "http://192.168.1.86:8000/api/";
 
-const EleccionUsuario = ({ navigation }) => {
+const AdministradorScreen = ({ navigation }) => {
   const [productos, setProductos] = useState([]);
   const [producto, setProducto] = useState([]);
   const [categorias, setCategorias] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [nombreCategoria, setNombreCategoria] = useState("");
 
   const productoEditar = (id) => {
     const productoEditar = productos.filter((producto) => producto.id === id);
     setProducto(productoEditar[0]);
+  };
+
+  const eliminarProducto = (id) => {
+    try {
+      const requestOptions = {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5",
+        },
+      };
+      fetch(baseURL + "productos/" + id, requestOptions)
+        .then((res) => res.ok)
+        .catch((error) => console.error("Error", error))
+        .then((response) => console.log("Exito", response));
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const productoEliminar = (id) => {
@@ -38,19 +59,12 @@ const EleccionUsuario = ({ navigation }) => {
         {
           text: "Si, Eliminar",
           onPress: () => {
-            const productosActualizados = producto.filter(
-              (productoState) => productoState.id !== id
-            );
-            // console.log(pacientesActualizados)
-            setProductos(productosActualizados);
+            eliminarProducto(id);
           },
         },
       ]
     );
   };
-
-  const [modalVisible, setModalVisible] = useState(false);
-  const [nombreCategoria, setNombreCategoria] = useState("");
 
   const buscarNombreCategoria = () => {
     for (var p = 0; p < categorias.length; p++) {
@@ -60,7 +74,6 @@ const EleccionUsuario = ({ navigation }) => {
         setNombreCategoria(categorias[p].nombre);
       }
     }
-    console.log(nombreCategoria);
   };
 
   useEffect(() => {
@@ -107,12 +120,13 @@ const EleccionUsuario = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Pressable
-        style={styles.btnNuevaCita}
-        onPress={() => setModalVisible(!modalVisible)}
-      >
-        <Text style={styles.btnTextoNuevaCita}>Añadir producto</Text>
-      </Pressable>
+      <IconButton
+        icon="arrow-left"
+        iconColor={MD3Colors.error50}
+        size={30}
+        onPress={() => volver()}
+      />
+
       <Text>{"   "}</Text>
       <Text style={styles.tituloBold}>{"   "}Productos disponibles:</Text>
       {productos.length === 0 ? (
@@ -135,6 +149,12 @@ const EleccionUsuario = ({ navigation }) => {
           }}
         />
       )}
+      <Pressable
+        style={styles.btnNuevaCita}
+        onPress={() => setModalVisible(!modalVisible)}
+      >
+        <Text style={styles.btnTextoNuevaCita}>Añadir producto</Text>
+      </Pressable>
       <Formulario
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
@@ -147,37 +167,6 @@ const EleccionUsuario = ({ navigation }) => {
   );
   //console.log(productos[1].nombre);
 };
-
-//   return (
-//     <SafeAreaView
-//       style={{
-//         backgroundColor: "white",
-//         flex: 1,
-//        // flexDirection : "row",
-//       }}
-//     >
-//         <IconButton
-//         icon="arrow-left"
-//         iconColor={MD3Colors.error50}
-//         size={30}
-//         onPress={() => volver()}
-//       />
-//       <Text>Productos disponibles:</Text>
-//       <ScrollView style={{
-//         tranparent: "true",
-//         backgroundColor: "white",
-
-//       }}>{mostrarProdutoCategoria}</ScrollView>
-//       <IconButton
-//       backgroundColor="#afc7c1"
-//       icon="plus"
-//       onPress={() => setModalVisible(!modalVisible)}
-
-//     />
-
-//     </SafeAreaView>
-//   );
-// };
 
 const styles = StyleSheet.create({
   container: {
@@ -204,15 +193,15 @@ const styles = StyleSheet.create({
   btnTextoNuevaCita: {
     textAlign: "center",
     color: "#FFF",
-    fontSize: 18,
-    fontWeight: "900",
+    fontSize: 15,
+    fontWeight: "700",
     textTransform: "uppercase",
   },
   noPacientes: {
     marginTop: 40,
     textAlign: "center",
     fontSize: 24,
-    fontWeight: "600",
+    fontWeight: "500",
   },
   listado: {
     marginTop: 50,
@@ -220,4 +209,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EleccionUsuario;
+export default AdministradorScreen;

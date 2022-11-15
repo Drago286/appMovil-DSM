@@ -24,10 +24,13 @@ const Formulario = (props) => {
   const [categoria, setCategoria] = useState("");
   const [categorias, setCategorias] = useState([]);
   const [id, setId] = useState("");
+  const [codigo, setCodigo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [idCategoria, setIdCategoria] = useState("");
   const [precio, setPrecio] = useState("");
   const arrayCategorias = new Array(categorias.length);
+  let inicio = 1;
+  let fin = 99999999;
 
   useEffect(() => {
     (async function () {
@@ -45,6 +48,63 @@ const Formulario = (props) => {
       }
     })();
   }, []);
+  let agregarProducto = (nombre_, descripcion_, precio_, codigo_) => {
+    try {
+      fetch(
+        baseURL + "productos",
+        {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            codigo: codigo_,
+            nombre: nombre_,
+            descripcion: descripcion_,
+            precio: precio_,
+            categoria_id: 1,
+          }),
+        },
+        console.log("agregado ")
+      )
+        .then((res) => res.json())
+        .catch((error) => console.error("Error", error))
+        .then((response) => console.log("Exito", response));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const editarProducto = (nombre_, descripcion_, precio_) => {
+    try {
+      console.log(id);
+      const requestOptions = {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5",
+        },
+        body: JSON.stringify({
+          id: id,
+          nombre: nombre_,
+          descripcion: descripcion_,
+          precio: precio_,
+          categoria_id: 2,
+
+        })
+
+      }
+      fetch(baseURL + "productos/"+id,requestOptions)
+        .then((res) => res.json())
+        .catch((error) => console.error("Error", error))
+        .then((response) => console.log("Exito", response));
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const categoriasPicker = () => {
     for (var i = 0; i < categorias.length; i++) {
@@ -97,63 +157,43 @@ const Formulario = (props) => {
       idCategoria,
       precio,
       categoria,
+      codigo,
       //fecha,
       //sintomas,
     };
-    
+
     if (id) {
       //se edita el paciente
       nuevoProducto.id = id;
+      
       const productosActualizados = productos.map((productoState) =>
         productoState.id === nuevoProducto.id ? nuevoProducto : productoState
+        
       );
       setProductos(productosActualizados);
+      editarProducto(nombre, descripcion, precio, nuevoProducto.codigo);
       setProductoApp({});
     } else {
       //Se anade nuevo paciente
       nuevoProducto.id = Date.now();
+      let numeroRandom = Math.floor(Math.random()*9999999);
+      setCodigo(numeroRandom);
+      console.log("codigo random " + numeroRandom);
       //Instancio un nuevo paciente pasandole los states del componente
       setProductos([...productos, nuevoProducto]); //Toma lo que ya habia en el state que viene desde App.js y agrega el nuevo paciente del formulario
-      agregarProducto(nombre,descripcion,precio);
+      agregarProducto(nombre, descripcion, precio, numeroRandom);
     }
 
     setModalVisible(!modalVisible); //cierro el modal despues de guardar
 
     setId("");
-    //set('');
-    //setEmail('');
-    //setTelefono('');
-    //setFecha(new Date());
-    //setSintomas('');
+    setCodigo("");
+    setNombre("");
+    setProducto("");
+    setDescripcion("");
+    setIdCategoria("");
+    setPrecio("");
   };
-  let agregarProducto = (nombre_, descripcion_, precio_) => {
-    try {
-      fetch(baseURL + "productos", {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          codigo: '121221',
-          nombre: 'nombre_',
-          descripcion: 'descripcion_',
-          precio: 878786,
-          categoria_id: "1",
-        }),
-        
-      },
-      console.log("agregado ")).then(
-        res => res.json())
-        .catch(error => console.error('Error', error))
-        .then(response => console.log('Exito',response));
-
-      
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
   return (
     <Modal animationType="slide" visible={modalVisible}>
@@ -205,20 +245,6 @@ const Formulario = (props) => {
             <Text style={styles.label2}>Categoria:</Text>
           </View>
 
-          {/* <View style={styles.campo}>
-            <Text style={styles.label}>Sintomas</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Sintomas paciente"
-              placeholderTextColor={'#666'}
-              keyboardType="phone-pad"
-              value={sintomas}
-              onChangeText={setSintomas}
-              multiline={true}
-              numberOfLines={4}
-            />
-          </View> */}
-
           <Pressable style={styles.btnNuevaCita} onPress={handleCita}>
             <Text style={styles.btnNuevaCitaTexto}>
               {productoObj.id ? "Editar" : "Agregar"}
@@ -228,9 +254,10 @@ const Formulario = (props) => {
             style={styles.btnCancelar}
             onLongPress={() => {
               setModalVisible(!modalVisible);
-              agregarProducto();
               setProductoApp({});
               setId("");
+              setCodigo("");
+              setNombre("");
               setProducto("");
               setDescripcion("");
               setIdCategoria("");

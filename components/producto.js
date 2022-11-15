@@ -12,7 +12,7 @@ const Producto = ({
   const [nombreCategoria, setNombreCategoria] = useState("");
   const [categorias, setCategorias] = useState([]);
   const { categoria_id, producto, descripcion, precio, id, nombre } = item;
-  console.log(nombre);
+
 
   useEffect(() => {
     (async function () {
@@ -30,6 +30,8 @@ const Producto = ({
       }
     })();
   }, []);
+  
+  
 
   //   const formatearFecha = fecha => {
   //     const nuevaFecha = new Date(fecha);

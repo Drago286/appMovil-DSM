@@ -76,7 +76,7 @@ const MenuProductos = ({ navigation, route }) => {
         setProductosCategoria(productos[p]);
 
         console.log("productos: " + productos[p].nombre);
-        break;
+        
       }
     }
   
@@ -84,7 +84,7 @@ const MenuProductos = ({ navigation, route }) => {
 
 
   var j = -1;
-  const mostrarProdutoCategoria = productos.map(function (productosCategoria) {
+  const mostrarProdutoCategoria = productosCategoria.map(function (productosCategoria) {
     
 
     // setCategoriaEscogida(nombreCategoria);
