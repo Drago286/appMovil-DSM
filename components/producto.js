@@ -30,22 +30,6 @@ const Producto = ({
       }
     })();
   }, []);
-  
-  
-
-  //   const formatearFecha = fecha => {
-  //     const nuevaFecha = new Date(fecha);
-  //     const opciones ={
-  //         weekday:'long',
-  //         year:'numeric',
-  //         month:'long',
-  //         day:'numeric'
-  //     }
-
-  //     return nuevaFecha.toLocaleDateString('es-ES',opciones)
-  //   };
-  
-
   return (
     <View style={styles.contenedor}>
       <Text style={styles.label}>{"Nombre: " + nombre}</Text>
@@ -57,9 +41,6 @@ const Producto = ({
         {"Categoria: "}
         <Text style={styles.textoCategoria}>{nombreCategoria}</Text>
       </Text>
-
-      {/* <Text style={styles.fecha}>{formatearFecha(fecha)}</Text> */}
-
       <View style={styles.contenedorBotones}>
         <Pressable
           style={[styles.btn, styles.btnEditar]}

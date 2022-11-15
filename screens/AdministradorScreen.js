@@ -130,7 +130,7 @@ const AdministradorScreen = ({ navigation }) => {
       <Text>{"   "}</Text>
       <Text style={styles.tituloBold}>{"   "}Productos disponibles:</Text>
       {productos.length === 0 ? (
-        <Text style={styles.noPacientes}> No hay productos</Text>
+        <Text style={styles.noProductos}> No hay productos</Text>
       ) : (
         <FlatList
           style={styles.listado}
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textTransform: "uppercase",
   },
-  noPacientes: {
+  noProductos: {
     marginTop: 40,
     textAlign: "center",
     fontSize: 24,

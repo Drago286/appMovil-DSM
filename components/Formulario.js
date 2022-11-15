@@ -29,6 +29,13 @@ const Formulario = (props) => {
   const [idCategoria, setIdCategoria] = useState("");
   const [precio, setPrecio] = useState("");
   const arrayCategorias = new Array(categorias.length);
+  const { modalVisible } = props;
+  const { productos } = props;
+  const { setProductos } = props;
+  const { setModalVisible } = props;
+  const { producto: productoObj } = props;
+  const { setProducto: setProductoApp } = props;
+
   let inicio = 1;
   let fin = 99999999;
 
@@ -113,19 +120,6 @@ const Formulario = (props) => {
     }
   };
 
-  //const [sintomas, setSintomas] = useState('');
-  //const [fecha, setFecha] = useState(new Date());
-
-  /**
-   * Instancio todos los props que llegan al componente.
-   */
-  const { modalVisible } = props;
-  const { productos } = props;
-  const { setProductos } = props;
-  const { setModalVisible } = props;
-  const { producto: productoObj } = props;
-  const { setProducto: setProductoApp } = props;
-
   useEffect(() => {
     if (Object.keys(productoObj).length > 0) {
       setId(productoObj.id);
@@ -135,8 +129,6 @@ const Formulario = (props) => {
       setDescripcion(productoObj.descripcion);
       setIdCategoria(productoObj.idCategoria);
       setPrecio(productoObj.precio);
-      //setSintomas(productoObj.sintomas);
-      //setFecha(pacienteObj.fecha);
     }
   }, [productoObj]);
 
@@ -158,12 +150,10 @@ const Formulario = (props) => {
       precio,
       categoria,
       codigo,
-      //fecha,
-      //sintomas,
     };
 
     if (id) {
-      //se edita el paciente
+    
       nuevoProducto.id = id;
       
       const productosActualizados = productos.map((productoState) =>
@@ -174,13 +164,11 @@ const Formulario = (props) => {
       editarProducto(nombre, descripcion, precio, nuevoProducto.codigo);
       setProductoApp({});
     } else {
-      //Se anade nuevo paciente
       nuevoProducto.id = Date.now();
       let numeroRandom = Math.floor(Math.random()*9999999);
       setCodigo(numeroRandom);
       console.log("codigo random " + numeroRandom);
-      //Instancio un nuevo paciente pasandole los states del componente
-      setProductos([...productos, nuevoProducto]); //Toma lo que ya habia en el state que viene desde App.js y agrega el nuevo paciente del formulario
+      setProductos([...productos, nuevoProducto]); 
       agregarProducto(nombre, descripcion, precio, numeroRandom);
     }
 
