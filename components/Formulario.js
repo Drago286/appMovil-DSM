@@ -12,6 +12,7 @@ import {
   Pressable,
   Dropdown,
   Alert,
+  ViewHorizontal,
 } from "react-native";
 //import DatePicker from 'react-native-date-picker';
 import { Picker } from "@react-native-picker/picker";
@@ -226,9 +227,14 @@ const Formulario = (props) => {
           <View style={styles.campo}>
             <Text style={styles.label2}>Categoria:</Text>
           </View>
+          <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
 
-          <Pressable style={styles.btnNuevaCita} onPress={handleCita}>
-            <Text style={styles.btnNuevaCitaTexto}>
+          }}>
+          <Pressable style={styles.btnNuevoProducto} onPress={handleCita}>
+            <Text style={styles.btnNuevoProductoTexto}>
               {productoObj.id ? "Editar" : "Agregar"}
             </Text>
           </Pressable>
@@ -252,6 +258,8 @@ const Formulario = (props) => {
           >
             <Text style={styles.btnCancelarTexto}>Cancelar</Text>
           </Pressable>
+          </View>
+          
         </ScrollView>
       </SafeAreaView>
     </Modal>
@@ -275,10 +283,10 @@ const styles = StyleSheet.create({
   },
   btnCancelar: {
     //marginVertical: 30,
-    backgroundColor: "#5827A4",
+    backgroundColor: "red",
     marginHorizontal: 30,
     padding: 10,
-    width: 150,
+    width: 120,
     borderRadius: 10,
     alignSelf: "center",
   },
@@ -314,31 +322,23 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "500",
   },
-  sintomasInput: {
-    height: 100,
+
+  btnNuevoProducto: {
+      //marginVertical: 30,
+      backgroundColor: "#F59E0B",
+      marginHorizontal: 30,
+      padding: 10,
+      width: 120,
+      borderRadius: 10,
+      alignSelf: "center",
+   
   },
-  fechaContenedor: {
-    backgroundColor: "#FFF",
-    borderRadius: 10,
-  },
-  btnNuevaCita: {
-    marginVertical: 50,
-    backgroundColor: "#F59E0B",
-    paddingVertical: 15,
-    marginHorizontal: 30,
-    borderRadius: 10,
-  },
-  btnNuevaCitaTexto: {
+  btnNuevoProductoTexto: {
     color: "white",
     textAlign: "center",
-    fontWeight: "800",
+    fontWeight: "900",
     fontSize: 16,
     textTransform: "uppercase",
-    marginHorizontal: 30,
-    padding: 10,
-    width: 150,
-    borderRadius: 10,
-    alignSelf: "center",
   },
 });
 
