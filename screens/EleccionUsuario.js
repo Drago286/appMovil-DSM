@@ -20,7 +20,6 @@ const EleccionUsuario = ({ navigation }) => {
       style={{
         backgroundColor: "white",
         flex: 1,
-       // flexDirection : "row",
       }}
     >
       <TouchableOpacity style={estilos.botonEleccionUsuario} onPress={() => screenCliente()}>

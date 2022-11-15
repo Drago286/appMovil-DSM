@@ -68,8 +68,6 @@ const AdministradorScreen = ({ navigation }) => {
 
   const buscarNombreCategoria = () => {
     for (var p = 0; p < categorias.length; p++) {
-      //console.log("producto "+j+":"+ productos[j].nombre);
-      //console.log(idCategoria_);
       if (categoria_id == categorias[p].id) {
         setNombreCategoria(categorias[p].nombre);
       }
@@ -84,11 +82,7 @@ const AdministradorScreen = ({ navigation }) => {
         });
         const data = await response.json();
         setProductos(data);
-        // console.log({productos})
-
-        //console.log(data);
       } catch (error) {
-        //console.log(error);
         console.log("error productos");
       }
     })();
@@ -102,10 +96,7 @@ const AdministradorScreen = ({ navigation }) => {
         });
         const data = await response.json();
         setCategorias(data);
-        //buscarNombreCategoria();
-        //console.log(data);
       } catch (error) {
-        //console.log(error);
         console.log("error categorias");
       }
     })();
@@ -137,7 +128,6 @@ const AdministradorScreen = ({ navigation }) => {
           data={productos}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
-            //console.log({item});
             return (
               <Producto
                 item={item}
@@ -165,7 +155,6 @@ const AdministradorScreen = ({ navigation }) => {
       />
     </SafeAreaView>
   );
-  //console.log(productos[1].nombre);
 };
 
 const styles = StyleSheet.create({

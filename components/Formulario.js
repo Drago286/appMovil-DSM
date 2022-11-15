@@ -48,9 +48,7 @@ const Formulario = (props) => {
         const data = await response.json();
         setCategorias(data);
         categoriasPicker();
-        //console.log(data);
       } catch (error) {
-        //console.log(error);
         console.log("error categorias");
       }
     })();
@@ -74,7 +72,6 @@ const Formulario = (props) => {
             categoria_id: 1,
           }),
         },
-        console.log("agregado ")
       )
         .then((res) => res.json())
         .catch((error) => console.error("Error", error))
@@ -86,7 +83,6 @@ const Formulario = (props) => {
 
   const editarProducto = (nombre_, descripcion_, precio_) => {
     try {
-      console.log(id);
       const requestOptions = {
         method: "PUT",
         headers: {
@@ -167,7 +163,6 @@ const Formulario = (props) => {
       nuevoProducto.id = Date.now();
       let numeroRandom = Math.floor(Math.random()*9999999);
       setCodigo(numeroRandom);
-      console.log("codigo random " + numeroRandom);
       setProductos([...productos, nuevoProducto]); 
       agregarProducto(nombre, descripcion, precio, numeroRandom);
     }

@@ -22,10 +22,7 @@ const Producto = ({
         });
         const data = await response.json();
         setCategorias(data);
-        
-        //console.log(data);
       } catch (error) {
-        //console.log(error);
         console.log("error categorias");
       }
     })();
