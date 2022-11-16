@@ -9,11 +9,8 @@ const EleccionUsuario = ({ navigation }) => {
     navigation.navigate("HomeScreen");
   };
   const screenAdministrador = () => {
-    navigation.navigate("AdministradorScreen");
+    navigation.navigate("MyTabsAdmin");
   };
-
-   
-  
 
   return (
     <View

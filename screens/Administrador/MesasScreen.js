@@ -13,25 +13,23 @@ import {
   Alert,
 } from "react-native";
 import { IconButton, MD3Colors } from "react-native-paper";
-import estilos from "../MyDrawer/style";
+import estilos from "../../MyDrawer/style";
+import FormularioMesa from "../../components/FormularioMesa";
+import Mesa from "../../components/mesa";
 
-import Formulario from "../components/Formulario";
-import Producto from "../components/producto";
-const baseURL = "http://192.168.1.86:8000/api/";
+const baseURL = "http://192.168.1.82:8000/api/";
 
 const AdministradorScreen = ({ navigation }) => {
-  const [productos, setProductos] = useState([]);
-  const [producto, setProducto] = useState([]);
-  const [categorias, setCategorias] = useState([]);
+  const [mesa, setMesa] = useState([]);
+  const [mesas, setMesas] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [nombreCategoria, setNombreCategoria] = useState("");
 
-  const productoEditar = (id) => {
-    const productoEditar = productos.filter((producto) => producto.id === id);
-    setProducto(productoEditar[0]);
+  const mesaEditar = (id) => {
+    const mesaEditar = mesas.filter((mesa) => mesa.id === id);
+    setMesa(mesaEditar[0]);
   };
 
-  const eliminarProducto = (id) => {
+  const eliminarMesa = (id) => {
     try {
       const requestOptions = {
         method: "DELETE",
@@ -41,7 +39,7 @@ const AdministradorScreen = ({ navigation }) => {
           Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5",
         },
       };
-      fetch(baseURL + "productos/" + id, requestOptions)
+      fetch(baseURL + "mesas/" + id, requestOptions)
         .then((res) => res.ok)
         .catch((error) => console.error("Error", error))
         .then((response) => console.log("Exito", response));
@@ -50,54 +48,33 @@ const AdministradorScreen = ({ navigation }) => {
     }
   };
 
-  const productoEliminar = (id) => {
+  const mesaEliminar = (id) => {
     Alert.alert(
       "Deseas Eliminar?",
-      "Un producto eliminado no se puede recuperar",
+      "Una mesa eliminada no se puede recuperar",
       [
         { text: "Cancelar" },
         {
           text: "Si, Eliminar",
           onPress: () => {
-            eliminarProducto(id);
+            eliminarMesa(id);
           },
         },
       ]
     );
   };
 
-  const buscarNombreCategoria = () => {
-    for (var p = 0; p < categorias.length; p++) {
-      if (categoria_id == categorias[p].id) {
-        setNombreCategoria(categorias[p].nombre);
-      }
-    }
-  };
-
   useEffect(() => {
     (async function () {
       try {
-        const response = await fetch(baseURL + "productos", {
+        const response = await fetch(baseURL + "mesas", {
           method: "GET",
         });
         const data = await response.json();
-        setProductos(data);
+        //setMesas(data);
+        console.log(data);
       } catch (error) {
-        console.log("error productos");
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async function () {
-      try {
-        const response = await fetch(baseURL + "categorias", {
-          method: "GET",
-        });
-        const data = await response.json();
-        setCategorias(data);
-      } catch (error) {
-        console.log("error categorias");
+        console.log("error mesas");
       }
     })();
   }, []);
@@ -119,21 +96,21 @@ const AdministradorScreen = ({ navigation }) => {
       />
 
       <Text>{"   "}</Text>
-      <Text style={styles.tituloBold}>{"   "}Productos disponibles:</Text>
-      {productos.length === 0 ? (
-        <Text style={styles.noProductos}> No hay productos</Text>
+      <Text style={styles.tituloBold}>{"   "}Mesas disponibles:</Text>
+      {mesas.length === 0 ? (
+        <Text style={styles.noMesa}> No hay Mesas</Text>
       ) : (
         <FlatList
           style={styles.listado}
-          data={productos}
+          data={mesas}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             return (
-              <Producto
+              <Mesa
                 item={item}
                 setModalVisible={setModalVisible}
-                productoEditar={productoEditar}
-                productoEliminar={productoEliminar}
+                mesaEditar={mesaEditar}
+                mesaEliminar={mesaEliminar}
               />
             );
           }}
@@ -143,15 +120,15 @@ const AdministradorScreen = ({ navigation }) => {
         style={styles.btnNuevaCita}
         onPress={() => setModalVisible(!modalVisible)}
       >
-        <Text style={styles.btnTextoNuevaCita}>Añadir producto</Text>
+        <Text style={styles.btnTextoNuevaCita}>Añadir Mesa</Text>
       </Pressable>
-      <Formulario
+      <FormularioMesa
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        productos={productos}
-        setProductos={setProductos}
-        producto={producto}
-        setProducto={setProducto}
+        mesas={mesas}
+        setMesas={setMesas}
+        mesa={mesa}
+        setMesa={setMesa}
       />
     </SafeAreaView>
   );
@@ -186,7 +163,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textTransform: "uppercase",
   },
-  noProductos: {
+  noMesa: {
     marginTop: 40,
     textAlign: "center",
     fontSize: 24,

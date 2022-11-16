@@ -3,15 +3,15 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 
 const baseURL = "http://192.168.1.82:8000/api/";
 
-const Producto = ({
+const Categoria = ({
   item,
   setModalVisible,
-  productoEditar,
-  productoEliminar,
+  categoriaEditar,
+  categoriaEliminar,
 }) => {
   const [nombreCategoria, setNombreCategoria] = useState("");
   const [categorias, setCategorias] = useState([]);
-  const { categoria_id, producto, descripcion, precio, id, nombre } = item;
+  const { nombre,id } = item;
 
 
   useEffect(() => {
@@ -29,28 +29,20 @@ const Producto = ({
   }, []);
   return (
     <View style={styles.contenedor}>
-      <Text style={styles.label}>{"Nombre: " + nombre}</Text>
-
-      <Text style={styles.texto}>Descripción:</Text>
-      <Text style={styles.texto}>{descripcion}</Text>
-      <Text style={styles.texto}>{"Precio: $" + precio}</Text>
-      <Text style={styles.texto}>
-        {"Categoria: "}
-        <Text style={styles.textoCategoria}>{nombreCategoria}</Text>
-      </Text>
+      <Text style={styles.label}>{nombre}</Text>
       <View style={styles.contenedorBotones}>
         <Pressable
           style={[styles.btn, styles.btnEditar]}
           onLongPress={() => {
             setModalVisible(true);
-            productoEditar(id);
+            categoriaEditar(id);
           }}
         >
           <Text>Editar</Text>
         </Pressable>
         <Pressable
           style={[styles.btn, styles.btnEliminar]}
-          onLongPress={() => productoEliminar(id)}
+          onLongPress={() => categoriaEliminar(id)}
         >
           <Text>Eliminar</Text>
         </Pressable>
@@ -71,6 +63,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 10,
     fontSize: 20,
+    alignSelf : "center",
   },
   texto: {
     color: "#374151",
@@ -111,4 +104,4 @@ const styles = StyleSheet.create({
     color: "#FFF",
   },
 });
-export default Producto;
+export default Categoria;

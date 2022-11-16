@@ -12,9 +12,9 @@ import {
   Alert,
 } from "react-native";
 
-import estilos from "../MyDrawer/style";
+import estilos from '../../MyDrawer/style';
 
-const baseURL = "http://192.168.1.86:8000/api/";
+const baseURL = "http://192.168.1.82:8000/api/";
 
 const HomeScreen = ({ navigation }) => {
   const [valorMesa, inputMesa] = useState("");

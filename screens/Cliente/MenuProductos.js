@@ -11,10 +11,12 @@ import {
   Pressable,
 } from "react-native";
 import { IconButton, MD3Colors } from "react-native-paper";
-import estilos from "../MyDrawer/style";
-import Producto from "../components/producto";
 
-const baseURL = "http://192.168.1.86:8000/api/";
+import estilos from '../../MyDrawer/style';
+
+// import Producto from "../components/producto";
+
+const baseURL = "http://192.168.1.82:8000/api/";
 
 const MenuProductos = ({ navigation, route }) => {
   //const {valorMesa} = route.params;
@@ -42,7 +44,7 @@ const MenuProductos = ({ navigation, route }) => {
         const data = await response.json();
         setProductos(data);
         // console.log({productos})
-
+        modificarArray();
         //console.log(data);
       } catch (error) {
         //console.log(error);
@@ -67,77 +69,53 @@ const MenuProductos = ({ navigation, route }) => {
     })();
   }, []);
 
-  const modificarArray =() => {
-  
+  const modificarArray = () => {
+    const array = [productos.length];
+    var j = 0;
     for (var p = 0; p < productos.length; p++) {
       //console.log("producto "+j+":"+ productos[j].nombre);
       //console.log(idCategoria_);
       if (productos[p].categoria_id == idCategoria_) {
-        setProductosCategoria(productos[p]);
-
-        console.log("productos: " + productos[p].nombre);
-        
+        array[j] = productos[p];
+        j++;
       }
     }
-  
+    setProductosCategoria(array);
+    console.log(productosCategoria);
   };
 
-
   var j = -1;
-  const mostrarProdutoCategoria = productosCategoria.map(function (productosCategoria) {
-    
-
-    // setCategoriaEscogida(nombreCategoria);
-    // // console.log(idCategoria_);
-    // console.log("categoria recibida: " + idCategoria_);
-
-    //console.log("categoria escogida: " + categoriaEscogida);
-    // for (var p = 0; p < productos.length; p++) {
-    //   //console.log("producto "+j+":"+ productos[j].nombre);
-    //   //console.log(idCategoria_);
-    //   if (productos[p].categoria_id == idCategoria_) {
-    //     setProductosCategoria(productos[p]);
-
-    //     console.log("productos: " + productos[p].nombre);
-    //   }
-    // }
+  const mostrarProdutoCategoria = productosCategoria.map(function (
+    productosCategoria
+  ) {
     
     j++;
-      return (
-        <SafeAreaView style={styles.container} key ={j}>
-          <Text style={styles.titulo}>
-          {productosCategoria.nombre}{'  '}
-            
+    return (
+      <SafeAreaView style={styles.container} key={j}>
+        <Text style={styles.titulo}>
+          {productosCategoria.nombre}
+          {"  "}
+        </Text>
+        <View>
+          <Text style={styles.tituloBold}>
+            {"Descripción: "}
+            {productosCategoria.descripcion}
           </Text>
-          <Text style={styles.tituloBold}>{"Descripción:           "}{productosCategoria.descripcion}
-          <Text>{'                '}Precio: ${productosCategoria.precio}</Text></Text>
-          <Pressable
-            style={styles.btnNuevaCita}
-            onPress={() => console.log("presionadoxd"+j)}>
-            <Text style={styles.btnTextoNuevaCita}>Añadir al carrito</Text>
-          </Pressable>
+        </View>
+        <View>
+          <Text style={styles.tituloBold}>
+            Precio: ${productosCategoria.precio}
+          </Text>
+        </View>
+        <View></View>
 
-          {productos.length === 0 ? (
-            <Text style={styles.noPacientes}> No hay pacientes</Text>
-          ) : (
-            <FlatList
-              style={styles.listado}
-              data={productosCategoria}
-              keyExtractor={item => item.id}productosCategoria
-              renderItem={({item}) => {
-                console.log({item});
-                return (
-                  < Producto
-                    item={item}
-                    setModalVisible={setModalVisible}
-                    productoEditar={productoEditar}
-                    productoEliminar={productoEliminar}
-                  />
-                );
-              }}
-            />
-          )}
-          </SafeAreaView>
+        <Pressable
+          style={styles.btnNuevaCita}
+          onPress={() => console.log("presionadoxd" + j)}
+        >
+          <Text style={styles.btnTextoNuevaCita}>Añadir al carrito</Text>
+        </Pressable>
+      </SafeAreaView>
     );
     //console.log(productos[1].nombre);
   });
@@ -152,8 +130,11 @@ const MenuProductos = ({ navigation, route }) => {
             style={estilos.botonCategorias}
             onPress={() => {
               // mostrarProdutoCategoria(categorias.nombre);
-              setIdCategoria(categorias.id)
+              setIdCategoria(categorias.id);
               modificarArray();
+              // modificarArray();
+              
+              
             }}
           >
             <Text style={estilos.textoBoton}>
@@ -181,11 +162,11 @@ const MenuProductos = ({ navigation, route }) => {
         </ScrollView>
 
         <Text
-          // style={{
-          //   fontSize: 20,
-          //   marginTop: "30%",
-          //   textAlign: "center",
-          // }}
+        // style={{
+        //   fontSize: 20,
+        //   marginTop: "30%",
+        //   textAlign: "center",
+        // }}
         >
           Seleccione sus productos:
         </Text>
@@ -197,8 +178,10 @@ const MenuProductos = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#F3F4F6",
+    backgroundColor: "#DAD5D4",
     flex: 1,
+    borderRadius: 10,
+    marginBottom: 5,
   },
   titulo: {
     textAlign: "center",
@@ -207,8 +190,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   tituloBold: {
-    fontWeight: "900",
-    color: "#6D28D9",
+    fontWeight: "800",
+    color: "black",
+    fontSize: 16,
   },
   btnNuevaCita: {
     backgroundColor: "orange",
@@ -222,7 +206,9 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 18,
     fontWeight: "900",
+    
     textTransform: "uppercase",
+    
   },
   noPacientes: {
     marginTop: 40,

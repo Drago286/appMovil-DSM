@@ -20,22 +20,22 @@ import { Picker } from "@react-native-picker/picker";
 const baseURL = "http://192.168.1.82:8000/api/";
 
 const Formulario = (props) => {
-  const [producto, setProducto] = useState("");
+  //const [categoria, setcategoria] = useState("");
   const [nombre, setNombre] = useState("");
-  const [categoria, setCategoria] = useState("");
-  const [categorias, setCategorias] = useState([]);
+  //const [categoria, setCategoria] = useState("");
+  //const [categorias, setCategorias] = useState([]);
   const [id, setId] = useState("");
-  const [codigo, setCodigo] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [idCategoria, setIdCategoria] = useState("");
-  const [precio, setPrecio] = useState("");
-  const arrayCategorias = new Array(categorias.length);
+  //const [codigo, setCodigo] = useState("");
+  //const [descripcion, setDescripcion] = useState("");
+  //const [idCategoria, setIdCategoria] = useState("");
+  //const [precio, setPrecio] = useState("");
+  //const arrayCategorias = new Array(categorias.length);
   const { modalVisible } = props;
-  const { productos } = props;
-  const { setProductos } = props;
+  const { categorias } = props;
+  const { setCategorias } = props;
   const { setModalVisible } = props;
-  const { producto: productoObj } = props;
-  const { setProducto: setProductoApp } = props;
+  const { categoria: categoriaObj } = props;
+  const { setCategoria: setCategoriaApp } = props;
 
   let inicio = 1;
   let fin = 99999999;
@@ -54,10 +54,10 @@ const Formulario = (props) => {
       }
     })();
   }, []);
-  let agregarProducto = (nombre_, descripcion_, precio_, codigo_) => {
+  let agregarcategoria = (nombre_) => {
     try {
       fetch(
-        baseURL + "productos",
+        baseURL + "categorias",
         {
           method: "POST",
           mode: "no-cors",
@@ -66,11 +66,8 @@ const Formulario = (props) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            codigo: codigo_,
             nombre: nombre_,
-            descripcion: descripcion_,
-            precio: precio_,
-            categoria_id: 1,
+           
           }),
         },
       )
@@ -82,7 +79,7 @@ const Formulario = (props) => {
     }
   };
 
-  const editarProducto = (nombre_, descripcion_, precio_) => {
+  const editarcategoria = (nombre_) => {
     try {
       const requestOptions = {
         method: "PUT",
@@ -94,14 +91,10 @@ const Formulario = (props) => {
         body: JSON.stringify({
           id: id,
           nombre: nombre_,
-          descripcion: descripcion_,
-          precio: precio_,
-          categoria_id: 2,
-
         })
 
       }
-      fetch(baseURL + "productos/"+id,requestOptions)
+      fetch(baseURL + "categorias/"+id,requestOptions)
         .then((res) => res.json())
         .catch((error) => console.error("Error", error))
         .then((response) => console.log("Exito", response));
@@ -118,19 +111,14 @@ const Formulario = (props) => {
   };
 
   useEffect(() => {
-    if (Object.keys(productoObj).length > 0) {
-      setId(productoObj.id);
-      setProducto(productoObj.producto);
-      setNombre(productoObj.nombre);
-      setCategoria(productoObj.categoria_id);
-      setDescripcion(productoObj.descripcion);
-      setIdCategoria(productoObj.idCategoria);
-      setPrecio(productoObj.precio);
+    if (Object.keys(categoriaObj).length > 0) {
+        setId(categoriaObj.id);
+      setNombre(categoriaObj.nombre);
     }
-  }, [productoObj]);
+  }, [categoriaObj]);
 
   const handleCita = () => {
-    if ([nombre, descripcion, precio].includes("")) {
+    if ([nombre].includes("")) {
       //alerta para validar que todos los campos esten llenos.
       Alert.alert("Error", "Todos los campos son obligatorios.", [
         { text: "Recordar después", style: "cancel" },
@@ -139,44 +127,33 @@ const Formulario = (props) => {
       ]);
       return;
     }
-    const nuevoProducto = {
-      producto,
+    const nuevaCategoria = {
       nombre,
-      descripcion,
-      idCategoria,
-      precio,
-      categoria,
-      codigo,
     };
 
     if (id) {
     
-      nuevoProducto.id = id;
+      nuevaCategoria.id = id;
       
-      const productosActualizados = productos.map((productoState) =>
-        productoState.id === nuevoProducto.id ? nuevoProducto : productoState
+      const categoriasActualizados = categorias.map((categoriaState) =>
+        categoriaState.id === nuevaCategoria.id ? nuevaCategoria : categoriaState
         
       );
-      setProductos(productosActualizados);
-      editarProducto(nombre, descripcion, precio, nuevoProducto.codigo);
-      setProductoApp({});
+      setCategorias(categoriasActualizados);
+      editarcategoria(nombre);
+      setCategoriaApp({});
     } else {
-      nuevoProducto.id = Date.now();
-      let numeroRandom = Math.floor(Math.random()*9999999);
-      setCodigo(numeroRandom);
-      setProductos([...productos, nuevoProducto]); 
-      agregarProducto(nombre, descripcion, precio, numeroRandom);
+      nuevaCategoria.id = Date.now();
+    //   let numeroRandom = Math.floor(Math.random()*9999999);
+    //   setCodigo(numeroRandom);
+      setCategorias([...categorias, nuevaCategoria]); 
+      agregarcategoria(nombre);
     }
 
     setModalVisible(!modalVisible); //cierro el modal despues de guardar
 
     setId("");
-    setCodigo("");
     setNombre("");
-    setProducto("");
-    setDescripcion("");
-    setIdCategoria("");
-    setPrecio("");
   };
 
   return (
@@ -184,48 +161,19 @@ const Formulario = (props) => {
       <SafeAreaView style={styles.contenido}>
         <ScrollView>
           <Text style={styles.titulo}>
-            {productoObj.id ? "Editar" : "Nuevo"}{" "}
-            <Text style={styles.tituloBold}>Producto</Text>
+            {categoriaObj.id ? "Editar" : "Nuevo"}{" "}
+            <Text style={styles.tituloBold}>categoria</Text>
           </Text>
 
           <View style={styles.campo}>
-            <Text style={styles.label2}>Nombre Producto:</Text>
+            <Text style={styles.label2}>Nombre categoria:</Text>
             <TextInput
               style={styles.input}
-              placeholder="Nombre producto"
+              placeholder="Nombre categoria"
               placeholderTextColor={"#666"}
               value={nombre}
               onChangeText={setNombre}
             />
-          </View>
-
-          <View style={styles.campo}>
-            <Text style={styles.label2}>Descripción:</Text>
-            <TextInput
-              style={styles.input}
-              multiline
-              placeholder="Ingrese descripción"
-              placeholderTextColor={"#666"}
-              value={descripcion}
-              onChangeText={setDescripcion}
-            />
-          </View>
-
-          <View style={styles.campo}>
-            <Text style={styles.label2}>Precio</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="precio"
-              placeholderTextColor={"#666"}
-              keyboardType="phone-pad"
-              value={precio}
-              onChangeText={setPrecio}
-              maxLength={12}
-            />
-          </View>
-
-          <View style={styles.campo}>
-            <Text style={styles.label2}>Categoria:</Text>
           </View>
           <View
           style={{
@@ -233,23 +181,20 @@ const Formulario = (props) => {
             justifyContent: "space-between",
 
           }}>
-          <Pressable style={styles.btnNuevoProducto} onPress={handleCita}>
-            <Text style={styles.btnNuevoProductoTexto}>
-              {productoObj.id ? "Editar" : "Agregar"}
+          <Pressable style={styles.btnNuevocategoria} onPress={handleCita}>
+            <Text style={styles.btnNuevocategoriaTexto}>
+              {categoriaObj.id ? "Editar" : "Agregar"}
             </Text>
           </Pressable>
           <Pressable
             style={styles.btnCancelar}
             onLongPress={() => {
               setModalVisible(!modalVisible);
-              setProductoApp({});
+              setCategoriaApp({});
               setId("");
-              setCodigo("");
+              
               setNombre("");
-              setProducto("");
-              setDescripcion("");
-              setIdCategoria("");
-              setPrecio("");
+              
               //SetEmail('');
               //etTelefono("");
               //setFecha(new Date());
@@ -323,7 +268,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 
-  btnNuevoProducto: {
+  btnNuevocategoria: {
       //marginVertical: 30,
       backgroundColor: "#F59E0B",
       marginHorizontal: 30,
@@ -333,7 +278,7 @@ const styles = StyleSheet.create({
       alignSelf: "center",
    
   },
-  btnNuevoProductoTexto: {
+  btnNuevocategoriaTexto: {
     color: "white",
     textAlign: "center",
     fontWeight: "900",
