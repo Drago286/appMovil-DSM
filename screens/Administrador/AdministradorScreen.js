@@ -1,38 +1,30 @@
-import React, { useState, useEffect } from "react";
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  TextInput,
-  Button,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  FlatList,
-  ScrollView,
-  Alert,
-} from "react-native";
+import React, { useState, useEffect, createContext } from "react";
+import { Text,TouchableOpacity,View,TextInput,Button,Pressable,SafeAreaView,StyleSheet,FlatList,ScrollView,Alert} from "react-native";
 import { IconButton, MD3Colors } from "react-native-paper";
 import axios from "axios";
 //import estilos from "../../MyDrawer/style";
 
 import Formulario from "../../components/Formulario";
 import Producto from "../../components/producto";
-const baseURL = "http://192.168.1.82:8000/api/";
+const baseURL = "http://192.168.1.86:8000/api/";
 
-const AdministradorScreen = ({ navigation }) => {
+export const categoriasContext = createContext();
+
+
+const AdministradorScreen = ({ navigation,children }) => {
   const [productos, setProductos] = useState([]);
   const [producto, setProducto] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [nombreCategoria, setNombreCategoria] = useState("");
   const [ip, setIP] = useState('');
-
   
 
-  
+  //NAVEGACION VOLVER
+  const volver = () => {
+    navigation.navigate("EleccionUsuario");
+  };
 
-  
 
   const productoEditar = (id) => {
     const productoEditar = productos.filter((producto) => producto.id === id);
@@ -82,6 +74,7 @@ const AdministradorScreen = ({ navigation }) => {
     }
   };
 
+//GET PRODUCTOS.
   useEffect(() => {
     (async function () {
       try {
@@ -96,6 +89,7 @@ const AdministradorScreen = ({ navigation }) => {
     })();
   }, []);
 
+  //GET CATEGORIAS.
   useEffect(() => {
     (async function () {
       try {
@@ -110,14 +104,17 @@ const AdministradorScreen = ({ navigation }) => {
     })();
   }, []);
 
-  const screenCliente = () => {
-    navigation.navigate("HomeScreen");
-  };
-  const volver = () => {
-    navigation.navigate("EleccionUsuario");
-  };
 
+//DESPLEGAR CATEGORIAS.
+  const recorrerCaterias = () => {
+    for(var i = 0; i <categorias.length ; i++) {
+      console.log(categorias[i]);
+  }
+  };
+ 
+//VISTA DE ADMINISTRADOR_SCREEN
   return (
+    <categoriasContext.Provider value={ [categorias,setCategorias]}>
     <SafeAreaView style={styles.container}>
       <IconButton
         icon="arrow-left"
@@ -150,7 +147,7 @@ const AdministradorScreen = ({ navigation }) => {
       )}
       <Pressable
         style={styles.btnNuevaCita}
-        onPress={() => setModalVisible(!modalVisible)}
+        onPress={() => {setModalVisible(!modalVisible);recorrerCaterias()}}
       >
         <Text style={styles.btnTextoNuevaCita}>Añadir producto</Text>
       </Pressable>
@@ -161,11 +158,14 @@ const AdministradorScreen = ({ navigation }) => {
         setProductos={setProductos}
         producto={producto}
         setProducto={setProducto}
+        categorias = {categorias}
       />
     </SafeAreaView>
+    </categoriasContext.Provider>
   );
 };
 
+//STYLES
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#F3F4F6",

@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
-const baseURL = "http://192.168.1.82:8000/api/";
+const baseURL = "http://192.168.1.86:8000/api/";
 
 const Producto = ({
   item,
   setModalVisible,
   productoEditar,
   productoEliminar,
+  cantidad,
 }) => {
   const [nombreCategoria, setNombreCategoria] = useState("");
   const [categorias, setCategorias] = useState([]);
-  const { categoria_id, producto, descripcion, precio, id, nombre } = item;
+  const { categoria_id, producto, descripcion, precio, id, nombre,stock } = item;
 
 
   useEffect(() => {
@@ -34,6 +35,8 @@ const Producto = ({
       <Text style={styles.texto}>Descripción:</Text>
       <Text style={styles.texto}>{descripcion}</Text>
       <Text style={styles.texto}>{"Precio: $" + precio}</Text>
+
+      <Text style={styles.texto}>{"Stock: " + stock}</Text>
       <Text style={styles.texto}>
         {"Categoria: "}
         <Text style={styles.textoCategoria}>{nombreCategoria}</Text>
@@ -41,7 +44,7 @@ const Producto = ({
       <View style={styles.contenedorBotones}>
         <Pressable
           style={[styles.btn, styles.btnEditar]}
-          onLongPress={() => {
+          onPress={() => {
             setModalVisible(true);
             productoEditar(id);
           }}
@@ -50,7 +53,7 @@ const Producto = ({
         </Pressable>
         <Pressable
           style={[styles.btn, styles.btnEliminar]}
-          onLongPress={() => productoEliminar(id)}
+          onPress={() => productoEliminar(id)}
         >
           <Text>Eliminar</Text>
         </Pressable>

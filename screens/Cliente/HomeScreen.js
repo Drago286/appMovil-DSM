@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { IconButton, MD3Colors } from "react-native-paper";
 
 import {
@@ -12,9 +12,9 @@ import {
   Alert,
 } from "react-native";
 
-import estilos from '../../MyDrawer/style';
+import estilos from "../../MyDrawer/style";
 
-const baseURL = "http://192.168.1.82:8000/api/";
+const baseURL = "http://192.168.1.86:8000/api/";
 
 const HomeScreen = ({ navigation }) => {
   const [valorMesa, inputMesa] = useState("");
@@ -98,17 +98,14 @@ const HomeScreen = ({ navigation }) => {
         }}
       ></TextInput>
       <View style={estilos.viewHorizontal}>
-        <View>
-          <TouchableOpacity style={estilos.boton2}>
-            <Text
-              style={estilos.textoBoton}
-              onPress={() => screenMenuProductos()}
-            >
-              Continuar
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View></View>
+        <Pressable style={estilos.boton2}>
+          <Text
+            style={estilos.textoBoton}
+            onPress={() => screenMenuProductos()}
+          >
+            Continuar
+          </Text>
+        </Pressable>
       </View>
     </View>
   );

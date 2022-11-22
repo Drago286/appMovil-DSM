@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Navigation from "./Navigation";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -15,7 +15,6 @@ import MesasScreen from "../screens/Administrador/MesasScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-
 import estilos from "../MyDrawer/style";
 const Stack = createNativeStackNavigator();
 
@@ -61,6 +60,8 @@ function MyTabs() {
 }
 function MyTabsAdmin() {
     return (
+
+     
       <Tab.Navigator
         screenOptions={{
           tabBarActiveTintColor: "orange",

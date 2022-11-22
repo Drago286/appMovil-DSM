@@ -11,21 +11,23 @@ import {
   Pressable,
 } from "react-native";
 import { IconButton, MD3Colors } from "react-native-paper";
-
-import estilos from '../../MyDrawer/style';
+import Producto from "../../components/producto";
+import estilos from "../../MyDrawer/style";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 // import Producto from "../components/producto";
 
-const baseURL = "http://192.168.1.82:8000/api/";
+const baseURL = "http://192.168.1.86:8000/api/";
 
-const MenuProductos = ({ navigation, route }) => {
+const MenuProductos = ({ navigation, route, props }) => {
   //const {valorMesa} = route.params;
 
   const [categorias, setCategorias] = useState([]);
   const [productos, setProductos] = useState([]);
   const [producto, setProducto] = useState([]);
+  const [carrito, setCarrito] = useState([]);
   const [productosCategoria, setProductosCategoria] = useState([]);
-
+  const [arrayCarrito,setArrayCarrito] = useState([]);
   const [categoriaEscogida, setCategoriaEscogida] = useState("");
   const [idCategoria_, setIdCategoria] = useState("");
 
@@ -70,25 +72,30 @@ const MenuProductos = ({ navigation, route }) => {
   }, []);
 
   const modificarArray = () => {
-    const array = [productos.length];
-    var j = 0;
-    for (var p = 0; p < productos.length; p++) {
-      //console.log("producto "+j+":"+ productos[j].nombre);
-      //console.log(idCategoria_);
-      if (productos[p].categoria_id == idCategoria_) {
-        array[j] = productos[p];
-        j++;
-      }
-    }
+
+    const array = productos.filter( producto => producto.categoria_id === idCategoria_ );
+
     setProductosCategoria(array);
-    console.log(productosCategoria);
+
+
+  };
+
+  const addToCart = (item) => {
+
+    const busqueda = arrayCarrito.some(producto => producto.id === item.id);
+
+    if (!busqueda) {
+      arrayCarrito.push(item);
+    }
+
+    setCarrito(arrayCarrito);
+    console.log(carrito);
   };
 
   var j = -1;
   const mostrarProdutoCategoria = productosCategoria.map(function (
     productosCategoria
   ) {
-    
     j++;
     return (
       <SafeAreaView style={styles.container} key={j}>
@@ -98,8 +105,9 @@ const MenuProductos = ({ navigation, route }) => {
         </Text>
         <View>
           <Text style={styles.tituloBold}>
-            {"Descripción: "}
+            {"Descripción:   "}
             {productosCategoria.descripcion}
+            {"   "}
           </Text>
         </View>
         <View>
@@ -107,17 +115,18 @@ const MenuProductos = ({ navigation, route }) => {
             Precio: ${productosCategoria.precio}
           </Text>
         </View>
-        <View></View>
 
-        <Pressable
-          style={styles.btnNuevaCita}
-          onPress={() => console.log("presionadoxd" + j)}
-        >
-          <Text style={styles.btnTextoNuevaCita}>Añadir al carrito</Text>
-        </Pressable>
+        <View >
+         <Pressable style={styles.btnCarrito}
+         onPress = {()=> addToCart(productosCategoria)}>
+          <Text style={styles.btnCarritoText}>
+            Añadir al carrito
+          </Text>
+
+         </Pressable>
+        </View>
       </SafeAreaView>
     );
-    //console.log(productos[1].nombre);
   });
 
   var i = -1;
@@ -126,21 +135,19 @@ const MenuProductos = ({ navigation, route }) => {
     return (
       <View key={i}>
         <View>
-          <TouchableOpacity
+          <Pressable
             style={estilos.botonCategorias}
             onPress={() => {
               // mostrarProdutoCategoria(categorias.nombre);
               setIdCategoria(categorias.id);
               modificarArray();
               // modificarArray();
-              
-              
             }}
           >
             <Text style={estilos.textoBoton}>
               {categorias.nombre.toUpperCase()}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     );
@@ -162,11 +169,12 @@ const MenuProductos = ({ navigation, route }) => {
         </ScrollView>
 
         <Text
-        // style={{
-        //   fontSize: 20,
-        //   marginTop: "30%",
-        //   textAlign: "center",
-        // }}
+        style={{
+          fontSize: 20,
+          fontWeight: 'bold',
+          marginTop: 20,
+          marginBottom: 20,
+        }}
         >
           Seleccione sus productos:
         </Text>
@@ -194,21 +202,34 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 16,
   },
-  btnNuevaCita: {
-    backgroundColor: "orange",
-    padding: 15,
-    marginTop: 30,
-    marginHorizontal: 20,
+  btnCarrito: {
+    height: 30,
+    width: 150,
     borderRadius: 10,
+    backgroundColor: "#F9813A",
+    justifyContent: "center",
+    alignSelf: "center",
+    alignItems: "center",
+    marginBottom: 10,
+
   },
-  btnTextoNuevaCita: {
-    textAlign: "center",
+  btnCarritoText: {
     color: "#FFF",
-    fontSize: 18,
-    fontWeight: "900",
-    
+    fontSize: 16,
+    fontWeight: "500",
+
+  },
+
+  btnAgragarCantidad: {
+    textAlign: "center",
+    alignSelf: "center",
+    color: "#FFF",
+    fontSize: 30,
+    fontWeight: "700",
     textTransform: "uppercase",
-    
+    marginTop: 4,
+    marginBottom: 10,
+    borderRadius: 15,
   },
   noPacientes: {
     marginTop: 40,
