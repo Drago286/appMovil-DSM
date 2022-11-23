@@ -1,19 +1,36 @@
-import React, { useState, useEffect,useContext } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Pressable,Alert } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import RestauranteContext from "./RestauranteContext";
+const baseURL = "http://192.168.1.86:8000/api/";
 
-const ProductoMenu = ({ item, props }) => {
-  const [contador, setContador] = useState(0);
-  const [carrito, setCarrito] = useContext(RestauranteContext);
-  const [producto, setProducto] = useState([]);
-  const [arrayCarrito,setArrayCarrito] = useContext(RestauranteContext);
+const ProductoMenu = ({ item , eliminarDelCarrito}) => {
+  const [contador, setContador] = useState(1);
 
   const { nombre, descripcion, precio, id } = item;
- 
 
-  
-
+  const disminuirContador = () => {
+    if (contador <=1) {
+      Alert.alert(
+        "¿Deseas anular este producto del pedido?",
+        "Se eliminará solo el producto: '"+nombre+"'",
+        [
+          { text: "Cancelar" },
+          {
+            text: "Si, Eliminar",
+            onPress: () => {
+              eliminarDelCarrito(id);
+            },
+          },
+        ]
+      );
+      return;
+    } else {
+      setContador(contador - 1);
+    }
+  };
+  const aumentarContador = () => {
+    setContador(contador + 1);
+  };
 
   return (
     <View style={styles.contenedor}>
@@ -29,13 +46,31 @@ const ProductoMenu = ({ item, props }) => {
         <Text style={{ fontSize: 13, color: "grey" }}>{item.descripcion}</Text>
         <Text style={{ fontSize: 17, fontWeight: "bold" }}>${item.precio}</Text>
       </View>
+      <View style={{ marginRight: 20, alignItems: "center" }}>
+        <Text style={{ fontWeight: "bold", fontSize: 18 }}>{contador}</Text>
+        <View style={styles.actionBtn}>
+          <Icon
+            name="remove"
+            size={25}
+            color={"white"}
+            onPress={() => disminuirContador()}
+          />
+          <Icon
+            name="add"
+            size={25}
+            color={"white"}
+            onPress={() => aumentarContador()}
+          />
+        </View>
+      </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
   contenedor: {
-    height: 100,
+    height: 140,
     elevation: 15,
+    width: 300,
     borderRadius: 10,
     backgroundColor: "white",
     marginVertical: 10,
@@ -97,7 +132,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   cartCard: {
-    height: 100,
+    height: 150,
     elevation: 15,
     borderRadius: 10,
     backgroundColor: "#FFF",
@@ -108,7 +143,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   actionBtn: {
-    width: 60,
+    width: 80,
     height: 30,
     backgroundColor: "#F9813A",
     borderRadius: 30,

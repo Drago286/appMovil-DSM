@@ -1,6 +1,7 @@
-import React, { useState, useEffect, createContext } from "react";
+import React, { useState, useEffect, createContext, useContext } from "react";
 import { Text,TouchableOpacity,View,TextInput,Button,Pressable,SafeAreaView,StyleSheet,FlatList,ScrollView,Alert} from "react-native";
 import { IconButton, MD3Colors } from "react-native-paper";
+import RestauranteContext from "../../components/RestauranteContext";
 import axios from "axios";
 //import estilos from "../../MyDrawer/style";
 
@@ -16,6 +17,7 @@ const AdministradorScreen = ({ navigation,children }) => {
   const [producto, setProducto] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [carrito, setCarrito] = useContext(RestauranteContext)
   const [nombreCategoria, setNombreCategoria] = useState("");
   const [ip, setIP] = useState('');
   

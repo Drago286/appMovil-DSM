@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Navigation from "./Navigation";
-
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -16,6 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import estilos from "../MyDrawer/style";
+import { RestauranteProvider } from "./RestauranteContext";
 const Stack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator();
@@ -30,8 +30,7 @@ function MyTabs() {
       <Tab.Screen
         name="MenuProductos"
         component={MenuProductos}
-        options={({navigation,route})=> ({
-          
+        options={({ navigation, route }) => ({
           title: "Menú",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="restaurant" size={size} color="color" />
@@ -39,7 +38,7 @@ function MyTabs() {
           headerStyle: {
             backgroundColor: "#67b5a3",
           },
-        }) }
+        })}
       />
       <Tab.Screen
         name="Carrito"
@@ -54,49 +53,46 @@ function MyTabs() {
           },
         }}
       />
-      
     </Tab.Navigator>
   );
 }
 function MyTabsAdmin() {
-    return (
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: "orange",
+      }}
+    >
+      <Tab.Screen
+        name="AdministradorScreen"
+        component={AdministradorScreen}
+        options={({ navigation, route }) => ({
+          tabBarLabel: "Administrar Productos",
+          title: "Administrador Productos",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="restaurant" size={size} color="color" />
+          ),
+          headerStyle: {
+            backgroundColor: "#67b5a3",
+          },
+        })}
+      />
+      <Tab.Screen
+        name="CategoriasScreen"
+        component={CategoriasScreen}
+        options={{
+          tabBarLabel: "Administrar Categorias",
+          title: "Administrar Categorias",
 
-     
-      <Tab.Navigator
-        screenOptions={{
-          tabBarActiveTintColor: "orange",
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="shoppingcart" size={24} color="black" />
+          ),
+          headerStyle: {
+            backgroundColor: "#67b5a3",
+          },
         }}
-      >
-        <Tab.Screen
-          name="AdministradorScreen"
-          component={AdministradorScreen}
-          options={({navigation,route})=> ({
-            tabBarLabel: "Administrar Productos",
-            title: "Administrador Productos",
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="restaurant" size={size} color="color" />
-            ),
-            headerStyle: {
-              backgroundColor: "#67b5a3",
-            },
-          }) }
-        />
-        <Tab.Screen
-          name="CategoriasScreen"
-          component={CategoriasScreen}
-          options={{
-            tabBarLabel: "Administrar Categorias",
-            title: "Administrar Categorias",
-
-            tabBarIcon: ({ color, size }) => (
-              <AntDesign name="shoppingcart" size={24} color="black" />
-            ),
-            headerStyle: {
-              backgroundColor: "#67b5a3",
-            },
-          }}
-        />
-        <Tab.Screen
+      />
+      <Tab.Screen
         name="Mesas"
         component={MesasScreen}
         options={{
@@ -110,15 +106,15 @@ function MyTabsAdmin() {
           },
         }}
       />
-      </Tab.Navigator>
-    );
-  }
+    </Tab.Navigator>
+  );
+}
 
 export default function App() {
   return (
     <>
-    <NavigationContainer>
-
+<RestauranteProvider>
+      <NavigationContainer>
         <Stack.Navigator initialRouteName="EleccionUsuario">
           <Stack.Screen
             name="EleccionUsuario"
@@ -154,7 +150,8 @@ export default function App() {
             options={{ headerShown: false }}
           ></Stack.Screen>
         </Stack.Navigator>
-        </NavigationContainer>
+      </NavigationContainer>
+      </RestauranteProvider>
     </>
   );
 }

@@ -62,8 +62,8 @@ const estilos = StyleSheet.create({
     //marginLeft: 150,
     marginTop: 20,
     marginRight: 10,
-    borderRadius: 9,
-    backgroundColor: "grey",
+    borderRadius: 5,
+    backgroundColor: "#ffffff",
     //color: "#afc7c1",
   },
   entardaTexto:{
@@ -78,7 +78,7 @@ const estilos = StyleSheet.create({
   },
   textoBoton: {
     fontSize: 17,
-    color: "white",
+    color: "black",
     fontWeight: "bold",
   },
   viewHorizontal: {

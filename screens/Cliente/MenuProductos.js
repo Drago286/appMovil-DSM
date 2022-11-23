@@ -1,19 +1,11 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-  FlatList,
-  SafeAreaView,
-  Pressable,
-} from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import {View,Text,StyleSheet,TouchableOpacity,ScrollView,Image,FlatList,SafeAreaView,Pressable, Alert} from "react-native";
 import { IconButton, MD3Colors } from "react-native-paper";
 import Producto from "../../components/producto";
 import estilos from "../../MyDrawer/style";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import RestauranteContext from "../../components/RestauranteContext";
+import ProductoMenu from "../../components/ProductoMenu";
 
 // import Producto from "../components/producto";
 
@@ -25,9 +17,9 @@ const MenuProductos = ({ navigation, route, props }) => {
   const [categorias, setCategorias] = useState([]);
   const [productos, setProductos] = useState([]);
   const [producto, setProducto] = useState([]);
-  const [carrito, setCarrito] = useState([]);
+  const [carrito, setCarrito] = useContext(RestauranteContext);
   const [productosCategoria, setProductosCategoria] = useState([]);
-  const [arrayCarrito,setArrayCarrito] = useState([]);
+  const [arrayCarrito,setArrayCarrito] =useState([]);
   const [categoriaEscogida, setCategoriaEscogida] = useState("");
   const [idCategoria_, setIdCategoria] = useState("");
 
@@ -35,6 +27,7 @@ const MenuProductos = ({ navigation, route, props }) => {
 
   const volver = () => {
     navigation.navigate("HomeScreen");
+    setCarrito([]);
   };
 
   useEffect(() => {
@@ -71,9 +64,9 @@ const MenuProductos = ({ navigation, route, props }) => {
     })();
   }, []);
 
-  const modificarArray = () => {
+  const modificarArray = (id_categoria) => {
 
-    const array = productos.filter( producto => producto.categoria_id === idCategoria_ );
+    const array = productos.filter( producto => producto.categoria_id === id_categoria);
 
     setProductosCategoria(array);
 
@@ -82,52 +75,26 @@ const MenuProductos = ({ navigation, route, props }) => {
 
   const addToCart = (item) => {
 
-    const busqueda = arrayCarrito.some(producto => producto.id === item.id);
+    const busqueda = carrito.some(producto => producto.id === item.id);
 
     if (!busqueda) {
-      arrayCarrito.push(item);
+      carrito.push(item);
+     
+      Alert.alert("Añadido ;D", "¡El producto ha sido añadido al carrito exitosamente!", [
+        { text: "Ok" },
+      ]);
+    }else{
+      Alert.alert("UY!", "¡Este producto ya está en el carrito!", [
+        { text: "Ok" },
+      ]);
     }
 
-    setCarrito(arrayCarrito);
+    
     console.log(carrito);
   };
 
   var j = -1;
-  const mostrarProdutoCategoria = productosCategoria.map(function (
-    productosCategoria
-  ) {
-    j++;
-    return (
-      <SafeAreaView style={styles.container} key={j}>
-        <Text style={styles.titulo}>
-          {productosCategoria.nombre}
-          {"  "}
-        </Text>
-        <View>
-          <Text style={styles.tituloBold}>
-            {"Descripción:   "}
-            {productosCategoria.descripcion}
-            {"   "}
-          </Text>
-        </View>
-        <View>
-          <Text style={styles.tituloBold}>
-            Precio: ${productosCategoria.precio}
-          </Text>
-        </View>
-
-        <View >
-         <Pressable style={styles.btnCarrito}
-         onPress = {()=> addToCart(productosCategoria)}>
-          <Text style={styles.btnCarritoText}>
-            Añadir al carrito
-          </Text>
-
-         </Pressable>
-        </View>
-      </SafeAreaView>
-    );
-  });
+  
 
   var i = -1;
   const botonesCategoria = categorias.map(function (categorias) {
@@ -138,10 +105,7 @@ const MenuProductos = ({ navigation, route, props }) => {
           <Pressable
             style={estilos.botonCategorias}
             onPress={() => {
-              // mostrarProdutoCategoria(categorias.nombre);
-              setIdCategoria(categorias.id);
-              modificarArray();
-              // modificarArray();
+              modificarArray(categorias.id);
             }}
           >
             <Text style={estilos.textoBoton}>
@@ -154,7 +118,9 @@ const MenuProductos = ({ navigation, route, props }) => {
   });
 
   return (
-    <ScrollView>
+    <SafeAreaView>
+    
+   
       <View>
         <IconButton
           icon="arrow-left"
@@ -167,7 +133,7 @@ const MenuProductos = ({ navigation, route, props }) => {
         <ScrollView horizontal={true}>
           <View style={estilos.viewHorizontal}>{botonesCategoria}</View>
         </ScrollView>
-
+        </View>
         <Text
         style={{
           fontSize: 20,
@@ -178,9 +144,43 @@ const MenuProductos = ({ navigation, route, props }) => {
         >
           Seleccione sus productos:
         </Text>
-        {mostrarProdutoCategoria}
+        
+          <View>
+       
+        {productosCategoria.length === 0 ? (
+        <Text style={styles.noMesa}>No hay productos :c</Text>
+      ) : (
+        <FlatList
+          contentContainerStyle={{paddingBottom: 80}}
+          ListFooterComponentStyle={{paddingHorizontal: 20, marginTop: 20}}
+          style={styles.listado}
+          data={productosCategoria}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            return (
+              <View>
+                <ProductoMenu
+                item={item}
+              />
+               <View >
+              <Pressable style={styles.actionBtn} onPress={()=>addToCart(item)}>
+                <Text>
+                  AÑADIR
+                </Text>
+              </Pressable>
+            </View>
+              </View>
+              
+            );
+          }
+
+         }
+         
+        />
+      )}
       </View>
-    </ScrollView>
+   
+    </SafeAreaView>
   );
 };
 
@@ -240,6 +240,16 @@ const styles = StyleSheet.create({
   listado: {
     marginTop: 50,
     marginHorizontal: 30,
+  },
+  actionBtn: {
+    width: 60,
+    height: 30,
+    backgroundColor: "#F9813A",
+    borderRadius: 30,
+    paddingHorizontal: 5,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignContent: "center",
   },
 });
 
