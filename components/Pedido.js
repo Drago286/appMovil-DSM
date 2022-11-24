@@ -1,76 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Pressable,Alert } from "react-native";
+import React, { useState, useEffect,useContext } from "react";
+import { View, Text, StyleSheet, Pressable ,FlatList} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-const baseURL = "http://192.168.1.83:8000/api/";
+import Producto from "./producto";
+import ProductoPedido from "./ProductoPedido";
+import RestauranteContext from "./RestauranteContext";
 
-const ProductoMenu = ({ item , eliminarDelCarrito}) => {
-  const [contador, setContador] = useState(1);
+const Pedido = ({ item, props }) => {
 
+  const [pedidoDatails, setPedidoDetail] = useState([]);
+  const [resumen_orden_productos,setResumen_orden_productos] = useContext(RestauranteContext);
   const { nombre, descripcion, precio, id } = item;
 
-  const disminuirContador = () => {
-    if (contador <=1) {
-      Alert.alert(
-        "¿Deseas anular este producto del pedido?",
-        "Se eliminará solo el producto: '"+nombre+"'",
-        [
-          { text: "Cancelar" },
-          {
-            text: "Si, Eliminar",
-            onPress: () => {
-              eliminarDelCarrito(id);
-            },
-          },
-        ]
-      );
-      return;
-    } else {
-      setContador(contador - 1);
-    }
-  };
-  const aumentarContador = () => {
-    setContador(contador + 1);
-  };
-
+ 
   return (
-    <View style={styles.contenedor}>
-      <View
-        style={{
-          height: 100,
-          marginLeft: 10,
-          paddingVertical: 20,
-          flex: 1,
-        }}
-      >
+    
+      <View style={styles.contenedor}>
+        <FlatList
+          data={resumen_orden_productos}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            return (
+              <ProductoPedido
+                item={item}
+                
+              />
+            );
+          }}
+        />
         <Text style={{ fontWeight: "bold", fontSize: 16 }}>{item.nombre}</Text>
         <Text style={{ fontSize: 13, color: "grey" }}>{item.descripcion}</Text>
-        <Text style={{ fontSize: 17, fontWeight: "bold" }}>${item.precio}</Text>
+        <Text style={{ fontSize: 17, fontWeight: "bold" }}>Monto total: ${item.montoTotal}</Text>
       </View>
-      <View style={{ marginRight: 20, alignItems: "center" }}>
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>{contador}</Text>
-        <View style={styles.actionBtn}>
-          <Icon
-            name="remove"
-            size={25}
-            color={"white"}
-            onPress={() => disminuirContador()}
-          />
-          <Icon
-            name="add"
-            size={25}
-            color={"white"}
-            onPress={() => aumentarContador()}
-          />
-        </View>
-      </View>
-    </View>
+    
   );
 };
 const styles = StyleSheet.create({
   contenedor: {
-    height: 140,
+    height: 150,
     elevation: 15,
-    width: 300,
     borderRadius: 10,
     backgroundColor: "white",
     marginVertical: 10,
@@ -132,7 +99,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   cartCard: {
-    height: 150,
+    height: 100,
     elevation: 15,
     borderRadius: 10,
     backgroundColor: "#FFF",
@@ -143,7 +110,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   actionBtn: {
-    width: 80,
+    width: 60,
     height: 30,
     backgroundColor: "#F9813A",
     borderRadius: 30,
@@ -153,4 +120,4 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
 });
-export default ProductoMenu;
+export default Pedido;

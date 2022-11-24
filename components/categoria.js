@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
-const baseURL = "http://192.168.1.86:8000/api/";
+const baseURL = "http://192.168.1.83:8000/api/";
 
 const Categoria = ({
   item,
@@ -23,7 +23,7 @@ const Categoria = ({
         const data = await response.json();
         setCategorias(data);
       } catch (error) {
-        console.log("error categorias");
+        console.log("error categorias no ");
       }
     })();
   }, []);

@@ -17,7 +17,7 @@ import estilos from "../../MyDrawer/style";
 import FormularioMesa from "../../components/FormularioMesa";
 import Mesa from "../../components/mesa";
 
-const baseURL = "http://192.168.1.86:8000/api/";
+const baseURL = "http://192.168.1.83:8000/api/";
 
 const AdministradorScreen = ({ navigation }) => {
   const [mesa, setMesa] = useState([]);
@@ -71,7 +71,7 @@ const AdministradorScreen = ({ navigation }) => {
           method: "GET",
         });
         const data = await response.json();
-        //setMesas(data);
+        setMesas(data);
         console.log(data);
       } catch (error) {
         console.log("error mesas");

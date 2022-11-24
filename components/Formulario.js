@@ -17,7 +17,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { categoriasContext } from "../screens/Administrador/AdministradorScreen";
 
-const baseURL = "http://192.168.1.86:8000/api/";
+const baseURL = "http://192.168.1.83:8000/api/";
 
 const Formulario = (props, navigation) => {
   const [producto, setProducto] = useState("");
@@ -265,7 +265,7 @@ const Formulario = (props, navigation) => {
           <Picker
               selectedValue={selectPicker}
               onValueChange={(select) => setSelectPicker(select)}
-              style={styles.picker}
+              style={styles.picker} itemStyle={{height: 80}}
               
             >
               <Picker.Item style={{color:'white'}} label="- Seleccione -" value="" />
@@ -374,12 +374,13 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   picker: {
+    
     backgroundColor: "#FFF",
-    padding: 0,
     borderRadius: 10,
     fontSize: 17,
-    fontWeight: "500",
     marginBottom: 10,
+    width: 330,
+    alignSelf: "center",
   },
 
   btnNuevoProducto: {

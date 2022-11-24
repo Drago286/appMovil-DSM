@@ -17,14 +17,15 @@ const EleccionUsuario = ({ navigation }) => {
       style={{
         backgroundColor: "white",
         flex: 1,
+        
       }}
     >
-      <TouchableOpacity style={estilos.botonEleccionUsuario} onPress={() => screenCliente()}>
+      <Pressable style={estilos.botonEleccionUsuario} onPress={() => screenCliente()}>
         <Text style={estilos.textoBoton}>Cliente</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={estilos.botonEleccionUsuario} onPress ={() => screenAdministrador()}>
+      </Pressable>
+      <Pressable style={estilos.botonEleccionUsuario} onPress ={() => screenAdministrador()}>
         <Text style={estilos.textoBoton}>Administrador</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };

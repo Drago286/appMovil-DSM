@@ -6,6 +6,8 @@ import RestauranteContext from "../../components/RestauranteContext";
 import ProductoCarrito from "../../components/ProductoCarrito";
 
 const CarritoScreen= ({navigation})=>{
+  
+
   const [carrito,setCarrito] = useContext(RestauranteContext);
 
   const volver = () => {
@@ -29,10 +31,11 @@ const CarritoScreen= ({navigation})=>{
       />
 
       <Text>{"   "}</Text>
-      <Text style={styles.tituloBold}>{"   "}Detalle:</Text>
+     
       {carrito.length === 0 ? (
         <Text style={styles.noProductos}>¡Añade tus productos al carrito!</Text>
       ) : (
+
         <FlatList
           contentContainerStyle={{paddingBottom: 80}}
           ListFooterComponentStyle={{paddingHorizontal: 20, marginTop: 20}}

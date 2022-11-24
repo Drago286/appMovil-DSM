@@ -1,10 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
-import {View,Text,StyleSheet,TouchableOpacity,ScrollView,Image,FlatList,SafeAreaView,Pressable, Alert} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  FlatList,
+  SafeAreaView,
+  Pressable,
+  Alert,
+} from "react-native";
 import { IconButton, MD3Colors } from "react-native-paper";
 import Producto from "../../components/producto";
 import estilos from "../../MyDrawer/style";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import RestauranteContext from "../../components/RestauranteContext";
+import Pedido from "../../components/Pedido";
 import ProductoMenu from "../../components/ProductoMenu";
 
 // import Producto from "../components/producto";
@@ -19,13 +31,14 @@ const MenuProductos = ({ navigation, route, props }) => {
   const [producto, setProducto] = useState([]);
   const [carrito, setCarrito] = useContext(RestauranteContext);
   const [productosCategoria, setProductosCategoria] = useState([]);
-  const [arrayCarrito,setArrayCarrito] =useState([]);
+  const [arrayCarrito, setArrayCarrito] = useState([]);
   const [categoriaEscogida, setCategoriaEscogida] = useState("");
   const [idCategoria_, setIdCategoria] = useState("");
+  const [resumen_orden,setResumen_orden] = useState([]);
+  const [resumen_orden_productos,setResumen_orden_productos] = useContext(RestauranteContext);
+
 
   const [modalVisible, setModalVisible] = useState(false);
-
-
 
   const volver = () => {
     navigation.navigate("HomeScreen");
@@ -35,17 +48,16 @@ const MenuProductos = ({ navigation, route, props }) => {
   useEffect(() => {
     (async function () {
       try {
-        const response = await fetch(baseURL + "productos", {
+        const response = await fetch(baseURL + "resumen_ordens", {
           method: "GET",
         });
         const data = await response.json();
-        setProductos(data);
+        setResumen_orden(data);
         // console.log({productos})
-        modificarArray();
         //console.log(data);
       } catch (error) {
         //console.log(error);
-        console.log("error productos");
+        console.log("error resumen_ordens");
       }
     })();
   }, []);
@@ -53,11 +65,11 @@ const MenuProductos = ({ navigation, route, props }) => {
   useEffect(() => {
     (async function () {
       try {
-        const response = await fetch(baseURL + "categorias", {
+        const response = await fetch(baseURL + "resumen_orden_productos", {
           method: "GET",
         });
         const data = await response.json();
-        setCategorias(data);
+        setResumen_orden_productos(data);
         //console.log(data);
       } catch (error) {
         //console.log(error);
@@ -67,114 +79,45 @@ const MenuProductos = ({ navigation, route, props }) => {
   }, []);
 
   const modificarArray = (id_categoria) => {
-
-    const array = productos.filter( producto => producto.categoria_id === id_categoria);
+    const array = productos.filter(
+      (producto) => producto.categoria_id === id_categoria
+    );
 
     setProductosCategoria(array);
-
-
   };
 
-  const addToCart = (item) => {
-
-    const busqueda = carrito.some(producto => producto.id === item.id);
-
-    if (!busqueda) {
-      arrayCarrito.push(item);
-      setCarrito(arrayCarrito);
-     
-      Alert.alert("Añadido ;D", "¡El producto ha sido añadido al carrito exitosamente!", [
-        { text: "Ok" },
-      ]);
-    }else{
-      Alert.alert("UY!", "¡Este producto ya está en el carrito!", [
-        { text: "Ok" },
-      ]);
-    }
-
-    
-    console.log(carrito);
-  };
-
-  var i = -1;
-  const botonesCategoria = categorias.map(function (categorias) {
-    i++;
-    return (
-      <View key={i}>
-        <View>
-          <Pressable
-            style={estilos.botonCategorias}
-            onPress={() => {
-              modificarArray(categorias.id);
-            }}
-          >
-            <Text style={estilos.textoBoton}>
-              {categorias.nombre.toUpperCase()}
-            </Text>
-          </Pressable>
-        </View>
-      </View>
-    );
-  });
 
   return (
     <SafeAreaView>
+      
       <View>
-        <IconButton
-          icon="arrow-left"
-          iconColor={MD3Colors.error50}
-          size={30}
-          onPress={() => volver()}
-        />
-        <Text style={{ fontSize: 20 }}> Categorias:</Text>
-
-        <ScrollView horizontal={true}>
-          <View style={estilos.viewHorizontal}>{botonesCategoria}</View>
-        </ScrollView>
-        </View>
-        <Text
-        style={{
-          fontSize: 20,
-          fontWeight: 'bold',
-          marginTop: 20,
-          marginBottom: 20,
-        }}
-        >
-          Seleccione sus productos:
-        </Text>
-          <View>
-        {productosCategoria.length === 0 ? (
-        <Text style={styles.noMesa}>No hay productos :c</Text>
-      ) : (
-        <FlatList
-          contentContainerStyle={{paddingBottom: 80}}
-          ListFooterComponentStyle={{paddingHorizontal: 20, marginTop: 20}}
-          style={styles.listado}
-          data={productosCategoria}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => {
-            return (
-              <View>
-                <ProductoMenu
-                item={item}
-              />
-               <View >
-              <Pressable style={styles.actionBtn} onPress={()=>addToCart(item)}>
-                <Text>
-                  AÑADIR
-                </Text>
-              </Pressable>
-            </View>
-              </View>
-              
-            );
-          }
-
-         }
-        />
-      )}
+        {resumen_orden.length === 0 ? (
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+              marginTop: 20,
+              marginBottom: 20,
+              alignSelf: "center",
+            }}
+          >
+            No hay ningún pedido.
+          </Text>
+        ) : (
+          <FlatList
+            contentContainerStyle={{ paddingBottom: 80 }}
+            ListFooterComponentStyle={{ paddingHorizontal: 20, marginTop: 20 }}
+            style={styles.listado}
+            data={resumen_orden}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => {
+              return (
+                  <Pedido item={item} />
+              );
+            }}
+          />
+        )}
       </View>
-   
     </SafeAreaView>
   );
 };
@@ -206,13 +149,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     marginBottom: 10,
-
   },
   btnCarritoText: {
     color: "#FFF",
     fontSize: 16,
     fontWeight: "500",
-
   },
 
   btnAgragarCantidad: {

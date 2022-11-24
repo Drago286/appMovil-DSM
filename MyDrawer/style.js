@@ -7,8 +7,10 @@ const estilos = StyleSheet.create({
   botonEleccionUsuario: {
     width: 130,
     height: 50,
-    alignItems: "center",
+    alignSelf: "center",
     justifyContent: "center",
+    //alignItems : "center",
+    alignContent : "center",
   
     marginLeft: 150,
     marginTop: 20,
@@ -80,6 +82,7 @@ const estilos = StyleSheet.create({
     fontSize: 17,
     color: "black",
     fontWeight: "bold",
+    alignSelf : "center",
   },
   viewHorizontal: {
     flex: 1,

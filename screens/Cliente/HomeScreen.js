@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { IconButton, MD3Colors } from "react-native-paper";
+import { Picker } from "@react-native-picker/picker";
 
 import {
   View,
@@ -11,15 +12,20 @@ import {
   Pressable,
   Alert,
 } from "react-native";
+import RestauranteContext from "../../components/RestauranteContext";
 
 import estilos from "../../MyDrawer/style";
 
-const baseURL = "http://192.168.1.86:8000/api/";
+const baseURL = "http://192.168.1.83:8000/api/";
 
 const HomeScreen = ({ navigation }) => {
   const [valorMesa, inputMesa] = useState("");
   const [mesas, setMesas] = useState([]);
+  const [selectPicker, setSelectPicker] = useState("");
+  const [mesa_id_pedido,setMesa_id_pedido] = useContext(RestauranteContext);
 
+  //console.log(mesas);
+  
   useEffect(() => {
     (async function () {
       try {
@@ -27,23 +33,15 @@ const HomeScreen = ({ navigation }) => {
           method: "GET",
         });
         const data = await response.json();
+        
+        console.log(data);
         setMesas(data);
+        console.log(mesas);
       } catch (error) {
-        //console.log(error);
-        console.log("error u.u");
+        console.log("error MESAS");
       }
     })();
   }, []);
-
-  const buscarMesa = () => {
-    for (var i in mesas) {
-      if (mesas[i].numero == valorMesa) {
-        return true;
-      }
-      return false;
-    }
-    return false;
-  };
 
   const screenMenuProductos = () => {
     if (valorMesa == "") {
@@ -53,8 +51,9 @@ const HomeScreen = ({ navigation }) => {
         [{ text: "Entendido!" }]
       );
     } else {
-      var x = buscarMesa();
-      if (x === true) {
+      const busqueda = mesas.some(mesa => mesa.numero == valorMesa);      
+      if (busqueda) {
+        setMesa_id_pedido(valorMesa);
         Alert.alert("😊", "Mesa disponible", [{ text: "Continuar" }]);
         navigation.navigate("MyTabs", { valorMesa });
       } else {
@@ -64,6 +63,7 @@ const HomeScreen = ({ navigation }) => {
   };
   const volver = () => {
     navigation.navigate("EleccionUsuario");
+    setMesa_id_pedido("");
   };
 
   return (
@@ -88,7 +88,7 @@ const HomeScreen = ({ navigation }) => {
       >
         Por favor indicanos tu número de mesa:
       </Text>
-
+      
       <TextInput
         style={estilos.entardaTexto}
         keyboardType="numeric"

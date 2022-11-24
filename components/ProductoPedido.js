@@ -33,36 +33,11 @@ const ProductoMenu = ({ item , eliminarDelCarrito}) => {
   };
 
   return (
-    <View style={styles.contenedor}>
-      <View
-        style={{
-          height: 100,
-          marginLeft: 10,
-          paddingVertical: 20,
-          flex: 1,
-        }}
-      >
-        <Text style={{ fontWeight: "bold", fontSize: 16 }}>{item.nombre}</Text>
-        <Text style={{ fontSize: 13, color: "grey" }}>{item.descripcion}</Text>
-        <Text style={{ fontSize: 17, fontWeight: "bold" }}>${item.precio}</Text>
-      </View>
-      <View style={{ marginRight: 20, alignItems: "center" }}>
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>{contador}</Text>
-        <View style={styles.actionBtn}>
-          <Icon
-            name="remove"
-            size={25}
-            color={"white"}
-            onPress={() => disminuirContador()}
-          />
-          <Icon
-            name="add"
-            size={25}
-            color={"white"}
-            onPress={() => aumentarContador()}
-          />
-        </View>
-      </View>
+    <View>
+      
+        <Text style={{ fontWeight: "bold", fontSize: 16 }}>Unidades: {item.cantidad}</Text>
+        
+      
     </View>
   );
 };
