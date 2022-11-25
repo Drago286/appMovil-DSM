@@ -22,10 +22,10 @@ const HomeScreen = ({ navigation }) => {
   const [valorMesa, inputMesa] = useState("");
   const [mesas, setMesas] = useState([]);
   const [selectPicker, setSelectPicker] = useState("");
-  const [mesa_id_pedido,setMesa_id_pedido] = useContext(RestauranteContext);
+  const {idMesa, setIdMesa} = useContext(RestauranteContext);
 
   //console.log(mesas);
-  
+
   useEffect(() => {
     (async function () {
       try {
@@ -33,7 +33,7 @@ const HomeScreen = ({ navigation }) => {
           method: "GET",
         });
         const data = await response.json();
-        
+
         console.log(data);
         setMesas(data);
         console.log(mesas);
@@ -51,11 +51,11 @@ const HomeScreen = ({ navigation }) => {
         [{ text: "Entendido!" }]
       );
     } else {
-      const busqueda = mesas.some(mesa => mesa.numero == valorMesa);      
+      const busqueda = mesas.some((mesa) => mesa.numero == valorMesa);
       if (busqueda) {
-        setMesa_id_pedido(valorMesa);
+        //setIdMesa(valorMesa);
         Alert.alert("😊", "Mesa disponible", [{ text: "Continuar" }]);
-        navigation.navigate("MyTabs", { valorMesa });
+        navigation.navigate("MyTabs");
       } else {
         Alert.alert("😥", "Mesa no disponible", [{ text: "cerrar" }]);
       }
@@ -63,14 +63,13 @@ const HomeScreen = ({ navigation }) => {
   };
   const volver = () => {
     navigation.navigate("EleccionUsuario");
-    setMesa_id_pedido("");
+    setIdMesa("");
   };
 
   return (
     <View
       style={{
         backgroundColor: "white",
-        flex: 1,
       }}
     >
       <IconButton

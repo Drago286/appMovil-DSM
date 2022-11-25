@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import RestauranteContext from "./RestauranteContext";
 
-const ProductoMenu = ({ item, props }) => {
+const ProductoMenu = ({ item, props, addToCart }) => {
   const [contador, setContador] = useState(0);
-  const [carrito, setCarrito] = useContext(RestauranteContext);
+  //const [carrito, setCarrito] = useContext(RestauranteContext);
   const [producto, setProducto] = useState([]);
-  const [arrayCarrito,setArrayCarrito] = useContext(RestauranteContext);
+  //const [arrayCarrito,setArrayCarrito] = useContext(RestauranteContext);
 
   const { nombre, descripcion, precio, id } = item;
  
@@ -19,7 +19,7 @@ const ProductoMenu = ({ item, props }) => {
     <View style={styles.contenedor}>
       <View
         style={{
-          height: 100,
+          height: 140,
           marginLeft: 10,
           paddingVertical: 20,
           flex: 1,
@@ -27,14 +27,24 @@ const ProductoMenu = ({ item, props }) => {
       >
         <Text style={{ fontWeight: "bold", fontSize: 16 }}>{item.nombre}</Text>
         <Text style={{ fontSize: 13, color: "grey" }}>{item.descripcion}</Text>
-        <Text style={{ fontSize: 17, fontWeight: "bold" }}>${item.precio}</Text>
+        <Text style={{ fontSize: 17, fontWeight: "bold" ,marginBottom: 10,}}>${item.precio}</Text>
+        <Pressable style={styles.actionBtn} onPress={()=> addToCart(item)}>
+          <Text style={{
+            fontSize: 15,
+                        color: "white",
+                        fontWeight : 'bold',
+                        alignSelf : "center",
+          }}>
+            Añadir
+          </Text>
+        </Pressable>
       </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
   contenedor: {
-    height: 100,
+    height: 120,
     elevation: 15,
     borderRadius: 10,
     backgroundColor: "white",

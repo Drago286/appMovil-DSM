@@ -1,24 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Pressable,Alert } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 const baseURL = "http://192.168.1.83:8000/api/";
+import RestauranteContext from "./RestauranteContext";
 
-const ProductoMenu = ({ item , eliminarDelCarrito}) => {
+const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
   const [contador, setContador] = useState(1);
+  const { total, setTotal } = useContext(RestauranteContext);
 
   const { nombre, descripcion, precio, id } = item;
 
   const disminuirContador = () => {
-    if (contador <=1) {
+    if (contador <= 1) {
       Alert.alert(
         "¿Deseas anular este producto del pedido?",
-        "Se eliminará solo el producto: '"+nombre+"'",
+        "Se eliminará solo el producto: '" + nombre + "'",
         [
           { text: "Cancelar" },
           {
             text: "Si, Eliminar",
             onPress: () => {
               eliminarDelCarrito(id);
+              var subTotal = total;
+              setTotal((subTotal -= item.precio * contador));
             },
           },
         ]
@@ -26,14 +30,20 @@ const ProductoMenu = ({ item , eliminarDelCarrito}) => {
       return;
     } else {
       setContador(contador - 1);
+      var subTotal = total;
+      setTotal((subTotal -= item.precio));
     }
   };
+
   const aumentarContador = () => {
     setContador(contador + 1);
+    var subTotal = total;
+    setTotal(subTotal + item.precio);
   };
 
   return (
     <View style={styles.contenedor}>
+      
       <View
         style={{
           height: 100,
@@ -44,7 +54,9 @@ const ProductoMenu = ({ item , eliminarDelCarrito}) => {
       >
         <Text style={{ fontWeight: "bold", fontSize: 16 }}>{item.nombre}</Text>
         <Text style={{ fontSize: 13, color: "grey" }}>{item.descripcion}</Text>
-        <Text style={{ fontSize: 17, fontWeight: "bold" }}>${item.precio}</Text>
+        <Text style={{ fontSize: 17, fontWeight: "bold" }}>
+          ${item.precio * contador}
+        </Text>
       </View>
       <View style={{ marginRight: 20, alignItems: "center" }}>
         <Text style={{ fontWeight: "bold", fontSize: 18 }}>{contador}</Text>

@@ -32,6 +32,7 @@ function MyTabs() {
         name="MenuProductos"
         component={MenuProductos}
         options={({ navigation, route }) => ({
+          //unmountOnBlur: true,
           title: "Menú",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="restaurant" size={size} color="color" />
@@ -45,6 +46,7 @@ function MyTabs() {
         name="Carrito"
         component={CarritoScreen}
         options={{
+          //unmountOnBlur: true,
           tabBarLabel: "Carrito de compras",
           tabBarIcon: ({ color, size }) => (
             
@@ -148,6 +150,7 @@ export default function App() {
             component={HomeScreen}
             options={{
               title: "Inicio",
+              unmountOnBlur: true,
               headerStyle: {
                 backgroundColor: "#67b5a3",
               },

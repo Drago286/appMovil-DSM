@@ -17,7 +17,6 @@ const AdministradorScreen = ({ navigation,children }) => {
   const [producto, setProducto] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [carrito, setCarrito] = useContext(RestauranteContext)
   const [nombreCategoria, setNombreCategoria] = useState("");
   const [ip, setIP] = useState('');
   

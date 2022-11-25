@@ -12,14 +12,17 @@ export const RestauranteProvider = ({ children }) => {
     const [productos, setProductos] = useState([]);
     const [categorias, setCategorias] = useState([]);
     const[resumen_orden_productos, setResumen_orden_productos] = useState([]);
-    const [mesa_id_pedido, setMesa_id_pedido] = useState("");
+    const [idMesa, setIdMesa] = useState("");
     const [mesas, setMesas] = useState([]);
-
+    const[contador, setContador] = useState(1);
+    const [total, setTotal] = useState(0);
   
-
     return (
         <RestauranteContext.Provider 
-        value={[carrito,setCarrito,categorias,setCategorias,productos,setProductos,resumen_orden_productos,setResumen_orden_productos,mesa_id_pedido,setMesa_id_pedido,mesas,setMesas]}>
+        value={{carrito,setCarrito,categorias,setCategorias,
+        productos,setProductos,resumen_orden_productos,
+        setResumen_orden_productos,idMesa,setIdMesa,mesas,setMesas,
+        contador,setContador,total,setTotal}}>
             {children}
         </RestauranteContext.Provider>
     );

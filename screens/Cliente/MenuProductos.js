@@ -1,5 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import {View,Text,StyleSheet,TouchableOpacity,ScrollView,Image,FlatList,SafeAreaView,Pressable, Alert} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  FlatList,
+  SafeAreaView,
+  Pressable,
+  Alert,
+} from "react-native";
 import { IconButton, MD3Colors } from "react-native-paper";
 import Producto from "../../components/producto";
 import estilos from "../../MyDrawer/style";
@@ -17,19 +28,19 @@ const MenuProductos = ({ navigation, route, props }) => {
   const [categorias, setCategorias] = useState([]);
   const [productos, setProductos] = useState([]);
   const [producto, setProducto] = useState([]);
-  const [carrito, setCarrito] = useContext(RestauranteContext);
+  const {carrito, setCarrito,total,setTotal} = useContext(RestauranteContext);
   const [productosCategoria, setProductosCategoria] = useState([]);
-  const [arrayCarrito,setArrayCarrito] =useState([]);
+  const [arrayCarrito, setArrayCarrito] = useState([]);
   const [categoriaEscogida, setCategoriaEscogida] = useState("");
   const [idCategoria_, setIdCategoria] = useState("");
+  //const {total, setTotal} = useContext(RestauranteContext);
 
   const [modalVisible, setModalVisible] = useState(false);
-
-
 
   const volver = () => {
     navigation.navigate("HomeScreen");
     setCarrito([]);
+    setTotal(0)
   };
 
   useEffect(() => {
@@ -41,7 +52,7 @@ const MenuProductos = ({ navigation, route, props }) => {
         const data = await response.json();
         setProductos(data);
         // console.log({productos})
-        modificarArray();
+        //modificarArray();
         //console.log(data);
       } catch (error) {
         //console.log(error);
@@ -67,32 +78,33 @@ const MenuProductos = ({ navigation, route, props }) => {
   }, []);
 
   const modificarArray = (id_categoria) => {
-
-    const array = productos.filter( producto => producto.categoria_id === id_categoria);
+  
+    const array = productos.filter(
+      (producto) => producto.categoria_id === id_categoria
+    );
 
     setProductosCategoria(array);
-
-
   };
 
   const addToCart = (item) => {
-
-    const busqueda = carrito.some(producto => producto.id === item.id);
+    const busqueda = carrito.some((producto) => producto.id === item.id);
 
     if (!busqueda) {
-      arrayCarrito.push(item);
-      setCarrito(arrayCarrito);
-     
-      Alert.alert("Añadido ;D", "¡El producto ha sido añadido al carrito exitosamente!", [
-        { text: "Ok" },
-      ]);
-    }else{
+      carrito.push(item);
+      var subTotal = total;
+      setTotal(subTotal + item.precio);
+      
+      Alert.alert(
+        "Añadido ;D",
+        "¡El producto ha sido añadido al carrito exitosamente!",
+        [{ text: "Ok" }]
+      );
+    } else {
       Alert.alert("UY!", "¡Este producto ya está en el carrito!", [
         { text: "Ok" },
       ]);
     }
 
-    
     console.log(carrito);
   };
 
@@ -131,50 +143,37 @@ const MenuProductos = ({ navigation, route, props }) => {
         <ScrollView horizontal={true}>
           <View style={estilos.viewHorizontal}>{botonesCategoria}</View>
         </ScrollView>
-        </View>
-        <Text
+      </View>
+      <Text
         style={{
           fontSize: 20,
-          fontWeight: 'bold',
+          fontWeight: "bold",
           marginTop: 20,
-          marginBottom: 20,
         }}
-        >
-          Seleccione sus productos:
-        </Text>
-          <View>
+      >
+        Seleccione sus productos:
+      </Text>
+      <View>
         {productosCategoria.length === 0 ? (
-        <Text style={styles.noMesa}>No hay productos :c</Text>
-      ) : (
-        <FlatList
-          contentContainerStyle={{paddingBottom: 80}}
-          ListFooterComponentStyle={{paddingHorizontal: 20, marginTop: 20}}
-          style={styles.listado}
-          data={productosCategoria}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => {
-            return (
-              <View>
-                <ProductoMenu
-                item={item}
-              />
-               <View >
-              <Pressable style={styles.actionBtn} onPress={()=>addToCart(item)}>
-                <Text>
-                  AÑADIR
-                </Text>
-              </Pressable>
-            </View>
-              </View>
-              
-            );
-          }
-
-         }
-        />
-      )}
+          <Text style={styles.noMesa}>No hay productos :c</Text>
+        ) : (
+          <FlatList
+            contentContainerStyle={{ paddingBottom: 80 }}
+            ListFooterComponentStyle={{ paddingHorizontal: 20, marginTop: 20 }}
+            style={styles.listado}
+            data={productosCategoria}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => {
+              return (
+                <View>
+                  <ProductoMenu item={item} addToCart={addToCart} />
+                  <View></View>
+                </View>
+              );
+            }}
+          />
+        )}
       </View>
-   
     </SafeAreaView>
   );
 };
@@ -206,13 +205,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     marginBottom: 10,
-
   },
   btnCarritoText: {
     color: "#FFF",
     fontSize: 16,
     fontWeight: "500",
-
   },
 
   btnAgragarCantidad: {
@@ -233,7 +230,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   listado: {
-    marginTop: 50,
+    marginTop: 10,
     marginHorizontal: 30,
   },
   actionBtn: {

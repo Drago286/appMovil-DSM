@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text,TouchableOpacity,View,TextInput,Button,Pressable,SafeAreaView,StyleSheet,FlatList,ScrollView,Alert} from "react-native";
 import { IconButton, MD3Colors } from "react-native-paper";
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -6,23 +6,28 @@ import RestauranteContext from "../../components/RestauranteContext";
 import ProductoCarrito from "../../components/ProductoCarrito";
 
 const CarritoScreen= ({navigation})=>{
-  
 
-  const [carrito,setCarrito] = useContext(RestauranteContext);
+  const {carrito,setCarrito} = useContext(RestauranteContext);
+  const [cantidad,setCantidad] = useState("");
+  const [precio,setPrecio] = useState("");
+  const {total,setTotal} = useContext(RestauranteContext);
+  
+ 
+
 
   const volver = () => {
     navigation.navigate("HomeScreen");
     setCarrito([]);
+    setTotal(0);
   };
   const eliminarDelCarrito = (id) => {
-  const nuevoCarrito = carrito.filter((item) => item.id !== id);
-  setCarrito(nuevoCarrito);
-  console.log(carrito);
+  
+  setCarrito(carrito.filter((item) => item.id != id));
+
 
   };
-
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView >
       <IconButton
         icon="arrow-left"
         iconColor={MD3Colors.error50}
@@ -32,10 +37,11 @@ const CarritoScreen= ({navigation})=>{
 
       <Text>{"   "}</Text>
      
-      {carrito.length === 0 ? (
+      {carrito.length === 0 ? ( 
         <Text style={styles.noProductos}>¡Añade tus productos al carrito!</Text>
+        
       ) : (
-
+        <View>
         <FlatList
           contentContainerStyle={{paddingBottom: 80}}
           ListFooterComponentStyle={{paddingHorizontal: 20, marginTop: 20}}
@@ -49,16 +55,21 @@ const CarritoScreen= ({navigation})=>{
                 eliminarDelCarrito={eliminarDelCarrito}
               />
             );
+            
           }
-
          }
         />
+        <Text>Total a pagar: {total}</Text>
+         </View>
       )}
+      
       
     </SafeAreaView>
   );
-  
-}
+};
+
+
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#F3F4F6",
@@ -95,8 +106,8 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   listado: {
-    marginTop: 50,
-    marginHorizontal: 30,
+    marginTop: 10,
+    marginHorizontal: 20,
   },
 });
 
