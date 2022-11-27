@@ -17,7 +17,8 @@ const EleccionUsuario = ({ navigation }) => {
       style={{
         backgroundColor: "white",
         flex: 1,
-        
+        alignItems : "center",
+        //flexDirection: "row",
       }}
     >
       <Pressable style={estilos.botonEleccionUsuario} onPress={() => screenCliente()}>

@@ -17,7 +17,7 @@ import {
 //import DatePicker from 'react-native-date-picker';
 import { Picker } from "@react-native-picker/picker";
 
-const baseURL = "http://192.168.1.83:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 const Formulario = (props) => {
   //const [categoria, setcategoria] = useState("");
@@ -54,6 +54,8 @@ const Formulario = (props) => {
       }
     })();
   }, []);
+
+
   let agregarcategoria = (nombre_) => {
     try {
       fetch(

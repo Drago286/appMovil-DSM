@@ -110,7 +110,7 @@ function MyTabsAdmin() {
           },
         }}
       />
-       <Tab.Screen
+       {/* <Tab.Screen
         name="Pedidos"
         component={PedidosScreen}
         options={{
@@ -123,7 +123,7 @@ function MyTabsAdmin() {
             backgroundColor: "#67b5a3",
           },
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 }
@@ -133,7 +133,7 @@ export default function App() {
     <>
 <RestauranteProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="EleccionUsuario">
+        <Stack.Navigator initialRouteName="MyTabs">
           <Stack.Screen
             name="EleccionUsuario"
             component={EleccionUsuario}
@@ -149,6 +149,7 @@ export default function App() {
             name="HomeScreen"
             component={HomeScreen}
             options={{
+              //unmountOnBlur: true,
               title: "Inicio",
               unmountOnBlur: true,
               headerStyle: {

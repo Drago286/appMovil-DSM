@@ -7,14 +7,14 @@ const estilos = StyleSheet.create({
   botonEleccionUsuario: {
     width: 130,
     height: 50,
-    alignSelf: "center",
-    justifyContent: "center",
-    //alignItems : "center",
-    alignContent : "center",
+    // alignSelf: "center",
+    // justifyContent: "center",
+    // //alignItems : "center",
+    //alignContent : "center",
   
-    marginLeft: 150,
+   
     marginTop: 20,
-    marginRight: 20,
+    //marginRight: 20,
     borderRadius: 9,
     backgroundColor: "#afc7c1",
     //color: "#afc7c1",
@@ -82,7 +82,8 @@ const estilos = StyleSheet.create({
     fontSize: 17,
     color: "black",
     fontWeight: "bold",
-    alignSelf : "center",
+   // alignSelf : "center",
+    textAlign : "center",
   },
   viewHorizontal: {
     flex: 1,

@@ -18,7 +18,7 @@ import { IconButton, MD3Colors } from "react-native-paper";
 import Formulario from "../../components/Formulario";
 import FormularioCategoria from "../../components/FormularioCategoria";
 import Categoria from "../../components/categoria";
-const baseURL = "http://192.168.1.83:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 const AdministradorScreen = ({ navigation }) => {
   //const [categorias, setcategorias] = useState([]);

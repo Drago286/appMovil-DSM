@@ -17,7 +17,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { categoriasContext } from "../screens/Administrador/AdministradorScreen";
 
-const baseURL = "http://192.168.1.83:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 const Formulario = (props, navigation) => {
   const [producto, setProducto] = useState("");
@@ -49,7 +49,8 @@ const Formulario = (props, navigation) => {
         const response = await fetch(baseURL + "categorias", {
           method: "GET",
         });
-        const data = await response.json();
+        const data = await response.json().then(res => {
+        }).catch();
         setCategorias(data);
         categoriasPicker();
       } catch (error) {

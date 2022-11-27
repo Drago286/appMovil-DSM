@@ -17,30 +17,35 @@ import estilos from "../../MyDrawer/style";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import RestauranteContext from "../../components/RestauranteContext";
 import ProductoMenu from "../../components/ProductoMenu";
+import Pedido from "../../components/Pedido";
 
 // import Producto from "../components/producto";
 
-const baseURL = "http://192.168.1.83:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 const MenuProductos = ({ navigation, route, props }) => {
   //const {valorMesa} = route.params;
 
   const [categorias, setCategorias] = useState([]);
   const [productos, setProductos] = useState([]);
-  const [producto, setProducto] = useState([]);
-  const {carrito, setCarrito,total,setTotal} = useContext(RestauranteContext);
+  const [ProductoCarrito, setProductoCarrito] = useState([]);
+  const { carrito, setCarrito, total, setTotal,idMesa, resumen_orden_productos, setResumen_orden_productos } = useContext(RestauranteContext);
   const [productosCategoria, setProductosCategoria] = useState([]);
   const [arrayCarrito, setArrayCarrito] = useState([]);
   const [categoriaEscogida, setCategoriaEscogida] = useState("");
   const [idCategoria_, setIdCategoria] = useState("");
-  //const {total, setTotal} = useContext(RestauranteContext);
 
   const [modalVisible, setModalVisible] = useState(false);
+
+  var pedido = {
+    detalle: []
+  };
 
   const volver = () => {
     navigation.navigate("HomeScreen");
     setCarrito([]);
-    setTotal(0)
+    setTotal(0);
+    setResumen_orden_productos([]);
   };
 
   useEffect(() => {
@@ -78,7 +83,6 @@ const MenuProductos = ({ navigation, route, props }) => {
   }, []);
 
   const modificarArray = (id_categoria) => {
-  
     const array = productos.filter(
       (producto) => producto.categoria_id === id_categoria
     );
@@ -93,10 +97,40 @@ const MenuProductos = ({ navigation, route, props }) => {
       carrito.push(item);
       var subTotal = total;
       setTotal(subTotal + item.precio);
-      
+      if(resumen_orden_productos.length===0) {
+      resumen_orden_productos.push({
+        orden_id: "",
+        mesa_id : idMesa,
+        producto_id: item.id,
+        cantidad: 1, 
+         
+      })
+      console.log("aaa")
+    }else{
+      var founded;
+      for(var i = 0; i <resumen_orden_productos.length; i++) {
+      if (resumen_orden_productos[i].producto_id ===item.id) {
+        resumen_orden_productos[i].cantidad++;
+        founded == true;
+      }
+    }
+    if(!founded){
+      resumen_orden_productos.push({
+        orden_id: "",
+        mesa_id : idMesa,
+        producto_id: item.id,
+        cantidad: 1, 
+         
+      })
+    }
+      //buscar el producto y ver si no esta agregado.
+    }
+      console.log(resumen_orden_productos);
+
+
       Alert.alert(
-        "Añadido ;D",
-        "¡El producto ha sido añadido al carrito exitosamente!",
+        "¡Añadido!",
+        "El producto ha sido añadido al carrito exitosamente",
         [{ text: "Ok" }]
       );
     } else {
@@ -105,7 +139,7 @@ const MenuProductos = ({ navigation, route, props }) => {
       ]);
     }
 
-    console.log(carrito);
+    //console.log(carrito);
   };
 
   var i = -1;
@@ -138,7 +172,16 @@ const MenuProductos = ({ navigation, route, props }) => {
           size={30}
           onPress={() => volver()}
         />
-        <Text style={{ fontSize: 20 }}> Categorias:</Text>
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: "bold",
+            marginLeft: 20,
+          }}
+        >
+          {" "}
+          Categorias:
+        </Text>
 
         <ScrollView horizontal={true}>
           <View style={estilos.viewHorizontal}>{botonesCategoria}</View>
@@ -149,13 +192,28 @@ const MenuProductos = ({ navigation, route, props }) => {
           fontSize: 20,
           fontWeight: "bold",
           marginTop: 20,
+          marginLeft: 20,
         }}
       >
         Seleccione sus productos:
       </Text>
       <View>
         {productosCategoria.length === 0 ? (
-          <Text style={styles.noMesa}>No hay productos :c</Text>
+          <FlatList
+            contentContainerStyle={{ paddingBottom: 80 }}
+            ListFooterComponentStyle={{ paddingHorizontal: 20, marginTop: 20 }}
+            style={styles.listado}
+            data={productos}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => {
+              return (
+                <View>
+                  <ProductoMenu item={item} addToCart={addToCart} />
+                  <View></View>
+                </View>
+              );
+            }}
+          />
         ) : (
           <FlatList
             contentContainerStyle={{ paddingBottom: 80 }}

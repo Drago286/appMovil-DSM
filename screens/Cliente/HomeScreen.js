@@ -16,60 +16,39 @@ import RestauranteContext from "../../components/RestauranteContext";
 
 import estilos from "../../MyDrawer/style";
 
-const baseURL = "http://192.168.1.83:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 const HomeScreen = ({ navigation }) => {
   const [valorMesa, inputMesa] = useState("");
-  const [mesas, setMesas] = useState([]);
+  const {mesas, setMesas,idMesa, setIdMesa} = useContext(RestauranteContext);
   const [selectPicker, setSelectPicker] = useState("");
-  const {idMesa, setIdMesa} = useContext(RestauranteContext);
 
-  //console.log(mesas);
 
-  useEffect(() => {
-    (async function () {
-      try {
-        const response = await fetch(baseURL + "mesas", {
-          method: "GET",
-        });
-        const data = await response.json();
-
-        console.log(data);
-        setMesas(data);
-        console.log(mesas);
-      } catch (error) {
-        console.log("error MESAS");
-      }
-    })();
-  }, []);
 
   const screenMenuProductos = () => {
-    if (valorMesa == "") {
+    if (selectPicker == "") {
       Alert.alert(
         "Oops!",
         "Por favor, indique un número de mesa antes de continuar",
         [{ text: "Entendido!" }]
       );
     } else {
-      const busqueda = mesas.some((mesa) => mesa.numero == valorMesa);
-      if (busqueda) {
-        //setIdMesa(valorMesa);
+        setIdMesa(selectPicker);
         Alert.alert("😊", "Mesa disponible", [{ text: "Continuar" }]);
         navigation.navigate("MyTabs");
-      } else {
-        Alert.alert("😥", "Mesa no disponible", [{ text: "cerrar" }]);
-      }
     }
   };
   const volver = () => {
     navigation.navigate("EleccionUsuario");
     setIdMesa("");
+
   };
 
   return (
     <View
       style={{
         backgroundColor: "white",
+        flex: 1,
       }}
     >
       <IconButton
@@ -81,21 +60,39 @@ const HomeScreen = ({ navigation }) => {
       <Text
         style={{
           fontSize: 20,
-          marginTop: "30%",
+
           textAlign: "center",
         }}
       >
         Por favor indicanos tu número de mesa:
       </Text>
-      
-      <TextInput
-        style={estilos.entardaTexto}
-        keyboardType="numeric"
-        value={valorMesa}
-        onChangeText={(text) => {
-          inputMesa(text);
+      <Picker
+        selectedValue={selectPicker}
+        onValueChange={(select) => setSelectPicker(select)}
+        style={{
+          backgroundColor: "#FFF",
+          borderRadius: 10,
+          fontSize: 17,
+          marginBottom: 10,
+          width: 330,
+          alignSelf: "center",
         }}
-      ></TextInput>
+        itemStyle={{ height: 80 }}
+      >
+        <Picker.Item
+          style={{ color: "white" }}
+          label="- Seleccione -"
+          value=""
+        />
+        {mesas.map((elemento) => (
+          <Picker.Item
+            key={elemento.id}
+            label={"Mesa "+elemento.numero.toString()}
+            value={elemento.id}
+          />
+        ))}
+      </Picker>
+
       <View style={estilos.viewHorizontal}>
         <Pressable style={estilos.boton2}>
           <Text

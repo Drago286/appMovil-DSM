@@ -7,7 +7,7 @@ import ProductoCarrito from "../../components/ProductoCarrito";
 
 const CarritoScreen= ({navigation})=>{
 
-  const {carrito,setCarrito} = useContext(RestauranteContext);
+  const {carrito,setCarrito,setResumen_orden_productos} = useContext(RestauranteContext);
   const [cantidad,setCantidad] = useState("");
   const [precio,setPrecio] = useState("");
   const {total,setTotal} = useContext(RestauranteContext);
@@ -19,6 +19,8 @@ const CarritoScreen= ({navigation})=>{
     navigation.navigate("HomeScreen");
     setCarrito([]);
     setTotal(0);
+    setResumen_orden_productos([]);
+
   };
   const eliminarDelCarrito = (id) => {
   
@@ -27,7 +29,7 @@ const CarritoScreen= ({navigation})=>{
 
   };
   return (
-    <SafeAreaView >
+    <SafeAreaView  style={{flex: 1}}>
       <IconButton
         icon="arrow-left"
         iconColor={MD3Colors.error50}
@@ -43,8 +45,8 @@ const CarritoScreen= ({navigation})=>{
       ) : (
         <View>
         <FlatList
-          contentContainerStyle={{paddingBottom: 80}}
-          ListFooterComponentStyle={{paddingHorizontal: 20, marginTop: 20}}
+          //contentContainerStyle={{paddingBottom: 80,flexGrow: 1,}}
+          //ListFooterComponentStyle={{paddingHorizontal: 20, marginTop: 20}}
           style={styles.listado}
           data={carrito}
           keyExtractor={(item) => item.id}
@@ -59,7 +61,10 @@ const CarritoScreen= ({navigation})=>{
           }
          }
         />
-        <Text>Total a pagar: {total}</Text>
+        <Pressable style={styles.btnNuevaCita}>
+          <Text style={styles.btnTextoNuevaCita}>Enviar pedido ${total}</Text>
+        </Pressable>
+        
          </View>
       )}
       
@@ -95,7 +100,7 @@ const styles = StyleSheet.create({
   btnTextoNuevaCita: {
     textAlign: "center",
     color: "#FFF",
-    fontSize: 15,
+    fontSize: 20,
     fontWeight: "700",
     textTransform: "uppercase",
   },
@@ -108,6 +113,7 @@ const styles = StyleSheet.create({
   listado: {
     marginTop: 10,
     marginHorizontal: 20,
+    
   },
 });
 
