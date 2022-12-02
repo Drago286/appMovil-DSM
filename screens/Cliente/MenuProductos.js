@@ -21,15 +21,15 @@ import Pedido from "../../components/Pedido";
 
 // import Producto from "../components/producto";
 
-const baseURL = "http://192.168.1.176:8000/api/";
+const baseURL = "http://192.168.1.83:8000/api/";
 
 const MenuProductos = ({ navigation, route, props }) => {
   //const {valorMesa} = route.params;
 
   const [categorias, setCategorias] = useState([]);
-  const [productos, setProductos] = useState([]);
+  // const [productos, setProductos] = useState([]);
   const [ProductoCarrito, setProductoCarrito] = useState([]);
-  const { carrito, setCarrito, total, setTotal,idMesa, resumen_orden_productos, setResumen_orden_productos } = useContext(RestauranteContext);
+  const { carrito, setCarrito, total, setTotal,idMesa, resumen_orden_productos, setResumen_orden_productos , productos,setProductos} = useContext(RestauranteContext);
   const [productosCategoria, setProductosCategoria] = useState([]);
   const [arrayCarrito, setArrayCarrito] = useState([]);
   const [categoriaEscogida, setCategoriaEscogida] = useState("");
@@ -105,7 +105,6 @@ const MenuProductos = ({ navigation, route, props }) => {
         cantidad: 1, 
          
       })
-      console.log("aaa")
     }else{
       var founded;
       for(var i = 0; i <resumen_orden_productos.length; i++) {
@@ -164,7 +163,7 @@ const MenuProductos = ({ navigation, route, props }) => {
   });
 
   return (
-    <SafeAreaView>
+    <View>
       <View>
         <IconButton
           icon="arrow-left"
@@ -229,10 +228,13 @@ const MenuProductos = ({ navigation, route, props }) => {
                 </View>
               );
             }}
+            
           />
         )}
+        
       </View>
-    </SafeAreaView>
+      
+    </View>
   );
 };
 

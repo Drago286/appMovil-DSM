@@ -17,7 +17,7 @@ import estilos from "../../MyDrawer/style";
 import FormularioMesa from "../../components/FormularioMesa";
 import Mesa from "../../components/mesa";
 
-const baseURL = "http://192.168.1.176:8000/api/";
+const baseURL = "http://192.168.1.83:8000/api/";
 
 const AdministradorScreen = ({ navigation }) => {
   const [mesa, setMesa] = useState([]);

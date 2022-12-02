@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable,Alert } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-const baseURL = "http://192.168.1.176:8000/api/";
+const baseURL = "http://192.168.1.83:8000/api/";
 
 const ProductoMenu = ({ item , eliminarDelCarrito}) => {
   const [contador, setContador] = useState(1);

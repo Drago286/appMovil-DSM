@@ -2,11 +2,9 @@ import React, { useState, createContext, useEffect } from "react";
 const RestauranteContext = createContext();
 
 
-const baseURL = "http://192.168.1.176:8000/api/";
+const baseURL = "http://192.168.1.83:8000/api/";
 
 export const RestauranteProvider = ({ children }) => {
-
-  
 
     const [carrito,setCarrito] = useState([]);
     const [productos, setProductos] = useState([]);
@@ -19,7 +17,6 @@ export const RestauranteProvider = ({ children }) => {
     const [resumen_orden, setResumen_orden] = useState([]);
     
     
-
     useEffect(() => {
         (async function () {
           try {
@@ -37,6 +34,24 @@ export const RestauranteProvider = ({ children }) => {
         })();
       }, []);
   
+      useEffect(() => {
+        (async function () {
+          try {
+            const response = await fetch(baseURL + "productos", {
+              method: "GET",
+            });
+            const data = await response.json();
+    
+            console.log(data);
+            setMesas(data);
+            console.log(mesas);
+          } catch (error) {
+            console.log("error MESAS");
+          }
+        })();
+      }, []);
+  
+
     return (
         <RestauranteContext.Provider 
         value={{carrito,setCarrito,categorias,setCategorias,

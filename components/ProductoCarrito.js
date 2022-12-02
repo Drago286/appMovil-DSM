@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-const baseURL = "http://192.168.1.176:8000/api/";
+const baseURL = "http://192.168.1.83:8000/api/";
 import RestauranteContext from "./RestauranteContext";
 
 const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
@@ -23,6 +23,7 @@ const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
               eliminarDelCarrito(id);
               var subTotal = total;
               setTotal((subTotal -= item.precio * contador));
+              
             },
           },
         ]
@@ -58,7 +59,7 @@ const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
     
     //   }
     // });
-    console.log(resumen_orden_productos);
+    // console.log(resumen_orden_productos);
 
 
   };

@@ -5,23 +5,60 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import RestauranteContext from "../../components/RestauranteContext";
 import ProductoCarrito from "../../components/ProductoCarrito";
 
+const baseURL = "http://192.168.1.83:8000/api/";
+
+
 const CarritoScreen= ({navigation})=>{
 
-  const {carrito,setCarrito,setResumen_orden_productos} = useContext(RestauranteContext);
+  const {carrito,setCarrito,idMesa,resumen_orden_productos,total,setResumen_orden_productos} = useContext(RestauranteContext);
   const [cantidad,setCantidad] = useState("");
   const [precio,setPrecio] = useState("");
-  const {total,setTotal} = useContext(RestauranteContext);
-  
+
+  let guardarOrden = (total_,idMesa_,resumen_orden_productos_) => {
+    Alert.alert(
+      "¿Desea enviar su pedido?",'',
+      [
+        { text: "No" },
+        {
+          text: "Si",
+          onPress: () => {
+            try {
+             
+              fetch(
+                baseURL + "saveOrder",
+                {
+                  method: "POST",
+                  mode: "no-cors",
+                  headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    montoTotal: total_,
+                    mesa_id: idMesa_,
+                    resumen_orden_productos: resumen_orden_productos_,
+                    
+                  }),
+                },
+              )
+                .then((res) => res.json())
+                .catch((error) => console.error("Error", error))
+                .then((response) => console.log("Exito", response));
+            } catch (e) {
+              console.log(e);
+            }
+           
+          },
+        },
+      ]
+    );
+   
+  };
+
  
 
 
-  const volver = () => {
-    navigation.navigate("HomeScreen");
-    setCarrito([]);
-    setTotal(0);
-    setResumen_orden_productos([]);
-
-  };
+ 
   const eliminarDelCarrito = (id) => {
   
   setCarrito(carrito.filter((item) => item.id != id));
@@ -30,12 +67,7 @@ const CarritoScreen= ({navigation})=>{
   };
   return (
     <SafeAreaView  style={{flex: 1}}>
-      <IconButton
-        icon="arrow-left"
-        iconColor={MD3Colors.error50}
-        size={30}
-        onPress={() => volver()}
-      />
+      
 
       <Text>{"   "}</Text>
      
@@ -61,7 +93,7 @@ const CarritoScreen= ({navigation})=>{
           }
          }
         />
-        <Pressable style={styles.btnNuevaCita}>
+        <Pressable style={styles.btnNuevaCita} onPress ={()=> guardarOrden(total,idMesa,resumen_orden_productos)}>
           <Text style={styles.btnTextoNuevaCita}>Enviar pedido ${total}</Text>
         </Pressable>
         

@@ -16,13 +16,30 @@ import RestauranteContext from "../../components/RestauranteContext";
 
 import estilos from "../../MyDrawer/style";
 
-const baseURL = "http://192.168.1.176:8000/api/";
+const baseURL = "http://192.168.1.83:8000/api/";
 
 const HomeScreen = ({ navigation }) => {
   const [valorMesa, inputMesa] = useState("");
-  const {mesas, setMesas,idMesa, setIdMesa} = useContext(RestauranteContext);
+  const {idMesa, setIdMesa} = useContext(RestauranteContext);
   const [selectPicker, setSelectPicker] = useState("");
+  const [mesas,setMesas]=useState([]);
 
+  useEffect(() => {
+    (async function () {
+      try {
+        const response = await fetch(baseURL + "mesas", {
+          method: "GET",
+        });
+        const data = await response.json();
+
+        console.log(data);
+        setMesas(data);
+        console.log(mesas);
+      } catch (error) {
+        console.log("error MESAS");
+      }
+    })();
+  }, []);
 
 
   const screenMenuProductos = () => {
@@ -34,7 +51,6 @@ const HomeScreen = ({ navigation }) => {
       );
     } else {
         setIdMesa(selectPicker);
-        Alert.alert("😊", "Mesa disponible", [{ text: "Continuar" }]);
         navigation.navigate("MyTabs");
     }
   };
@@ -87,7 +103,7 @@ const HomeScreen = ({ navigation }) => {
         {mesas.map((elemento) => (
           <Picker.Item
             key={elemento.id}
-            label={"Mesa "+elemento.numero.toString()}
+            label={"Mesa N°"+elemento.numero.toString()}
             value={elemento.id}
           />
         ))}

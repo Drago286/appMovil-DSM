@@ -133,7 +133,7 @@ export default function App() {
     <>
 <RestauranteProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MyTabs">
+        <Stack.Navigator initialRouteName="EleccionUsuario">
           <Stack.Screen
             name="EleccionUsuario"
             component={EleccionUsuario}
