@@ -73,6 +73,7 @@ function MyTabsAdmin() {
         options={({ navigation, route }) => ({
           tabBarLabel: "Administrar Productos",
           title: "Administrador Productos",
+          unmountOnBlur: true,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="restaurant" size={size} color="color" />
           ),
@@ -87,6 +88,7 @@ function MyTabsAdmin() {
         options={{
           tabBarLabel: "Administrar Categorias",
           title: "Administrar Categorias",
+          unmountOnBlur: true,
 
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="list" size={24} color="black" />
@@ -102,6 +104,7 @@ function MyTabsAdmin() {
         options={{
           tabBarLabel: "Administrar Mesas",
           title: "Administrar Mesas",
+          unmountOnBlur: true,
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="user" size={24} color="black" />
           ),

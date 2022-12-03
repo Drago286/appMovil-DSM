@@ -20,16 +20,9 @@ import { Picker } from "@react-native-picker/picker";
 const baseURL = "http://192.168.1.83:8000/api/";
 
 const Formulario = (props) => {
-  //const [categoria, setcategoria] = useState("");
+
   const [nombre, setNombre] = useState("");
-  //const [categoria, setCategoria] = useState("");
-  //const [categorias, setCategorias] = useState([]);
   const [id, setId] = useState("");
-  //const [codigo, setCodigo] = useState("");
-  //const [descripcion, setDescripcion] = useState("");
-  //const [idCategoria, setIdCategoria] = useState("");
-  //const [precio, setPrecio] = useState("");
-  //const arrayCategorias = new Array(categorias.length);
   const { modalVisible } = props;
   const { categorias } = props;
   const { setCategorias } = props;
@@ -37,8 +30,6 @@ const Formulario = (props) => {
   const { categoria: categoriaObj } = props;
   const { setCategoria: setCategoriaApp } = props;
 
-  let inicio = 1;
-  let fin = 99999999;
 
   useEffect(() => {
     (async function () {
@@ -197,10 +188,6 @@ const Formulario = (props) => {
               
               setNombre("");
               
-              //SetEmail('');
-              //etTelefono("");
-              //setFecha(new Date());
-              //setSintomas('');
             }}
           >
             <Text style={styles.btnCancelarTexto}>Cancelar</Text>
@@ -268,6 +255,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     fontSize: 17,
     fontWeight: "500",
+    marginBottom: 10,
   },
 
   btnNuevocategoria: {

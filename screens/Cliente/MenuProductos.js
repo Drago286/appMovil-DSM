@@ -163,7 +163,7 @@ const MenuProductos = ({ navigation, route, props }) => {
   });
 
   return (
-    <View>
+    <SafeAreaView style={styles.container}>
       <View>
         <IconButton
           icon="arrow-left"
@@ -217,7 +217,7 @@ const MenuProductos = ({ navigation, route, props }) => {
           <FlatList
             contentContainerStyle={{ paddingBottom: 80 }}
             ListFooterComponentStyle={{ paddingHorizontal: 20, marginTop: 20 }}
-            style={styles.listado}
+            // style={styles.listado}
             data={productosCategoria}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
@@ -234,16 +234,16 @@ const MenuProductos = ({ navigation, route, props }) => {
         
       </View>
       
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#DAD5D4",
+    
     flex: 1,
     borderRadius: 10,
-    marginBottom: 5,
+    marginBottom: 150,
   },
   titulo: {
     textAlign: "center",

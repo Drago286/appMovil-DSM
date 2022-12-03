@@ -54,69 +54,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  label: {
-    color: "#374151",
-    textTransform: "uppercase",
-    fontWeight: "700",
-    marginBottom: 10,
-    fontSize: 20,
-    alignSelf: "center",
-  },
-  texto: {
-    color: "#374151",
-    fontSize: 15,
-    fontWeight: "700",
-    marginBottom: 10,
-  },
-  textoCategoria: {
-    color: "#374151",
-    fontSize: 15,
-    fontWeight: "700",
-    marginBottom: 10,
-    textTransform: "uppercase",
-  },
-  fecha: {
-    color: "#374151",
-  },
-  contenedorBotones: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
-  },
-  btn: {
-    paddingVertical: 5,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  btnEditar: {
-    backgroundColor: "#F59E0B",
-  },
-  btnEliminar: {
-    backgroundColor: "#EF4444",
-  },
-  btnTexto: {
-    textTransform: "uppercase",
-    fontWeight: "700",
-    fontSize: 12,
-    color: "#FFF",
-  },
-  header: {
-    paddingVertical: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    marginHorizontal: 20,
-  },
-  cartCard: {
-    height: 100,
-    elevation: 15,
-    borderRadius: 10,
-    backgroundColor: "#FFF",
-    marginVertical: 10,
-    marginHorizontal: 20,
-    paddingHorizontal: 10,
-    flexDirection: "row",
-    alignItems: "center",
-  },
+  
   actionBtn: {
     width: 60,
     height: 30,

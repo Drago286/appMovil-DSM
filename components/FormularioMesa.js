@@ -20,16 +20,10 @@ import { Picker } from "@react-native-picker/picker";
 const baseURL = "http://192.168.1.83:8000/api/";
 
 const Formulario = (props) => {
-  //const [categoria, setcategoria] = useState("");
   const [numero, setNumero] = useState("");
-  //const [categoria, setCategoria] = useState("");
-  //const [categorias, setCategorias] = useState([]);
+  
   const [id, setId] = useState("");
-  //const [codigo, setCodigo] = useState("");
-  //const [descripcion, setDescripcion] = useState("");
-  //const [idCategoria, setIdCategoria] = useState("");
-  //const [precio, setPrecio] = useState("");
-  //const arrayCategorias = new Array(categorias.length);
+ 
   const { modalVisible } = props;
   const { mesas } = props;
   const { setMesas   } = props;
@@ -37,8 +31,6 @@ const Formulario = (props) => {
   const { mesa: mesaObj } = props;
   const { setMesa: setMesaApp } = props;
 
-  let inicio = 1;
-  let fin = 99999999;
 
   useEffect(() => {
     (async function () {
@@ -199,10 +191,7 @@ const Formulario = (props) => {
               
               setNumero("");
               
-              //SetEmail('');
-              //etTelefono("");
-              //setFecha(new Date());
-              //setSintomas('');
+              
             }}
           >
             <Text style={styles.btnCancelarTexto}>Cancelar</Text>

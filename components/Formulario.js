@@ -23,15 +23,12 @@ const Formulario = (props, navigation) => {
   const [producto, setProducto] = useState("");
   const [nombre, setNombre] = useState("");
   const [categoria, setCategoria] = useState("");
-  //const [categorias, setCategorias] = useState(categoriasContext);
   const [id, setId] = useState("");
   const [codigo, setCodigo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [idCategoria, setIdCategoria] = useState("");
   const [precio, setPrecio] = useState("");
   const [stock, setStock] = useState("");
-  //const arrayCategorias = new Array(categorias.length);
-  const [categotiaPicker, setCategoriaPicker] = useState("");
   const [selectPicker, setSelectPicker] = useState("");
   const { modalVisible } = props;
   const { productos } = props;
@@ -40,25 +37,10 @@ const Formulario = (props, navigation) => {
   const { producto: productoObj } = props;
   const { setProducto: setProductoApp } = props;
   const { categorias: categorias } = props;
-  let inicio = 1;
-  let fin = 99999999;
-
-  useEffect(() => {
-    (async function () {
-      try {
-        const response = await fetch(baseURL + "categorias", {
-          method: "GET",
-        });
-        const data = await response.json().then(res => {
-        }).catch();
-        setCategorias(data);
-        categoriasPicker();
-      } catch (error) {
-        console.log("error categorias");
-      }
-    })();
-  }, []);
   
+
+  
+
   let agregarProducto = (
     nombre_,
     descripcion_,
@@ -107,7 +89,7 @@ const Formulario = (props, navigation) => {
           descripcion: descripcion_,
           precio: precio_,
           stock: stock_,
-          categoria_id: 2,
+          categoria_id: selectPicker,
         }),
       };
       fetch(baseURL + "productos/" + id, requestOptions)
@@ -122,16 +104,9 @@ const Formulario = (props, navigation) => {
   const recorrerCaterias = () => {
     for (var i = 0; i < 10; i++) {
       console.log(categorias[i]);
-      //onsole.log(i);
+   
     }
   };
-
-  // const categoriasPicker = () => {
-  //   for (var i = 0; i < categorias.length; i++) {
-  //     arrayCategorias[i] = categorias[i].nombre;
-  //     //console.log(arrayCategorias[i]);
-  //   }
-  // };
 
   useEffect(() => {
     if (Object.keys(productoObj).length > 0) {
@@ -147,7 +122,7 @@ const Formulario = (props, navigation) => {
   }, [productoObj]);
 
   const handleCita = () => {
-    if ([nombre, descripcion, precio,categoria].includes("")) {
+    if ([nombre, descripcion, precio,selectPicker].includes("")) {
       //alerta para validar que todos los campos esten llenos.
       Alert.alert("Error", "Todos los campos son obligatorios." ,[
         { text: "Recordar después", style: "cancel" },
@@ -187,12 +162,12 @@ const Formulario = (props, navigation) => {
         precio,
         numeroRandom,
         stock,
-        selectPicker
+        selectPicker,
       );
     }
 
     setModalVisible(!modalVisible); //cierro el modal despues de guardar
-
+    
     setId("");
     setCodigo("");
     setNombre("");
@@ -304,10 +279,7 @@ const Formulario = (props, navigation) => {
                 setIdCategoria("");
                 setPrecio("");
                 setStock("");
-                //SetEmail('');
-                //etTelefono("");
-                //setFecha(new Date());
-                //setSintomas('');
+                
               }}
             >
               <Text style={styles.btnCancelarTexto}>Cancelar</Text>

@@ -39,10 +39,12 @@ const Categoria = ({
 };
 const styles = StyleSheet.create({
   contenedor: {
-    backgroundColor: "#FFF",
+    elevation: 15,
+    borderRadius : 10,
+    backgroundColor: "white",
     padding: 20,
     borderBottomColor: "#94a3B8",
-    borderBottomWidth: 1,
+    marginVertical: 10,
   },
   label: {
     color: "#374151",

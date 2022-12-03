@@ -23,6 +23,7 @@ const Producto = ({
         });
         const data = await response.json();
         setCategorias(data);
+        
       } catch (error) {
         console.log("error categorias");
       }
@@ -30,10 +31,10 @@ const Producto = ({
   }, []);
   return (
     <View style={styles.contenedor}>
-      <Text style={styles.label}>{"Nombre: " + nombre}</Text>
+      <Text style={styles.label}>{nombre}</Text>
 
       <Text style={styles.texto}>Descripción:</Text>
-      <Text style={styles.texto}>{descripcion}</Text>
+      <Text style={styles.texto2}>{descripcion}</Text>
       <Text style={styles.texto}>{"Precio: $" + precio}</Text>
 
       <Text style={styles.texto}>{"Stock: " + stock}</Text>
@@ -63,10 +64,13 @@ const Producto = ({
 };
 const styles = StyleSheet.create({
   contenedor: {
-    backgroundColor: "#FFF",
+    elevation: 15,
+    borderRadius : 10,
+    backgroundColor: "white",
     padding: 20,
     borderBottomColor: "#94a3B8",
-    borderBottomWidth: 1,
+    marginVertical: 10,
+
   },
   label: {
     color: "#374151",
@@ -81,15 +85,18 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 10,
   },
+  texto2: {
+    color: "grey",
+    fontSize: 15,
+    fontWeight: "700",
+    marginBottom: 8,
+  },
   textoCategoria: {
     color: "#374151",
     fontSize: 15,
     fontWeight: "700",
     marginBottom: 10,
     textTransform: "uppercase",
-  },
-  fecha: {
-    color: "#374151",
   },
   contenedorBotones: {
     flexDirection: "row",
