@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import EleccionUsuario from "../screens/EleccionUsuario";
+import CounterScreen from "../screens/Cliente/CounterScreen";
 import MenuProductos from "../screens/Cliente/MenuProductos";
 import HomeScreen from "../screens/Cliente/HomeScreen";
 import CarritoScreen from "../screens/Cliente/CarritoScreen";
@@ -154,6 +155,17 @@ export default function App() {
             options={{
               //unmountOnBlur: true,
               title: "Inicio",
+              unmountOnBlur: true,
+              headerStyle: {
+                backgroundColor: "#67b5a3",
+              },
+            }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="CounterScreen"
+            component={CounterScreen}
+            options={{
+              title: "Contador",
               unmountOnBlur: true,
               headerStyle: {
                 backgroundColor: "#67b5a3",

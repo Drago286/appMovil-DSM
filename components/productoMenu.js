@@ -4,12 +4,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import RestauranteContext from "./RestauranteContext";
 
 const ProductoMenu = ({ item, props, addToCart }) => {
-  const [contador, setContador] = useState(0);
-  //const [carrito, setCarrito] = useContext(RestauranteContext);
-  const [producto, setProducto] = useState([]);
-  //const [arrayCarrito,setArrayCarrito] = useContext(RestauranteContext);
-
-  const { nombre, descripcion, precio, id } = item;
+const { nombre, descripcion, precio, id } = item;
  
 
   

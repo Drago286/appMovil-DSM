@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
-const baseURL = "http://192.168.1.83:8000/api/";
+const baseURL = "http://192.168.1.88:8000/api/";
 
 const Producto = ({
   item,
@@ -56,7 +56,7 @@ const Producto = ({
           style={[styles.btn, styles.btnEliminar]}
           onPress={() => productoEliminar(id)}
         >
-          <Text>Eliminar</Text>
+          <Text style={{color: "white"}}>Eliminar</Text>
         </Pressable>
       </View>
     </View>

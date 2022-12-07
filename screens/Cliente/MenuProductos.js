@@ -21,7 +21,7 @@ import Pedido from "../../components/Pedido";
 
 // import Producto from "../components/producto";
 
-const baseURL = "http://192.168.1.83:8000/api/";
+const baseURL = "http://192.168.1.88:8000/api/";
 
 const MenuProductos = ({ navigation, route, props }) => {
   //const {valorMesa} = route.params;

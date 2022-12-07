@@ -17,7 +17,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { categoriasContext } from "../screens/Administrador/AdministradorScreen";
 
-const baseURL = "http://192.168.1.83:8000/api/";
+const baseURL = "http://192.168.1.88:8000/api/";
 
 const Formulario = (props, navigation) => {
   const [producto, setProducto] = useState("");
@@ -122,7 +122,7 @@ const Formulario = (props, navigation) => {
   }, [productoObj]);
 
   const handleCita = () => {
-    if ([nombre, descripcion, precio,selectPicker].includes("")) {
+    if ([nombre, descripcion, precio,stock,selectPicker].includes("")) {
       //alerta para validar que todos los campos esten llenos.
       Alert.alert("Error", "Todos los campos son obligatorios." ,[
         { text: "Recordar después", style: "cancel" },

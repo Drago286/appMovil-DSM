@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
-const baseURL = "http://192.168.1.83:8000/api/";
+const baseURL = "http://192.168.1.88:8000/api/";
 
 const Categoria = ({
   item,
@@ -31,7 +31,7 @@ const Categoria = ({
           style={[styles.btn, styles.btnEliminar]}
           onLongPress={() => mesaEliminar(id)}
         >
-          <Text>Eliminar</Text>
+          <Text style={{color:"white"}}>Eliminar</Text>
         </Pressable>
       </View>
     </View>

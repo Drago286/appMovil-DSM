@@ -2,7 +2,7 @@ import React, { useState, createContext, useEffect } from "react";
 const RestauranteContext = createContext();
 
 
-const baseURL = "http://192.168.1.83:8000/api/";
+const baseURL = "http://192.168.1.88:8000/api/";
 
 export const RestauranteProvider = ({ children }) => {
 
@@ -46,7 +46,7 @@ export const RestauranteProvider = ({ children }) => {
             setMesas(data);
             console.log(mesas);
           } catch (error) {
-            console.log("error MESAS");
+            console.log("error PRODUCTOS");
           }
         })();
       }, []);
