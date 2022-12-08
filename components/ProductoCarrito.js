@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-const baseURL = "http://192.168.1.88:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 import RestauranteContext from "./RestauranteContext";
 
 const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
   const [contador, setContador] = useState(1);
-  const { total, setTotal,resumen_orden_productos } = useContext(RestauranteContext);
+  const { total, setTotal, resumen_orden_productos } =
+    useContext(RestauranteContext);
 
   const { nombre, descripcion, precio, id } = item;
 
@@ -23,7 +24,6 @@ const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
               eliminarDelCarrito(id);
               var subTotal = total;
               setTotal((subTotal -= item.precio * contador));
-              
             },
           },
         ]
@@ -33,8 +33,8 @@ const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
       setContador(contador - 1);
       var subTotal = total;
       setTotal((subTotal -= item.precio));
-      for(var i = 0; i <resumen_orden_productos.length; i++) {
-        if (resumen_orden_productos[i].producto_id ===item.id) {
+      for (var i = 0; i < resumen_orden_productos.length; i++) {
+        if (resumen_orden_productos[i].producto_id === item.id) {
           resumen_orden_productos[i].cantidad--;
         }
       }
@@ -43,30 +43,31 @@ const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
   };
 
   const aumentarContador = () => {
-    setContador(contador + 1);
-    var subTotal = total;
-    setTotal(subTotal + item.precio);
+    if (contador < item.stock) {
+      setContador(contador + 1);
+      var subTotal = total;
+      setTotal(subTotal + item.precio);
 
-    for(var i = 0; i <resumen_orden_productos.length; i++) {
-      if (resumen_orden_productos[i].producto_id ===item.id) {
-        resumen_orden_productos[i].cantidad++;
+      for (var i = 0; i < resumen_orden_productos.length; i++) {
+        if (resumen_orden_productos[i].producto_id === item.id) {
+          if (resumen_orden_productos[i].cantidad < item.stock) {
+            resumen_orden_productos[i].cantidad++;
+          }
+        }
       }
+    }else {
+      Alert.alert(
+        "UPS!",
+        "Solo tenemos esta cantidad en stock: " + item.stock ,
+        [{ text: "Ok" }]
+      );
     }
 
-    // resumen_orden_productos.forEach(element => {
-    //   if (element.id ===item.id) {
-    //     element.cantidad++;
-    
-    //   }
-    // });
     console.log(resumen_orden_productos);
-
-
   };
 
   return (
     <View style={styles.contenedor}>
-      
       <View
         style={{
           height: 140,

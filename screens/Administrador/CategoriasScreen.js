@@ -18,7 +18,7 @@ import { IconButton, MD3Colors } from "react-native-paper";
 import Formulario from "../../components/Formulario";
 import FormularioCategoria from "../../components/FormularioCategoria";
 import Categoria from "../../components/categoria";
-const baseURL = "http://192.168.1.88:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 const AdministradorScreen = ({ navigation }) => {
   //const [categorias, setcategorias] = useState([]);
@@ -31,7 +31,12 @@ const AdministradorScreen = ({ navigation }) => {
     const categoriaEditar = categorias.filter((categoria) => categoria.id === id);
     setCategoria(categoriaEditar[0]);
   };
-
+  const alertaContrain = () => {
+    Alert.alert("Error", "Existen productos asociados a esta categoria, no se puede eliminar", [
+      { text: "OK" },
+     
+    ]);
+  };
   const eliminarcategoria = (id) => {
     try {
       const requestOptions = {
@@ -45,7 +50,7 @@ const AdministradorScreen = ({ navigation }) => {
       fetch(baseURL + "categorias/" + id, requestOptions)
         .then((res) => res.ok)
         .catch((error) => console.error("Error", error))
-        .then((response) => console.log("Exito", response));
+        .then((response) => (response===true ?console.log("Exito", response) : alertaContrain() ));
     } catch (e) {
       console.log(e);
     }

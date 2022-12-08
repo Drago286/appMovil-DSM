@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import RestauranteContext from "../../components/RestauranteContext";
 import ProductoCarrito from "../../components/ProductoCarrito";
 
-const baseURL = "http://192.168.1.88:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 
 const CarritoScreen= ({navigation})=>{
@@ -14,7 +14,7 @@ const CarritoScreen= ({navigation})=>{
   const [cantidad,setCantidad] = useState("");
   const [precio,setPrecio] = useState("");
 
-  let guardarOrden = (total_,idMesa_,resumen_orden_productos_) => {
+  let enviarOrden = (total_,idMesa_,resumen_orden_productos_) => {
     Alert.alert(
       "¿Desea enviar su pedido?",'',
       [
@@ -37,6 +37,7 @@ const CarritoScreen= ({navigation})=>{
                     montoTotal: total_,
                     mesa_id: idMesa_,
                     resumen_orden_productos: resumen_orden_productos_,
+                    estado: 'PENDIENTE',
                     
                   }),
                 },
@@ -93,7 +94,7 @@ const CarritoScreen= ({navigation})=>{
           }
          }
         />
-        <Pressable style={styles.btnNuevaCita} onPress ={()=> guardarOrden(total,idMesa,resumen_orden_productos)}>
+        <Pressable style={styles.btnNuevaCita} onPress ={()=> enviarOrden(total,idMesa,resumen_orden_productos)}>
           <Text style={styles.btnTextoNuevaCita}>Enviar pedido ${total}</Text>
         </Pressable>
         

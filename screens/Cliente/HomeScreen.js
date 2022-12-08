@@ -16,7 +16,7 @@ import RestauranteContext from "../../components/RestauranteContext";
 
 import estilos from "../../MyDrawer/style";
 
-const baseURL = "http://192.168.1.88:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 const HomeScreen = ({ navigation }) => {
   const [valorMesa, inputMesa] = useState("");

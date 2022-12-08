@@ -16,13 +16,14 @@ const { nombre, descripcion, precio, id } = item;
         style={{
           height: 140,
           marginLeft: 10,
-          paddingVertical: 20,
+          paddingVertical: 10,
           flex: 1,
         }}
       >
         <Text style={{ fontWeight: "bold", fontSize: 16 }}>{item.nombre}</Text>
         <Text style={{ fontSize: 13, color: "grey" }}>{item.descripcion}</Text>
         <Text style={{ fontSize: 17, fontWeight: "bold" ,marginBottom: 10,}}>${item.precio}</Text>
+        <Text style={{ fontSize: 15, fontWeight: "bold" ,marginBottom: 10,}}>Stock disponible: {item.stock}</Text>
         <Pressable style={styles.actionBtn} onPress={()=> addToCart(item)}>
           <Text style={{
             fontSize: 15,
@@ -39,7 +40,7 @@ const { nombre, descripcion, precio, id } = item;
 };
 const styles = StyleSheet.create({
   contenedor: {
-    height: 120,
+    height: 190,
     elevation: 15,
     borderRadius: 10,
     backgroundColor: "white",

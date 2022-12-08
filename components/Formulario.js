@@ -17,7 +17,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { categoriasContext } from "../screens/Administrador/AdministradorScreen";
 
-const baseURL = "http://192.168.1.88:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 const Formulario = (props, navigation) => {
   const [producto, setProducto] = useState("");
@@ -37,9 +37,6 @@ const Formulario = (props, navigation) => {
   const { producto: productoObj } = props;
   const { setProducto: setProductoApp } = props;
   const { categorias: categorias } = props;
-  
-
-  
 
   let agregarProducto = (
     nombre_,
@@ -47,7 +44,8 @@ const Formulario = (props, navigation) => {
     precio_,
     codigo_,
     stock_,
-    categoria_
+    categoria_,
+    nuevoProducto
   ) => {
     try {
       fetch(baseURL + "productos", {
@@ -66,9 +64,9 @@ const Formulario = (props, navigation) => {
           categoria_id: categoria_,
         }),
       })
-        .then((res) => res.text())
-        .catch((error) => console.error("Error", error))
-        .then((response) => console.log("Exito", response));
+      .then((res) => res.json())
+      .catch((error) => console.error("Error", error))
+      .then((response) => validar(response,nuevoProducto));
     } catch (e) {
       console.log(e);
     }
@@ -93,18 +91,60 @@ const Formulario = (props, navigation) => {
         }),
       };
       fetch(baseURL + "productos/" + id, requestOptions)
-        .then((res) => res.json())
-        .catch((error) => console.error("Error", error))
-        .then((response) => console.log("Exito", response));
+      .then((res) => res.json())
+      .catch((error) => console.error("Error", error))
+      .then((response) => validar_update(response));
     } catch (e) {
       console.log(e);
+    }
+  };
+  const validar = (response,nuevoProducto) => {
+    //captura de erores del backEnd
+    console.log(response);
+    if (response.status === 100) {
+      Alert.alert("Error", response.message.nombre[0].toString(), [
+        { text: "Ok" },
+      ]);
+    } else {
+      //cerar modal y actualizar array
+      setProductos([...productos, nuevoProducto]);
+      setModalVisible(!modalVisible); //cierro el modal despues de guardar
+
+      setId("");
+      setCodigo("");
+      setNombre("");
+      setProducto("");
+      setDescripcion("");
+      setIdCategoria("");
+      setPrecio("");
+      setStock("");
+    }
+  };
+  const validar_update = (response) => {
+    console.log(response);
+    //captura de erores del backEnd
+    if (response.status === 100) {
+      Alert.alert("Error", response.message.numero[0].toString(), [
+        { text: "Ok" },
+      ]);
+    } else {
+      //cerar modal y actualizar array
+      setModalVisible(!modalVisible); //cierro el modal despues de guardar
+
+      setId("");
+      setCodigo("");
+      setNombre("");
+      setProducto("");
+      setDescripcion("");
+      setIdCategoria("");
+      setPrecio("");
+      setStock("");
     }
   };
 
   const recorrerCaterias = () => {
     for (var i = 0; i < 10; i++) {
       console.log(categorias[i]);
-   
     }
   };
 
@@ -121,18 +161,31 @@ const Formulario = (props, navigation) => {
     }
   }, [productoObj]);
 
-  const handleCita = () => {
-    if ([nombre, descripcion, precio,stock,selectPicker].includes("")) {
+  const ingresarProducto = () => {
+    if ([nombre, descripcion, precio, stock, selectPicker].includes("")) {
       //alerta para validar que todos los campos esten llenos.
-      Alert.alert("Error", "Todos los campos son obligatorios." ,[
-        { text: "Recordar después", style: "cancel" },
+      Alert.alert("Error", "Todos los campos son obligatorios.", [
+        { text: "Cancelar" },
+        { text: "Ok" },
+      ]);
+      return;
+    }
+    if (precio < 0) {
+      Alert.alert("Error", "El valor PRECIO no puede ser negativo", [
+        { text: "Cancelar" },
+        { text: "Ok" },
+      ]);
+      return;
+    }
+    if (stock < 0) {
+      Alert.alert("Error", "El valor STOCK no puede ser negativo", [
         { text: "Cancelar" },
         { text: "Ok" },
       ]);
       return;
     }
     const nuevoProducto = {
-      producto,
+      //producto,
       nombre,
       descripcion,
       idCategoria,
@@ -150,12 +203,12 @@ const Formulario = (props, navigation) => {
       );
       setProductos(productosActualizados);
       editarProducto(nombre, descripcion, precio, stock);
-      setProductoApp({});
+      //setProductoApp({});
     } else {
       nuevoProducto.id = Date.now();
       let numeroRandom = Math.floor(Math.random() * 9999999);
       setCodigo(numeroRandom);
-      setProductos([...productos, nuevoProducto]);
+      //setProductos([...productos, nuevoProducto]);
       agregarProducto(
         nombre,
         descripcion,
@@ -163,19 +216,20 @@ const Formulario = (props, navigation) => {
         numeroRandom,
         stock,
         selectPicker,
+        nuevoProducto,
       );
     }
 
-    setModalVisible(!modalVisible); //cierro el modal despues de guardar
-    
-    setId("");
-    setCodigo("");
-    setNombre("");
-    setProducto("");
-    setDescripcion("");
-    setIdCategoria("");
-    setPrecio("");
-    setStock("");
+    // setModalVisible(!modalVisible); //cierro el modal despues de guardar
+
+    // setId("");
+    // setCodigo("");
+    // setNombre("");
+    // setProducto("");
+    // setDescripcion("");
+    // setIdCategoria("");
+    // setPrecio("");
+    // setStock("");
   };
 
   return (
@@ -237,35 +291,41 @@ const Formulario = (props, navigation) => {
 
           <View style={styles.campo}>
             <Text style={styles.label2}>Categoria:</Text>
-            
           </View>
           <Picker
-              selectedValue={selectPicker}
-              onValueChange={(select) => setSelectPicker(select)}
-              style={styles.picker} itemStyle={{height: 80}}
-              
-            >
-              <Picker.Item style={{color:'white'}} label="- Seleccione -" value="" />
-              {categorias.map((elemento) => (
-                <Picker.Item
-                  key={elemento.id}
-                  label={elemento.nombre}
-                  value={elemento.id}
-                />
-              ))}
-            </Picker>
+            selectedValue={selectPicker}
+            onValueChange={(select) => setSelectPicker(select)}
+            style={styles.picker}
+            itemStyle={{ height: 80 }}
+          >
+            <Picker.Item
+              style={{ color: "white" }}
+              label="- Seleccione -"
+              value=""
+            />
+            {categorias.map((elemento) => (
+              <Picker.Item
+                key={elemento.id}
+                label={elemento.nombre}
+                value={elemento.id}
+              />
+            ))}
+          </Picker>
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
             }}
           >
-            <Pressable style={styles.btnNuevoProducto} onPress={handleCita}>
+            <Pressable
+              style={styles.btnNuevoProducto}
+              onPress={ingresarProducto}
+            >
               <Text style={styles.btnNuevoProductoTexto}>
                 {productoObj.id ? "Editar" : "Agregar"}
               </Text>
             </Pressable>
-           
+
             <Pressable
               style={styles.btnCancelar}
               onPress={() => {
@@ -279,7 +339,6 @@ const Formulario = (props, navigation) => {
                 setIdCategoria("");
                 setPrecio("");
                 setStock("");
-                
               }}
             >
               <Text style={styles.btnCancelarTexto}>Cancelar</Text>
@@ -348,7 +407,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   picker: {
-    
     backgroundColor: "#FFF",
     borderRadius: 10,
     fontSize: 17,
@@ -365,6 +423,7 @@ const styles = StyleSheet.create({
     width: 120,
     borderRadius: 10,
     alignSelf: "center",
+    marginBottom: 10,
   },
   btnNuevoProductoTexto: {
     color: "white",

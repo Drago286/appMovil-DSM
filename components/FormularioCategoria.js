@@ -17,10 +17,9 @@ import {
 //import DatePicker from 'react-native-date-picker';
 import { Picker } from "@react-native-picker/picker";
 
-const baseURL = "http://192.168.1.88:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 const Formulario = (props) => {
-
   const [nombre, setNombre] = useState("");
   const [id, setId] = useState("");
   const { modalVisible } = props;
@@ -30,7 +29,6 @@ const Formulario = (props) => {
   const { categoria: categoriaObj } = props;
   const { setCategoria: setCategoriaApp } = props;
 
-
   useEffect(() => {
     (async function () {
       try {
@@ -39,36 +37,59 @@ const Formulario = (props) => {
         });
         const data = await response.json();
         setCategorias(data);
-        categoriasPicker();
       } catch (error) {
         console.log("error categorias");
       }
     })();
   }, []);
 
-
-  let agregarcategoria = (nombre_) => {
+  let agregarcategoria = (nombre_,nuevaCategoria) => {
     try {
-      fetch(
-        baseURL + "categorias",
-        {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            nombre: nombre_,
-           
-          }),
+      fetch(baseURL + "categorias", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-      )
+        body: JSON.stringify({
+          nombre: nombre_.toUpperCase(),
+        }),
+      })
         .then((res) => res.json())
         .catch((error) => console.error("Error", error))
-        .then((response) => console.log("Exito", response));
+        .then((response) => validar(response,nuevaCategoria));
     } catch (e) {
       console.log(e);
+    }
+  };
+  const validar = (response,nuevaCategoria) => {
+    //captura de erores del backEnd
+    if (response.status === 100) {
+      Alert.alert("Error", response.message.nombre[0].toString(), [
+        { text: "Ok" },
+      ]);
+    } else {
+      //cerar modal y actualizar array
+      setCategorias([...categorias, nuevaCategoria]);
+      setModalVisible(!modalVisible); //cierro el modal despues de guardar
+
+      setId("");
+      setNombre("");
+    }
+  };
+  const validar_update = (response) => {
+    console.log(response);
+    //captura de erores del backEnd
+    if (response.status === 100) {
+      Alert.alert("Error", response.message.nombre[0].toString(), [
+        { text: "Ok" },
+      ]);
+    } else {
+      //cerar modal y actualizar array
+      setModalVisible(!modalVisible); //cierro el modal despues de guardar
+      setId("");
+      setNombre("");
     }
   };
 
@@ -83,34 +104,27 @@ const Formulario = (props) => {
         },
         body: JSON.stringify({
           id: id,
-          nombre: nombre_,
-        })
-
-      }
-      fetch(baseURL + "categorias/"+id,requestOptions)
+          nombre: nombre_.toUpperCase(),
+        }),
+      };
+      fetch(baseURL + "categorias/" + id, requestOptions)
         .then((res) => res.json())
         .catch((error) => console.error("Error", error))
-        .then((response) => console.log("Exito", response));
+        .then((response) => validar_update(response));
     } catch (e) {
       console.log(e);
     }
   };
 
-  const categoriasPicker = () => {
-    for (var i = 0; i < categorias.length; i++) {
-      arrayCategorias[i] = categorias[i].nombre;
-      //console.log(arrayCategorias[i]);
-    }
-  };
-
+  
   useEffect(() => {
     if (Object.keys(categoriaObj).length > 0) {
-        setId(categoriaObj.id);
+      setId(categoriaObj.id);
       setNombre(categoriaObj.nombre);
     }
   }, [categoriaObj]);
 
-  const handleCita = () => {
+  const ingresarCategoria = () => {
     if ([nombre].includes("")) {
       //alerta para validar que todos los campos esten llenos.
       Alert.alert("Error", "Todos los campos son obligatorios.", [
@@ -125,28 +139,26 @@ const Formulario = (props) => {
     };
 
     if (id) {
-    
       nuevaCategoria.id = id;
-      
+
       const categoriasActualizados = categorias.map((categoriaState) =>
-        categoriaState.id === nuevaCategoria.id ? nuevaCategoria : categoriaState
-        
+        categoriaState.id === nuevaCategoria.id
+          ? nuevaCategoria
+          : categoriaState
       );
       setCategorias(categoriasActualizados);
       editarcategoria(nombre);
-      setCategoriaApp({});
+      //setCategoriaApp({});
     } else {
       nuevaCategoria.id = Date.now();
-    //   let numeroRandom = Math.floor(Math.random()*9999999);
-    //   setCodigo(numeroRandom);
-      setCategorias([...categorias, nuevaCategoria]); 
-      agregarcategoria(nombre);
+      // setCategorias([...categorias, nuevaCategoria]);
+      agregarcategoria(nombre,nuevaCategoria);
     }
 
-    setModalVisible(!modalVisible); //cierro el modal despues de guardar
+    // setModalVisible(!modalVisible); //cierro el modal despues de guardar
 
-    setId("");
-    setNombre("");
+    // setId("");
+    // setNombre("");
   };
 
   return (
@@ -169,31 +181,29 @@ const Formulario = (props) => {
             />
           </View>
           <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-
-          }}>
-          <Pressable style={styles.btnNuevocategoria} onPress={handleCita}>
-            <Text style={styles.btnNuevocategoriaTexto}>
-              {categoriaObj.id ? "Editar" : "Agregar"}
-            </Text>
-          </Pressable>
-          <Pressable
-            style={styles.btnCancelar}
-            onLongPress={() => {
-              setModalVisible(!modalVisible);
-              setCategoriaApp({});
-              setId("");
-              
-              setNombre("");
-              
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
             }}
           >
-            <Text style={styles.btnCancelarTexto}>Cancelar</Text>
-          </Pressable>
+            <Pressable style={styles.btnNuevocategoria} onPress={ingresarCategoria}>
+              <Text style={styles.btnNuevocategoriaTexto}>
+                {categoriaObj.id ? "Editar" : "Agregar"}
+              </Text>
+            </Pressable>
+            <Pressable
+              style={styles.btnCancelar}
+              onLongPress={() => {
+                setModalVisible(!modalVisible);
+                setCategoriaApp({});
+                setId("");
+
+                setNombre("");
+              }}
+            >
+              <Text style={styles.btnCancelarTexto}>Cancelar</Text>
+            </Pressable>
           </View>
-          
         </ScrollView>
       </SafeAreaView>
     </Modal>
@@ -259,14 +269,13 @@ const styles = StyleSheet.create({
   },
 
   btnNuevocategoria: {
-      //marginVertical: 30,
-      backgroundColor: "#F59E0B",
-      marginHorizontal: 30,
-      padding: 10,
-      width: 120,
-      borderRadius: 10,
-      alignSelf: "center",
-   
+    //marginVertical: 30,
+    backgroundColor: "#F59E0B",
+    marginHorizontal: 30,
+    padding: 10,
+    width: 120,
+    borderRadius: 10,
+    alignSelf: "center",
   },
   btnNuevocategoriaTexto: {
     color: "white",

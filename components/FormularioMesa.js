@@ -17,20 +17,19 @@ import {
 //import DatePicker from 'react-native-date-picker';
 import { Picker } from "@react-native-picker/picker";
 
-const baseURL = "http://192.168.1.88:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 const Formulario = (props) => {
   const [numero, setNumero] = useState("");
-  
+
   const [id, setId] = useState("");
- 
+
   const { modalVisible } = props;
   const { mesas } = props;
-  const { setMesas   } = props;
+  const { setMesas } = props;
   const { setModalVisible } = props;
   const { mesa: mesaObj } = props;
   const { setMesa: setMesaApp } = props;
-
 
   useEffect(() => {
     (async function () {
@@ -40,41 +39,59 @@ const Formulario = (props) => {
         });
         const data = await response.json();
         setMesas(data);
-        
       } catch (error) {
         console.log("error mesas");
       }
     })();
   }, []);
-  let agregarMesa = (numero_) => {
+  let agregarMesa = (numero_,nuevaMesa) => {
     try {
-      fetch(
-        baseURL + "mesas",
-        {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-
-
-            numero: numero_,
-
-
-           
-          }),
+      fetch(baseURL + "mesas", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-      )
+        body: JSON.stringify({
+          numero: numero_,
+        }),
+      })
         .then((res) => res.json())
         .catch((error) => console.error("Error", error))
-        .then((response) => console.log("Exito", response));
+        .then((response) => validar(response,nuevaMesa));
     } catch (e) {
       console.log(e);
     }
   };
-
+  const validar = (response,nuevaMesa) => {
+    //captura de erores del backEnd
+    console.log(response);
+    if (response.status === 100) {
+      Alert.alert("Error", response.message.numero[0].toString(), [
+        { text: "Ok" },
+      ]);
+    } else {
+      //cerar modal y actualizar array
+      setMesas([...mesas, nuevaMesa]);
+      setModalVisible(!modalVisible); //cierro el modal despues de guardar
+      setNumero("");
+    }
+  };
+  const validar_update = (response) => {
+    console.log(response);
+    //captura de erores del backEnd
+    if (response.status === 100) {
+      Alert.alert("Error", response.message.numero[0].toString(), [
+        { text: "Ok" },
+      ]);
+    } else {
+      //cerar modal y actualizar array
+      setModalVisible(!modalVisible); //cierro el modal despues de guardar
+      setId("");
+      setNumero("");
+    }
+  };
   const editarMesa = (numero_) => {
     try {
       const requestOptions = {
@@ -87,33 +104,25 @@ const Formulario = (props) => {
         body: JSON.stringify({
           id: id,
           numero: numero_,
-        })
-
-      }
-      fetch(baseURL + "mesas/"+id,requestOptions)
+        }),
+      };
+      fetch(baseURL + "mesas/" + id, requestOptions)
         .then((res) => res.json())
         .catch((error) => console.error("Error", error))
-        .then((response) => console.log("Exito", response));
+        .then((response) => validar_update(response));
     } catch (e) {
       console.log(e);
     }
   };
 
-  const categoriasPicker = () => {
-    for (var i = 0; i < categorias.length; i++) {
-      arrayCategorias[i] = categorias[i].nombre;
-      //console.log(arrayCategorias[i]);
-    }
-  };
-
   useEffect(() => {
     if (Object.keys(mesaObj).length > 0) {
-        setId(mesaObj.id);
+      setId(mesaObj.id);
       setNumero(mesaObj.numero);
     }
   }, [mesaObj]);
 
-  const handleCita = () => {
+  const ingresarMesa = () => {
     if ([numero].includes("")) {
       //alerta para validar que todos los campos esten llenos.
       Alert.alert("Error", "Todos los campos son obligatorios.", [
@@ -128,28 +137,24 @@ const Formulario = (props) => {
     };
 
     if (id) {
-    
       nuevaMesa.id = id;
-      
+
       const mesasActualizadas = mesas.map((mesasState) =>
         mesasState.id === nuevaMesa.id ? nuevaMesa : mesasState
-        
       );
       setMesas(mesasActualizadas);
       editarMesa(numero);
-      setMesaApp({});
+      //setMesaApp({});
     } else {
       nuevaMesa.id = Date.now();
-    //   let numeroRandom = Math.floor(Math.random()*9999999);
-    //   setCodigo(numeroRandom);
-      setMesas([...mesas, nuevaMesa]); 
-      agregarMesa(numero);
+      //setMesas([...mesas, nuevaMesa]);
+      agregarMesa(numero,nuevaMesa);
     }
 
-    setModalVisible(!modalVisible); //cierro el modal despues de guardar
+    // setModalVisible(!modalVisible); //cierro el modal despues de guardar
 
-    setId("");
-    setNumero("");
+    // setId("");
+    // setNumero("");
   };
 
   return (
@@ -172,32 +177,29 @@ const Formulario = (props) => {
             />
           </View>
           <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-
-          }}>
-          <Pressable style={styles.btnNuevocategoria} onPress={handleCita}>
-            <Text style={styles.btnNuevocategoriaTexto}>
-              {mesaObj.id ? "Editar" : "Agregar"}
-            </Text>
-          </Pressable>
-          <Pressable
-            style={styles.btnCancelar}
-            onLongPress={() => {
-              setModalVisible(!modalVisible);
-              setMesaApp({});
-              setId("");
-              
-              setNumero("");
-              
-              
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
             }}
           >
-            <Text style={styles.btnCancelarTexto}>Cancelar</Text>
-          </Pressable>
+            <Pressable style={styles.btnNuevocategoria} onPress={ingresarMesa}>
+              <Text style={styles.btnNuevocategoriaTexto}>
+                {mesaObj.id ? "Editar" : "Agregar"}
+              </Text>
+            </Pressable>
+            <Pressable
+              style={styles.btnCancelar}
+              onLongPress={() => {
+                setModalVisible(!modalVisible);
+                setMesaApp({});
+                setId("");
+
+                setNumero("");
+              }}
+            >
+              <Text style={styles.btnCancelarTexto}>Cancelar</Text>
+            </Pressable>
           </View>
-          
         </ScrollView>
       </SafeAreaView>
     </Modal>
@@ -262,14 +264,13 @@ const styles = StyleSheet.create({
   },
 
   btnNuevocategoria: {
-      //marginVertical: 30,
-      backgroundColor: "#F59E0B",
-      marginHorizontal: 30,
-      padding: 10,
-      width: 120,
-      borderRadius: 10,
-      alignSelf: "center",
-   
+    //marginVertical: 30,
+    backgroundColor: "#F59E0B",
+    marginHorizontal: 30,
+    padding: 10,
+    width: 120,
+    borderRadius: 10,
+    alignSelf: "center",
   },
   btnNuevocategoriaTexto: {
     color: "white",

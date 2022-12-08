@@ -1,5 +1,17 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
-import { Text,TouchableOpacity,View,TextInput,Button,Pressable,SafeAreaView,StyleSheet,FlatList,ScrollView,Alert} from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  TextInput,
+  Button,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  FlatList,
+  ScrollView,
+  Alert,
+} from "react-native";
 import { IconButton, MD3Colors } from "react-native-paper";
 import RestauranteContext from "../../components/RestauranteContext";
 import axios from "axios";
@@ -7,32 +19,36 @@ import axios from "axios";
 
 import Formulario from "../../components/Formulario";
 import Producto from "../../components/producto";
-const baseURL = "http://192.168.1.88:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 export const categoriasContext = createContext();
 
-
-const AdministradorScreen = ({ navigation,children }) => {
+const AdministradorScreen = ({ navigation, children }) => {
   const [productos, setProductos] = useState([]);
   const [producto, setProducto] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [nombreCategoria, setNombreCategoria] = useState("");
-  const [ip, setIP] = useState('');
-  
+  const [ip, setIP] = useState("");
 
   //NAVEGACION VOLVER
   const volver = () => {
     navigation.navigate("EleccionUsuario");
   };
 
-
   const productoEditar = (id) => {
     const productoEditar = productos.filter((producto) => producto.id === id);
     setProducto(productoEditar[0]);
   };
+  const alertaContrain = () => {
+    Alert.alert("Error", "Existen pedidos asociados a este producto, no se puede eliminar", [
+      { text: "OK" },
+     
+    ]);
+  };
 
   const eliminarProducto = (id) => {
+    console.log(id);
     try {
       const requestOptions = {
         method: "DELETE",
@@ -45,14 +61,16 @@ const AdministradorScreen = ({ navigation,children }) => {
       fetch(baseURL + "productos/" + id, requestOptions)
         .then((res) => res.ok)
         .catch((error) => console.error("Error", error))
-        .then((response) => console.log("Exito", response));
+        .then((response) => (response===true ?console.log("Exito", response) : alertaContrain() ));
     } catch (e) {
       console.log(e);
     }
   };
 
   const productoEliminar = (id) => {
+
     Alert.alert(
+    
       "Deseas Eliminar?",
       "Un producto eliminado no se puede recuperar",
       [
@@ -60,7 +78,9 @@ const AdministradorScreen = ({ navigation,children }) => {
         {
           text: "Si, Eliminar",
           onPress: () => {
+           
             eliminarProducto(id);
+            
           },
         },
       ]
@@ -75,7 +95,14 @@ const AdministradorScreen = ({ navigation,children }) => {
     }
   };
 
-//GET PRODUCTOS.
+  const alertaNoCategorias = () => {
+    Alert.alert("Error", "No hay registros de categorias. No puedes crear productos sin categorias.", [
+      { text: "OK" },
+     
+    ]);
+  };
+
+  //GET PRODUCTOS.
   useEffect(() => {
     (async function () {
       try {
@@ -105,63 +132,66 @@ const AdministradorScreen = ({ navigation,children }) => {
     })();
   }, []);
 
-
-//DESPLEGAR CATEGORIAS.
+  //DESPLEGAR CATEGORIAS.
   const recorrerCaterias = () => {
-    for(var i = 0; i <categorias.length ; i++) {
+    for (var i = 0; i < categorias.length; i++) {
       console.log(categorias[i]);
-  }
+    }
   };
- 
-//VISTA DE ADMINISTRADOR_SCREEN
-  return (
-    <categoriasContext.Provider value={ [categorias,setCategorias]}>
-    <SafeAreaView style={styles.container}>
-      <IconButton
-        icon="arrow-left"
-        iconColor={MD3Colors.error50}
-        size={30}
-        onPress={() => volver()}
-      />
 
-      <Text>{"   "}</Text>
-      <Text style={styles.tituloBold}>{"   "}Productos disponibles:</Text>
-      
-      {productos.length === 0 ? (
-        <Text style={styles.noProductos}> No hay productos</Text>
-      ) : (
-        <FlatList
-          style={styles.listado}
-          data={productos}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => {
-            return (
-              <Producto
-                item={item}
-                setModalVisible={setModalVisible}
-                productoEditar={productoEditar}
-                productoEliminar={productoEliminar}
-              />
-            );
-          }}
+  //VISTA DE ADMINISTRADOR_SCREEN
+  return (
+    <categoriasContext.Provider value={[categorias, setCategorias]}>
+      <SafeAreaView style={styles.container}>
+        <IconButton
+          icon="arrow-left"
+          iconColor={MD3Colors.error50}
+          size={30}
+          onPress={() => volver()}
         />
-      )}
-      <Pressable
-        style={styles.btnNuevaCita}
-        onPress={() => {setModalVisible(!modalVisible);recorrerCaterias()}}
-      >
-        <Text style={styles.btnTextoNuevaCita}>Añadir producto</Text>
-      </Pressable>
-      <Formulario
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        productos={productos}
-        setProductos={setProductos}
-        producto={producto}
-        setProducto={setProducto}
-        categorias = {categorias}
-      />
-    </SafeAreaView>
+
+        <Text>{"   "}</Text>
+        <Text style={styles.tituloBold}>{"   "}Productos disponibles:</Text>
+
+        {productos.length === 0 ? (
+          <Text style={styles.noProductos}> No hay productos</Text>
+        ) : (
+          <FlatList
+            style={styles.listado}
+            data={productos}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => {
+              return (
+                <Producto
+                  item={item}
+                  setModalVisible={setModalVisible}
+                  productoEditar={productoEditar}
+                  productoEliminar={productoEliminar}
+                />
+              );
+            }}
+          />
+        )}
+        <Pressable
+          style={styles.btnNuevaCita}
+          onPress={() => {
+            categorias.length > 0
+              ? setModalVisible(!modalVisible)
+              : alertaNoCategorias();
+          }}
+        >
+          <Text style={styles.btnTextoNuevaCita}>Añadir producto</Text>
+        </Pressable>
+        <Formulario
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          productos={productos}
+          setProductos={setProductos}
+          producto={producto}
+          setProducto={setProducto}
+          categorias={categorias}
+        />
+      </SafeAreaView>
     </categoriasContext.Provider>
   );
 };

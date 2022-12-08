@@ -21,7 +21,7 @@ import Pedido from "../../components/Pedido";
 
 // import Producto from "../components/producto";
 
-const baseURL = "http://192.168.1.88:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 const MenuProductos = ({ navigation, route, props }) => {
   //const {valorMesa} = route.params;
@@ -84,7 +84,7 @@ const MenuProductos = ({ navigation, route, props }) => {
 
   const modificarArray = (id_categoria) => {
     const array = productos.filter(
-      (producto) => producto.categoria_id === id_categoria
+      (producto) => producto.categoria_id === id_categoria && producto.stock>0
     );
 
     setProductosCategoria(array);
@@ -183,10 +183,26 @@ const MenuProductos = ({ navigation, route, props }) => {
         </Text>
 
         <ScrollView horizontal={true}>
+        <Pressable
+            style={estilos.botonCategorias}
+            onPress={() => {
+              setProductosCategoria(productos);
+            }}
+          >
+            <Text style={estilos.textoBoton}>
+              TODAS
+            </Text>
+          </Pressable>
           <View style={estilos.viewHorizontal}>{botonesCategoria}</View>
         </ScrollView>
       </View>
-      <Text
+      
+      <View>
+        {productosCategoria.length === 0 ? (
+          <Text>No hay productos</Text>
+        ) : (
+          <View>
+            <Text
         style={{
           fontSize: 20,
           fontWeight: "bold",
@@ -196,24 +212,6 @@ const MenuProductos = ({ navigation, route, props }) => {
       >
         Seleccione sus productos:
       </Text>
-      <View>
-        {productosCategoria.length === 0 ? (
-          <FlatList
-            contentContainerStyle={{ paddingBottom: 80 }}
-            ListFooterComponentStyle={{ paddingHorizontal: 20, marginTop: 20 }}
-            style={styles.listado}
-            data={productos}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => {
-              return (
-                <View>
-                  <ProductoMenu item={item} addToCart={addToCart} />
-                  <View></View>
-                </View>
-              );
-            }}
-          />
-        ) : (
           <FlatList
             contentContainerStyle={{ paddingBottom: 80 }}
             ListFooterComponentStyle={{ paddingHorizontal: 20, marginTop: 20 }}
@@ -223,13 +221,14 @@ const MenuProductos = ({ navigation, route, props }) => {
             renderItem={({ item }) => {
               return (
                 <View>
+                  
                   <ProductoMenu item={item} addToCart={addToCart} />
                   <View></View>
                 </View>
               );
             }}
             
-          />
+          /></View>
         )}
         
       </View>

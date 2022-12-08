@@ -33,7 +33,7 @@ function MyTabs() {
         name="MenuProductos"
         component={MenuProductos}
         options={({ navigation, route }) => ({
-          //unmountOnBlur: true,
+          unmountOnBlur: true,
           title: "Menú",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="restaurant" size={size} color="color" />

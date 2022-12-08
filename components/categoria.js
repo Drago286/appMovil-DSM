@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
-const baseURL = "http://192.168.1.88:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 const Categoria = ({
   item,
@@ -33,7 +33,7 @@ const Categoria = ({
       <View style={styles.contenedorBotones}>
         <Pressable
           style={[styles.btn, styles.btnEditar]}
-          onLongPress={() => {
+          onPress={() => {
             setModalVisible(true);
             categoriaEditar(id);
           }}
@@ -42,7 +42,7 @@ const Categoria = ({
         </Pressable>
         <Pressable
           style={[styles.btn, styles.btnEliminar]}
-          onLongPress={() => categoriaEliminar(id)}
+          onPress={() => categoriaEliminar(id)}
         >
           <Text style = {{color: "white"}}>Eliminar</Text>
         </Pressable>

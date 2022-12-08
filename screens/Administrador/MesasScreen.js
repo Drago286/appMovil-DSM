@@ -17,7 +17,7 @@ import estilos from "../../MyDrawer/style";
 import FormularioMesa from "../../components/FormularioMesa";
 import Mesa from "../../components/mesa";
 
-const baseURL = "http://192.168.1.88:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 const AdministradorScreen = ({ navigation }) => {
   const [mesa, setMesa] = useState([]);
@@ -27,6 +27,11 @@ const AdministradorScreen = ({ navigation }) => {
   const mesaEditar = (id) => {
     const mesaEditar = mesas.filter((mesa) => mesa.id === id);
     setMesa(mesaEditar[0]);
+  };
+  const alertaContrain = () => {
+    Alert.alert("Error", "Existen pedidos asociados a esta mesa, no se puede eliminar", [
+      { text: "OK" },
+    ]);
   };
 
   const eliminarMesa = (id) => {
@@ -42,7 +47,7 @@ const AdministradorScreen = ({ navigation }) => {
       fetch(baseURL + "mesas/" + id, requestOptions)
         .then((res) => res.ok)
         .catch((error) => console.error("Error", error))
-        .then((response) => console.log("Exito", response));
+        .then((response) => (response===true ?console.log("Exito", response) : alertaContrain() ));
     } catch (e) {
       console.log(e);
     }
@@ -98,7 +103,7 @@ const AdministradorScreen = ({ navigation }) => {
       <Text>{"   "}</Text>
       <Text style={styles.tituloBold}>{"   "}Mesas disponibles:</Text>
       {mesas.length === 0 ? (
-        <Text style={styles.noMesa}> No hay Mesas</Text>
+        <Text style={styles.noMesa}> No hay mesas</Text>
       ) : (
         <FlatList
           style={styles.listado}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
-const baseURL = "http://192.168.1.88:8000/api/";
+const baseURL = "http://192.168.1.176:8000/api/";
 
 const Producto = ({
   item,
@@ -38,10 +38,7 @@ const Producto = ({
       <Text style={styles.texto}>{"Precio: $" + precio}</Text>
 
       <Text style={styles.texto}>{"Stock: " + stock}</Text>
-      <Text style={styles.texto}>
-        {"Categoria: "}
-        <Text style={styles.textoCategoria}>{nombreCategoria}</Text>
-      </Text>
+      
       <View style={styles.contenedorBotones}>
         <Pressable
           style={[styles.btn, styles.btnEditar]}
