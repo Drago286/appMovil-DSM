@@ -1,46 +1,64 @@
-import React, { useState, useEffect,useContext } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import { View, Text, StyleSheet, Pressable, Image, SafeAreaView } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import RestauranteContext from "./RestauranteContext";
+import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+
+const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
 const ProductoMenu = ({ item, props, addToCart }) => {
-const { nombre, descripcion, precio, id } = item;
- 
-
-  
-
+  const { nombre, descripcion, precio, id } = item;
 
   return (
+    <SafeAreaView>
     <View style={styles.contenedor}>
-      <View
+    <View
+      style={{
+        height: 250,
+        marginLeft: 10,
+        //paddingVertical: 15,
+        flex: 1,
+      }}
+    >
+      <Text style={{ fontWeight: "bold", fontSize: 16 }}>{item.nombre}</Text>
+      <Text style={{ fontSize: 13, color: "grey" }}>{item.descripcion}</Text>
+      <Image
         style={{
-          height: 140,
-          marginLeft: 10,
-          paddingVertical: 10,
-          flex: 1,
+          alignSelf: "center",
+          height: 100,
+          width: 100,
+          marginBottom: 20,
         }}
-      >
-        <Text style={{ fontWeight: "bold", fontSize: 16 }}>{item.nombre}</Text>
-        <Text style={{ fontSize: 13, color: "grey" }}>{item.descripcion}</Text>
-        <Text style={{ fontSize: 17, fontWeight: "bold" ,marginBottom: 10,}}>${item.precio}</Text>
-        <Text style={{ fontSize: 15, fontWeight: "bold" ,marginBottom: 10,}}>Stock disponible: {item.stock}</Text>
-        <Pressable style={styles.actionBtn} onPress={()=> addToCart(item)}>
-          <Text style={{
+        source={{ uri: item.imagen }}
+      />
+      <Text style={{ fontSize: 17, fontWeight: "bold", marginBottom: 10 }}>
+        ${item.precio}
+      </Text>
+      <Text style={{ fontSize: 15, fontWeight: "bold", marginBottom: 10 }}>
+        Stock disponible: {item.stock}
+      </Text>
+     
+      <Pressable style={styles.actionBtn} onPress={() => addToCart(item)}>
+        <Text
+          style={{
             fontSize: 15,
-                        color: "white",
-                        fontWeight : 'bold',
-                        alignSelf : "center",
-          }}>
-            Añadir
-          </Text>
-        </Pressable>
-      </View>
+            color: "white",
+            fontWeight: "bold",
+            alignSelf: "center",
+          }}
+        >
+          Añadir
+        </Text>
+      </Pressable>
     </View>
+  </View>
+  </SafeAreaView>
   );
 };
+
 const styles = StyleSheet.create({
   contenedor: {
-    height: 190,
+    height: 250,
     elevation: 15,
     borderRadius: 10,
     backgroundColor: "white",
@@ -50,7 +68,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  
+
   actionBtn: {
     width: 60,
     height: 30,

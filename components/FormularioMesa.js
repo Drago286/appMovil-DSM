@@ -189,7 +189,7 @@ const Formulario = (props) => {
             </Pressable>
             <Pressable
               style={styles.btnCancelar}
-              onLongPress={() => {
+              onPress={() => {
                 setModalVisible(!modalVisible);
                 setMesaApp({});
                 setId("");
@@ -261,6 +261,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     fontSize: 17,
     fontWeight: "500",
+    marginBottom : 10,
   },
 
   btnNuevocategoria: {

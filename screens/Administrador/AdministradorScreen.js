@@ -18,6 +18,7 @@ import axios from "axios";
 //import estilos from "../../MyDrawer/style";
 
 import Formulario from "../../components/Formulario";
+import FormularioEditar from "../../components/FormularioEditar";
 import Producto from "../../components/producto";
 const baseURL = "http://192.168.1.176:8000/api/";
 
@@ -38,7 +39,8 @@ const AdministradorScreen = ({ navigation, children }) => {
 
   const productoEditar = (id) => {
     const productoEditar = productos.filter((producto) => producto.id === id);
-    setProducto(productoEditar[0]);
+    console.log(productoEditar);
+    setProducto(productoEditar);
   };
   const alertaContrain = () => {
     Alert.alert("Error", "Existen pedidos asociados a este producto, no se puede eliminar", [
@@ -165,6 +167,7 @@ const AdministradorScreen = ({ navigation, children }) => {
                 <Producto
                   item={item}
                   setModalVisible={setModalVisible}
+                  modalVisible={modalVisible}
                   productoEditar={productoEditar}
                   productoEliminar={productoEliminar}
                 />

@@ -20,7 +20,7 @@ const Categoria = ({
       <View style={styles.contenedorBotones}>
         <Pressable
           style={[styles.btn, styles.btnEditar]}
-          onLongPress={() => {
+          onPress={() => {
             setModalVisible(true);
             mesaEditar(id);
           }}
@@ -29,7 +29,7 @@ const Categoria = ({
         </Pressable>
         <Pressable
           style={[styles.btn, styles.btnEliminar]}
-          onLongPress={() => mesaEliminar(id)}
+          onPress={() => mesaEliminar(id)}
         >
           <Text style={{color:"white"}}>Eliminar</Text>
         </Pressable>

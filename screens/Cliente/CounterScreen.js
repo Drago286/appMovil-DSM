@@ -1,116 +1,65 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Text,TouchableOpacity,View,TextInput,Button,Pressable,SafeAreaView,StyleSheet,FlatList,ScrollView,Alert} from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  TextInput,
+  Button,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  FlatList,
+  ScrollView,
+  Alert,
+} from "react-native";
 import { IconButton, MD3Colors } from "react-native-paper";
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from "react-native-vector-icons/MaterialIcons";
 import RestauranteContext from "../../components/RestauranteContext";
 import ProductoCarrito from "../../components/ProductoCarrito";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import CountDown from "react-native-countdown-component";
 
 const baseURL = "http://192.168.1.176:8000/api/";
 
+const CounterScreen = ({ navigation }) => {
 
-const CarritoScreen= ({navigation})=>{
+  const [time,setTime] = useState("");
 
-  const {carrito,setCarrito,idMesa,resumen_orden_productos,total,setResumen_orden_productos} = useContext(RestauranteContext);
-  const [cantidad,setCantidad] = useState("");
-  const [precio,setPrecio] = useState("");
-
-  let guardarOrden = (total_,idMesa_,resumen_orden_productos_) => {
-    Alert.alert(
-      "¿Desea enviar su pedido?",'',
-      [
-        { text: "No" },
-        {
-          text: "Si",
-          onPress: () => {
-            try {
-             
-              fetch(
-                baseURL + "saveOrder",
-                {
-                  method: "POST",
-                  mode: "no-cors",
-                  headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    montoTotal: total_,
-                    mesa_id: idMesa_,
-                    resumen_orden_productos: resumen_orden_productos_,
-                    
-                  }),
-                },
-              )
-                .then((res) => res.json())
-                .catch((error) => console.error("Error", error))
-                .then((response) => console.log("Exito", response));
-            } catch (e) {
-              console.log(e);
-            }
-           
-          },
-        },
-      ]
-    );
-   
-  };
-
- 
-
-
- 
-  const eliminarDelCarrito = (id) => {
-  
-  setCarrito(carrito.filter((item) => item.id != id));
-
+  const handleFinish = () => {
 
   };
+
+
   return (
-    <SafeAreaView  style={{flex: 1}}>
+    <SafeAreaView>
+      <View style={styles.container}>
+      {time === "" ? (
+          <Text style={styles.noTime}>Calculando tiempo de preparacion... </Text>
+        ) : (
       
-
-      <Text>{"   "}</Text>
-     
-      {carrito.length === 0 ? ( 
-        <Text style={styles.noProductos}>¡Añade tus productos al carrito!</Text>
-        
-      ) : (
-        <View>
-        <FlatList
-          //contentContainerStyle={{paddingBottom: 80,flexGrow: 1,}}
-          //ListFooterComponentStyle={{paddingHorizontal: 20, marginTop: 20}}
-          style={styles.listado}
-          data={carrito}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => {
-            return (
-              <ProductoCarrito
-                item={item}
-                eliminarDelCarrito={eliminarDelCarrito}
-              />
-            );
-            
-          }
-         }
+        <CountDown
+        size={35}
+        until = {time}
+        onFinish = {() => handleFinish()}
+        timeToShow = {['H','M','S']}
+        showSeparator
+        timeLabels ={{}}
         />
-        <Pressable style={styles.btnNuevaCita} onPress ={()=> guardarOrden(total,idMesa,resumen_orden_productos)}>
-          <Text style={styles.btnTextoNuevaCita}>Enviar pedido ${total}</Text>
-        </Pressable>
-        
-         </View>
-      )}
-      
-      
+        )}
+      </View>
     </SafeAreaView>
   );
 };
 
-
-
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#F3F4F6",
-    flex: 1,
+   padding: 50,
+  },
+  noTime: {
+    marginTop: 40,
+    textAlign: "center",
+    fontSize: 24,
+    fontWeight: "500",
   },
   titulo: {
     textAlign: "center",
@@ -129,6 +78,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     borderRadius: 10,
   },
+
   btnTextoNuevaCita: {
     textAlign: "center",
     color: "#FFF",
@@ -145,9 +95,7 @@ const styles = StyleSheet.create({
   listado: {
     marginTop: 10,
     marginHorizontal: 20,
-    
   },
 });
 
-export default CarritoScreen;
-
+export default CounterScreen;

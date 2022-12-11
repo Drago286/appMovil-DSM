@@ -85,12 +85,22 @@ const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
       <View style={{ marginRight: 20, alignItems: "center" }}>
         <Text style={{ fontWeight: "bold", fontSize: 18 }}>{contador}</Text>
         <View style={styles.actionBtn}>
-          <Icon
+        {contador === 1 ? (
+         <Icon
+        name = "block"
+         size={25}
+         color={"white"}
+         onPress={() => disminuirContador()}
+       />)
+          : 
+          (
+            <Icon
             name="remove"
             size={25}
             color={"white"}
             onPress={() => disminuirContador()}
           />
+          )}
           <Icon
             name="add"
             size={25}
@@ -104,16 +114,6 @@ const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
 };
 const styles = StyleSheet.create({
   contenedor: {
-    // height: 140,
-    // elevation: 15,
-    // width: 300,
-    // borderRadius: 10,
-    // backgroundColor: "white",
-    // marginVertical: 10,
-    // marginHorizontal: 20,
-    // paddingHorizontal: 10,
-    // flexDirection: "row",
-    // alignItems: "center",
     height: 120,
     elevation: 15,
     borderRadius: 10,

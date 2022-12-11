@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable,Image } from "react-native";
+import Formulario from "./Formulario";
 
 const baseURL = "http://192.168.1.176:8000/api/";
 
 const Producto = ({
   item,
-  setModalVisible,
+ setModalVisible,
   productoEditar,
   productoEliminar,
   cantidad,
 }) => {
   const [nombreCategoria, setNombreCategoria] = useState("");
   const [categorias, setCategorias] = useState([]);
-  const { categoria_id, producto, descripcion, precio, id, nombre,stock } = item;
+  const [imagenes, setImagens] = useState([]);
+  const [imagenSource, setImagenSource] = useState("");
+  const { categoria_id, producto, descripcion, precio, id, nombre,stock,imagen } = item;
 
 
   useEffect(() => {
@@ -24,8 +27,25 @@ const Producto = ({
         const data = await response.json();
         setCategorias(data);
         
+        
       } catch (error) {
         console.log("error categorias");
+      }
+    })();
+  }, []);
+  useEffect(() => {
+    (async function () {
+      try {
+        const response = await fetch(baseURL + "imagens", {
+          method: "GET",
+        });
+        const data = await response.json();
+        setImagens(data);
+        setImagenSource(imagenes.find(element => element.id === item.imagen))
+        console.log(imagenSource);
+        
+      } catch (error) {
+        console.log("error imagenes");
       }
     })();
   }, []);
@@ -38,6 +58,16 @@ const Producto = ({
       <Text style={styles.texto}>{"Precio: $" + precio}</Text>
 
       <Text style={styles.texto}>{"Stock: " + stock}</Text>
+      <Image
+            style={{
+              alignSelf: "center",
+              height: 100,
+              width: 100,
+              marginBottom: 20,
+            }}
+            source={{  uri:imagen }}
+          />
+    
       
       <View style={styles.contenedorBotones}>
         <Pressable
@@ -55,6 +85,7 @@ const Producto = ({
         >
           <Text style={{color: "white"}}>Eliminar</Text>
         </Pressable>
+        
       </View>
     </View>
   );

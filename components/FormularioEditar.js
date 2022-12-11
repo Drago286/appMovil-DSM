@@ -28,7 +28,7 @@ const Formulario = (props, navigation) => {
   const [producto, setProducto] = useState("");
   const [nombre, setNombre] = useState("");
   const [categoria, setCategoria] = useState("");
-  const [urlImagen, setUrlImagen] = useState("https://via.placeholder.com/200");
+  const [urlImagen, setUrlImagen] = useState("");
   const [id, setId] = useState("");
   const [codigo, setCodigo] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -201,8 +201,6 @@ const Formulario = (props, navigation) => {
       setStock("");
       setSelectPicker("");
       setUrlImagen("");
-      setImage("https://via.placeholder.com/200");
-
     }
   };
   const validar_update = (response) => {
@@ -226,26 +224,23 @@ const Formulario = (props, navigation) => {
       setStock("");
       setSelectPicker("");
       setUrlImagen("");
-      setImage("https://via.placeholder.com/200");
     }
   };
 
  
 
   useEffect(() => {
-    console.log("buscando...");
+
     if (Object.keys(productoObj).length > 0) {
-      console.log(productoObj);
-      setId(productoObj[0].id);
-      setProducto(productoObj[0].producto);
-      setNombre(productoObj[0].nombre);
+      setId(productoObj.id);
+      setProducto(productoObj.producto);
+      setNombre(productoObj.nombre);
       setCategoria(productoObj.categoria_id);
-      setDescripcion(productoObj[0].descripcion);
-      setIdCategoria(productoObj[0].idCategoria);
-      setPrecio(parseInt(productoObj[0].precio));
-      setStock(productoObj[0].stock);
-      setUrlImagen(productoObj[0].imagen)
-     
+      setDescripcion(productoObj.descripcion);
+      setIdCategoria(productoObj.idCategoria);
+      setPrecio(productoObj.precio);
+      setStock(productoObj.stock);
+      setUrlImagen(productoObj.urlImagen)
     }
   }, [productoObj]);
 
@@ -328,7 +323,7 @@ const Formulario = (props, navigation) => {
       <SafeAreaView style={styles.contenido}>
         <ScrollView>
           <Text style={styles.titulo}>
-            {id ? "Editar" : "Nuevo"}{" "}
+            {productoObj.id ? "Editar" : "Nuevo"}{" "}
             <Text style={styles.tituloBold}>Producto</Text>
           </Text>
           
@@ -363,7 +358,7 @@ const Formulario = (props, navigation) => {
               placeholder="Ingrese precio"
               placeholderTextColor={"#666"}
               keyboardType="phone-pad"
-              value={precio.toString()}
+              value={productoObj.precio}
               onChangeText={setPrecio}
               maxLength={12}
             />
@@ -375,7 +370,7 @@ const Formulario = (props, navigation) => {
               placeholder="Ingrese stock"
               placeholderTextColor={"#666"}
               keyboardType="phone-pad"
-              value={stock.toString()}
+              value={productoObj.stock}
               onChangeText={setStock}
               maxLength={12}
             />
@@ -405,11 +400,11 @@ const Formulario = (props, navigation) => {
           </Picker>
 
           <Pressable
-            style={styles.btnNuevoProducto}
+            style={styles.btnImagen}
             onPress={() => handleChoosePhoto()}
           >
-            <Text style={styles.btnNuevoProductoTexto}>
-                {id ? "Editar" : "Agregar"}
+            <Text style={styles.btnNuevoProducto}>
+                {productoObj.id ? "Editar" : "Agregar"}
               </Text>
           </Pressable>
 
@@ -420,7 +415,7 @@ const Formulario = (props, navigation) => {
               width: 200,
               marginBottom: 20,
             }}
-            source={{ uri: urlImagen}}
+            source={{ uri: image }}
           /> 
          
        
@@ -435,7 +430,7 @@ const Formulario = (props, navigation) => {
               onPress={ingresarProducto}
             >
               <Text style={styles.btnNuevoProductoTexto}>
-                {id ? "Editar" : "Agregar"}
+                {productoObj.id ? "Editar" : "Agregar"}
               </Text>
             </Pressable>
 
@@ -452,8 +447,6 @@ const Formulario = (props, navigation) => {
                 setIdCategoria("");
                 setPrecio("");
                 setStock("");
-                setUrlImagen("https://via.placeholder.com/200");
-
               }}
             >
               <Text style={styles.btnCancelarTexto}>Cancelar</Text>
