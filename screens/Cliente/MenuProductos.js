@@ -16,7 +16,7 @@ import Producto from "../../components/producto";
 import estilos from "../../MyDrawer/style";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import RestauranteContext from "../../components/RestauranteContext";
-import ProductoMenu from "../../components/ProductoMenu";
+import ProductoMenu from "../../components/productoMenu";
 import Pedido from "../../components/Pedido";
 
 // import Producto from "../components/producto";

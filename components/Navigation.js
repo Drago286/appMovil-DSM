@@ -11,7 +11,6 @@ import HomeScreen from "../screens/Cliente/HomeScreen";
 import CarritoScreen from "../screens/Cliente/CarritoScreen";
 import AdministradorScreen from "../screens/Administrador/AdministradorScreen";
 import CategoriasScreen from "../screens/Administrador/CategoriasScreen";
-import PedidosScreen from "../screens/Administrador/PedidosScreen"; 
 import MesasScreen from "../screens/Administrador/MesasScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -114,20 +113,7 @@ function MyTabsAdmin() {
           },
         }}
       />
-       {/* <Tab.Screen
-        name="Pedidos"
-        component={PedidosScreen}
-        options={{
-          tabBarLabel: "Administrar pedidos",
-          title: "Administrar pedidos",
-          tabBarIcon: ({ color, size }) => (
-            <AntDesign name="calendar" size={24} color="black" />
-          ),
-          headerStyle: {
-            backgroundColor: "#67b5a3",
-          },
-        }}
-      /> */}
+       
     </Tab.Navigator>
   );
 }
