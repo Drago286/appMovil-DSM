@@ -17,7 +17,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import RestauranteContext from "../../components/RestauranteContext";
 import ProductoCarrito from "../../components/ProductoCarrito";
 
-const baseURL = "http://192.168.1.176:8000/api/";
+const baseURL = "http://192.168.1.85:8000/api/";
 
 const CarritoScreen = ({ navigation }) => {
   const {

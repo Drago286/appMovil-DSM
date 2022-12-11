@@ -22,7 +22,7 @@ import { categoriasContext } from "../screens/Administrador/AdministradorScreen"
 import axios from "axios";
 import * as FileSystem from "expo-file-system";
 
-const baseURL = "http://192.168.1.176:8000/api/";
+const baseURL = "http://192.168.1.85:8000/api/";
 
 const Formulario = (props, navigation) => {
   const [producto, setProducto] = useState("");
@@ -55,7 +55,7 @@ const Formulario = (props, navigation) => {
       aspect: [4, 3],
       quality: 1,
     });
-    console.log(result);
+    console.log(result + 'a');
     let path = result.uri;
     if (Platform.OS === "ios") {
       path = "~" + path.substring(path.indexOf("/Documents"));
@@ -107,7 +107,8 @@ const Formulario = (props, navigation) => {
             alert("Image upload failed!");
             return;
           }
-          console.log(response.uri);
+          console.log(response.url);
+          console.log('esta es tu uri');
           setUrlImagen(response.url);
           alert("Imagen subida al BackEnd!");
         });
@@ -153,8 +154,9 @@ const Formulario = (props, navigation) => {
     }
   };
 
-  const editarProducto = (nombre_, descripcion_, precio_, stock_,idImage) => {
+  const editarProducto = (nombre_, descripcion_, precio_, stock_, urlImagen_) => {
     try {
+      console.log(urlImagen_);
       const requestOptions = {
         method: "PUT",
         headers: {
@@ -169,6 +171,7 @@ const Formulario = (props, navigation) => {
           precio: precio_,
           stock: stock_,
           categoria_id: selectPicker,
+          imagen: urlImagen_,
         }),
       };
       fetch(baseURL + "productos/" + id, requestOptions)

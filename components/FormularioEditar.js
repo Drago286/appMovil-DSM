@@ -22,7 +22,7 @@ import { categoriasContext } from "../screens/Administrador/AdministradorScreen"
 import axios from "axios";
 import * as FileSystem from "expo-file-system";
 
-const baseURL = "http://192.168.1.176:8000/api/";
+const baseURL = "http://192.168.1.85:8000/api/";
 
 const Formulario = (props, navigation) => {
   const [producto, setProducto] = useState("");
