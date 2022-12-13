@@ -5,9 +5,35 @@ import RestauranteContext from "./RestauranteContext";
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
+const baseURL = "http://192.168.1.82:8000/api/";
 
 const ProductoMenu = ({ item, props, addToCart }) => {
-  const { nombre, descripcion, precio, id } = item;
+  const [imagens, setImagens] = useState([]);
+  const [imagenSource, setImagenSource] = useState("");
+  const { nombre, descripcion, precio, id, imagen} = item;
+  
+  useEffect(() => {
+    (async function () {
+      try {
+        const response = await fetch(baseURL + "imagens", {
+          method: "GET",
+        });
+        const data = await response.json();
+        setImagens(data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+  useEffect(() => {
+    for(let i = 0; i <imagens.length; i++) {
+      if(imagens[i].id==imagen){
+        setImagenSource(imagens[i].url);
+      }
+    }
+  
+  },[imagens.length]);
+
 
   return (
     <SafeAreaView>
@@ -29,7 +55,7 @@ const ProductoMenu = ({ item, props, addToCart }) => {
           width: 100,
           marginBottom: 20,
         }}
-        source={{ uri: item.imagen }}
+        source={{ uri: imagenSource }}
       />
       <Text style={{ fontSize: 17, fontWeight: "bold", marginBottom: 10 }}>
         ${item.precio}

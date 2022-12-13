@@ -16,7 +16,7 @@ import Producto from "../../components/producto";
 import estilos from "../../MyDrawer/style";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import RestauranteContext from "../../components/RestauranteContext";
-import ProductoMenu from "../../components/productoMenu";
+import ProductoMenu from "../../components/ProductoMenu";
 import Pedido from "../../components/Pedido";
 
 // import Producto from "../components/producto";
@@ -44,12 +44,13 @@ const MenuProductos = ({ navigation, route, props }) => {
   const [arrayCarrito, setArrayCarrito] = useState([]);
   const [categoriaEscogida, setCategoriaEscogida] = useState("");
   const [idCategoria_, setIdCategoria] = useState("");
+  const [imagens, setImagens] = useState([]);
+  const [imagenSource, setImagenSource] = useState("");
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  var pedido = {
-    detalle: [],
-  };
+
+  
 
   const volver = () => {
     navigation.navigate("HomeScreen");
@@ -218,7 +219,8 @@ const MenuProductos = ({ navigation, route, props }) => {
             renderItem={({ item }) => {
               return (
                 <View>
-                  <ProductoMenu item={item} addToCart={addToCart} />
+                  <ProductoMenu item={item} addToCart={addToCart}
+                   />
                 </View>
               );
             }}

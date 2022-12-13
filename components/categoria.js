@@ -23,7 +23,7 @@ const Categoria = ({
         const data = await response.json();
         setCategorias(data);
       } catch (error) {
-        console.log("error categorias no ");
+        console.log("error categorias");
       }
     })();
   }, []);
