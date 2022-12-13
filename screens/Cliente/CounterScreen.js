@@ -19,7 +19,7 @@ import ProductoCarrito from "../../components/ProductoCarrito";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import CountDown from "react-native-countdown-component";
 
-const baseURL = "http://192.168.1.85:8000/api/";
+const baseURL = "http://192.168.1.82:8000/api/";
 
 const CounterScreen = ({ navigation }) => {
 

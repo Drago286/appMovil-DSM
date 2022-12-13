@@ -2,7 +2,7 @@ import React, { useState, createContext, useEffect } from "react";
 const RestauranteContext = createContext();
 
 
-const baseURL = "http://192.168.1.85:8000/api/";
+const baseURL = "http://192.168.1.82:8000/api/";
 
 export const RestauranteProvider = ({ children }) => {
 

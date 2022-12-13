@@ -20,7 +20,7 @@ import axios from "axios";
 import Formulario from "../../components/Formulario";
 import FormularioEditar from "../../components/FormularioEditar";
 import Producto from "../../components/producto";
-const baseURL = "http://192.168.1.85:8000/api/";
+const baseURL = "http://192.168.1.82:8000/api/";
 
 export const categoriasContext = createContext();
 

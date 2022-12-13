@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable,Image } from "react-native";
 import Formulario from "./Formulario";
 
-const baseURL = "http://192.168.1.85:8000/api/";
+const baseURL = "http://192.168.1.82:8000/api/";
 
 const Producto = ({
   item,

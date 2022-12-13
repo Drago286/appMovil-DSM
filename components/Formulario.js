@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import mime from "mime";
 import {
   Modal,
   Text,
@@ -22,7 +22,7 @@ import { categoriasContext } from "../screens/Administrador/AdministradorScreen"
 import axios from "axios";
 import * as FileSystem from "expo-file-system";
 
-const baseURL = "http://192.168.1.85:8000/api/";
+const baseURL = "http://192.168.1.82:8000/api/";
 
 const Formulario = (props, navigation) => {
   const [producto, setProducto] = useState("");
@@ -48,14 +48,13 @@ const Formulario = (props, navigation) => {
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
   const handleChoosePhoto = async () => {
-    
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-    console.log(result + 'a');
+    console.log(result);
     let path = result.uri;
     if (Platform.OS === "ios") {
       path = "~" + path.substring(path.indexOf("/Documents"));
@@ -82,20 +81,28 @@ const Formulario = (props, navigation) => {
     uri = Platform.OS === "android" ? uri : uri.replace("file://", "");
 
     console.log(uri);
-    const formData = new FormData();
+    // const formData = new FormData();
+    const newImageUri = "file:///" + uri.split("file:/").join("");
 
+    const formData = new FormData();
     formData.append("image", {
-      uri: uri,
-      name: result.uri.split("/").pop(),
-      type: result.type,
+      uri: newImageUri,
+      type: mime.getType(newImageUri),
+      name: newImageUri.split("/").pop(),
     });
+
+    // formData.append("image", {
+    //   uri: uri,
+    //   name: result.uri.split("/").pop(),
+    //   type: result.type,
+    // });
 
     try {
       fetch(baseURL + "upload", {
         method: "POST",
         headers: {
           "Content-Type": "multipart/form-data",
-          'Accept': 'application/json, text/plain, */*',
+          Accept: "application/json",
         },
         body: formData,
       })
@@ -104,20 +111,19 @@ const Formulario = (props, navigation) => {
         .then((response) => {
           if (!response.isSuccess) {
             console.log(response);
-            alert("Image upload failed!");
+            alert("Error al subir la imagen");
             return;
           }
           console.log(response.url);
-          console.log('esta es tu uri');
+          console.log("esta es tu uri");
           setUrlImagen(response.url);
-          alert("Imagen subida al BackEnd!");
+          alert("Imagen subida");
         });
     } catch (e) {
       console.log(e);
     }
   };
- 
-  
+
   let agregarProducto = (
     nombre_,
     descripcion_,
@@ -126,7 +132,7 @@ const Formulario = (props, navigation) => {
     stock_,
     categoria_,
     nuevoProducto,
-    urlImagen_,
+    urlImagen_
   ) => {
     try {
       fetch(baseURL + "productos", {
@@ -154,7 +160,13 @@ const Formulario = (props, navigation) => {
     }
   };
 
-  const editarProducto = (nombre_, descripcion_, precio_, stock_, urlImagen_) => {
+  const editarProducto = (
+    nombre_,
+    descripcion_,
+    precio_,
+    stock_,
+    urlImagen_
+  ) => {
     try {
       console.log(urlImagen_);
       const requestOptions = {
@@ -205,7 +217,6 @@ const Formulario = (props, navigation) => {
       setSelectPicker("");
       setUrlImagen("");
       setImage("https://via.placeholder.com/200");
-
     }
   };
   const validar_update = (response) => {
@@ -233,8 +244,6 @@ const Formulario = (props, navigation) => {
     }
   };
 
- 
-
   useEffect(() => {
     console.log("buscando...");
     if (Object.keys(productoObj).length > 0) {
@@ -247,8 +256,7 @@ const Formulario = (props, navigation) => {
       setIdCategoria(productoObj[0].idCategoria);
       setPrecio(parseInt(productoObj[0].precio));
       setStock(productoObj[0].stock);
-      setUrlImagen(productoObj[0].imagen)
-     
+      setUrlImagen(productoObj[0].imagen);
     }
   }, [productoObj]);
 
@@ -285,7 +293,6 @@ const Formulario = (props, navigation) => {
       categoria,
       codigo,
       stock,
-
     };
 
     if (id) {
@@ -295,7 +302,7 @@ const Formulario = (props, navigation) => {
         productoState.id === nuevoProducto.id ? nuevoProducto : productoState
       );
       setProductos(productosActualizados);
-      editarProducto(nombre, descripcion, precio, stock,urlImagen);
+      editarProducto(nombre, descripcion, precio, stock, urlImagen);
       //setProductoApp({});
     } else {
       nuevoProducto.id = Date.now();
@@ -310,7 +317,7 @@ const Formulario = (props, navigation) => {
         stock,
         selectPicker,
         nuevoProducto,
-        urlImagen,
+        urlImagen
       );
     }
 
@@ -334,8 +341,7 @@ const Formulario = (props, navigation) => {
             {id ? "Editar" : "Nuevo"}{" "}
             <Text style={styles.tituloBold}>Producto</Text>
           </Text>
-          
-         
+
           <View style={styles.campo}>
             <Text style={styles.label2}>Nombre Producto:</Text>
             <TextInput
@@ -412,8 +418,8 @@ const Formulario = (props, navigation) => {
             onPress={() => handleChoosePhoto()}
           >
             <Text style={styles.btnNuevoProductoTexto}>
-                {id ? "Editar" : "Agregar"}
-              </Text>
+              {id ? "Editar" : "Agregar"}
+            </Text>
           </Pressable>
 
           <Image
@@ -423,10 +429,9 @@ const Formulario = (props, navigation) => {
               width: 200,
               marginBottom: 20,
             }}
-            source={{ uri: urlImagen}}
-          /> 
-         
-       
+            source={{ uri: urlImagen }}
+          />
+
           <View
             style={{
               flexDirection: "row",
@@ -456,7 +461,6 @@ const Formulario = (props, navigation) => {
                 setPrecio("");
                 setStock("");
                 setUrlImagen("https://via.placeholder.com/200");
-
               }}
             >
               <Text style={styles.btnCancelarTexto}>Cancelar</Text>
