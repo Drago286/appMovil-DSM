@@ -12,27 +12,28 @@ const ProductoMenu = ({ item, props, addToCart }) => {
   const [imagenSource, setImagenSource] = useState("");
   const { nombre, descripcion, precio, id, imagen} = item;
   
-  useEffect(() => {
-    (async function () {
-      try {
-        const response = await fetch(baseURL + "imagens", {
-          method: "GET",
-        });
-        const data = await response.json();
-        setImagens(data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
-  useEffect(() => {
-    for(let i = 0; i <imagens.length; i++) {
-      if(imagens[i].id==imagen){
-        setImagenSource(imagens[i].url);
-      }
-    }
+  // useEffect(() => {
+  //   (async function () {
+  //     try {
+  //       const response = await fetch(baseURL + "imagens", {
+  //         method: "GET",
+  //       });
+  //       const data = await response.json();
+  //       setImagens(data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   })();
+  // }, []);
+  // useEffect(() => {
+  //   for(let i = 0; i <imagens.length; i++) {
+  //     if(imagens[i].id==imagen){
+  //       setImagenSource(imagens[i].url);
+  //     }
+  //   }
+  //   console.log("1");
   
-  },[imagens.length]);
+  // },[imagens.length]);
 
 
   return (
@@ -55,7 +56,7 @@ const ProductoMenu = ({ item, props, addToCart }) => {
           width: 100,
           marginBottom: 20,
         }}
-        source={{ uri: imagenSource }}
+        source={{ uri: imagen }}
       />
       <Text style={{ fontSize: 17, fontWeight: "bold", marginBottom: 10 }}>
         ${item.precio}

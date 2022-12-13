@@ -19,29 +19,29 @@ const Producto = ({
   
 
   
-  useEffect(() => {
-    (async function () {
-      try {
-        const response = await fetch(baseURL + "imagens", {
-          method: "GET",
-        });
-        const data = await response.json();
-        setImagens(data);
+  // useEffect(() => {
+  //   (async function () {
+  //     try {
+  //       const response = await fetch(baseURL + "imagens", {
+  //         method: "GET",
+  //       });
+  //       const data = await response.json();
+  //       setImagens(data);
         
         
-      } catch (error) {
-        console.log("error imagenes");
-      }
-    })();
-  }, []);
-  useEffect(() => {
-    for(let i = 0; i <imagens.length; i++) {
-      if(imagens[i].id==imagen){
-        setImagenSource(imagens[i].url);
-      }
-    }
+  //     } catch (error) {
+  //       console.log("error imagenes");
+  //     }
+  //   })();
+  // }, []);
+  // useEffect(() => {
+  //   for(let i = 0; i <imagens.length; i++) {
+  //     if(imagens[i].id==imagen){
+  //       setImagenSource(imagens[i].url);
+  //     }
+  //   }
   
-  },[imagens.length]);
+  // },[imagens.length]);
  
   return (
     <View style={styles.contenedor}>
@@ -59,7 +59,7 @@ const Producto = ({
               width: 100,
               marginBottom: 20,
             }}
-            source={{  uri: imagenSource }}
+            source={{  uri: imagen }}
           />
     
       

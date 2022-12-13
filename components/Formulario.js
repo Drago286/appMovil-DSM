@@ -116,7 +116,7 @@ const Formulario = (props, navigation) => {
           }
           console.log(response.url);
           console.log("esta es tu uri");
-          setUrlImagen(response.id);
+          setUrlImagen(response.url);
           alert("Imagen subida");
           console.log("esta es tu id imagen");
           console.log(response.id);
