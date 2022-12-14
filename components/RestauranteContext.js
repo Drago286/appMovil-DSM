@@ -2,9 +2,12 @@ import React, { useState, createContext, useEffect } from "react";
 const RestauranteContext = createContext();
 
 
-const baseURL = "http://192.168.1.82:8000/api/";
+  
 
 export const RestauranteProvider = ({ children }) => {
+    const baseURL = "http://192.168.1.82:8000/api/";//<---Aqui va tu promedio
+
+
 
     const [carrito,setCarrito] = useState([]);
     const [productos, setProductos] = useState([]);
@@ -57,7 +60,7 @@ export const RestauranteProvider = ({ children }) => {
         value={{carrito,setCarrito,categorias,setCategorias,
         productos,setProductos,resumen_orden_productos,
         setResumen_orden_productos,idMesa,setIdMesa,mesas,setMesas,
-        contador,setContador,total,setTotal,setResumen_orden,resumen_orden}}>
+        contador,setContador,total,setTotal,setResumen_orden,resumen_orden,baseURL}}>
             {children}
         </RestauranteContext.Provider>
     );
