@@ -1,6 +1,6 @@
 //rafce
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useEffect,useContext } from "react";
+import RestauranteContext from "./RestauranteContext";
 import {
   Modal,
   Text,
@@ -17,9 +17,10 @@ import {
 //import DatePicker from 'react-native-date-picker';
 import { Picker } from "@react-native-picker/picker";
 
-const baseURL = "http://192.168.1.82:8000/api/";
+  
+const FormularioCategoria = (props) => {
+  const {baseURL} = useContext(RestauranteContext);
 
-const Formulario = (props) => {
   const [nombre, setNombre] = useState("");
   const [id, setId] = useState("");
   const { modalVisible } = props;
@@ -29,6 +30,9 @@ const Formulario = (props) => {
   const { categoria: categoriaObj } = props;
   const { setCategoria: setCategoriaApp } = props;
 
+  /**
+   * 
+   */
   useEffect(() => {
     (async function () {
       try {
@@ -42,7 +46,12 @@ const Formulario = (props) => {
       }
     })();
   }, []);
-
+/**
+ * 
+ * @param {nobre de la nueva categoria} nombre_ 
+ * @param {objeto categoria que sea validado} nuevaCategoria 
+ * Metod POST con la nueva categoria
+ */
   let agregarcategoria = (nombre_,nuevaCategoria) => {
     try {
       fetch(baseURL + "categorias", {
@@ -63,6 +72,11 @@ const Formulario = (props) => {
       console.log(e);
     }
   };
+  /**
+   * @param {respuesta del sistema} response
+   * @param {categoria a validar} nuevaCategoria 
+   * Traduce la respuesta del sistema al agregar la nueva categoria.
+   */
   const validar = (response,nuevaCategoria) => {
     //captura de erores del backEnd
     if (response.status === 100) {
@@ -78,6 +92,12 @@ const Formulario = (props) => {
       setNombre("");
     }
   };
+  /**
+   * 
+   * @param {respuesta del sistema} response 
+   * traduce la respuesta del sistema al actualizar la categoria actual.
+   * 
+   */
   const validar_update = (response) => {
     console.log(response);
     //captura de erores del backEnd
@@ -92,7 +112,11 @@ const Formulario = (props) => {
       setNombre("");
     }
   };
-
+/**
+ * 
+ * @param {Nombre de la categoria a editar} nombre_ 
+ * Metodo PUT para editar la categoria.
+ */
   const editarcategoria = (nombre_) => {
     try {
       const requestOptions = {
@@ -124,6 +148,10 @@ const Formulario = (props) => {
     }
   }, [categoriaObj]);
 
+  /**
+   * 
+   * @returns validacion de datos ingresados en el input.
+   */
   const ingresarCategoria = () => {
     if ([nombre].includes("")) {
       //alerta para validar que todos los campos esten llenos.
@@ -161,6 +189,9 @@ const Formulario = (props) => {
     // setNombre("");
   };
 
+  /**
+   * vista.
+   */
   return (
     <Modal animationType="slide" visible={modalVisible}>
       <SafeAreaView style={styles.contenido}>
@@ -286,4 +317,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Formulario;
+export default FormularioCategoria;

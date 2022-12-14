@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-const baseURL = "http://192.168.1.82:8000/api/";
+ 
 import RestauranteContext from "./RestauranteContext";
 
 const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
@@ -11,6 +11,10 @@ const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
 
   const { nombre, descripcion, precio, id } = item;
 
+  /**
+   * 
+   * @returns Actuliza la cantidad del producto seleccionado.
+   */
   const disminuirContador = () => {
     if (contador <= 1) {
       Alert.alert(
@@ -42,6 +46,10 @@ const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
     }
   };
 
+  /**
+   * Verfica si hay stock suficiente,
+   * Actualiza la cantidad del producto seleccionado.
+   */
   const aumentarContador = () => {
     if (contador < item.stock) {
       setContador(contador + 1);
@@ -66,6 +74,9 @@ const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
     console.log(resumen_orden_productos);
   };
 
+  /**
+   * vista.
+   */
   return (
     <View style={styles.contenedor}>
       <View

@@ -17,7 +17,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import RestauranteContext from "../../components/RestauranteContext";
 import ProductoCarrito from "../../components/ProductoCarrito";
 
-const baseURL = "http://192.168.1.82:8000/api/";
+  
 
 const CarritoScreen = ({ navigation }) => {
   const {
@@ -27,9 +27,9 @@ const CarritoScreen = ({ navigation }) => {
     resumen_orden_productos,
     total,
     setResumen_orden_productos,
+    baseURL,
   } = useContext(RestauranteContext);
-  const [cantidad, setCantidad] = useState("");
-  const [precio, setPrecio] = useState("");
+  
 
   let enviarOrden = (total_, idMesa_, resumen_orden_productos_) => {
     Alert.alert("¿Desea enviar su pedido?", "", [
@@ -99,10 +99,10 @@ const CarritoScreen = ({ navigation }) => {
             }}
           />
           <Pressable
-            style={styles.btnNuevaCita}
+            style={styles.btnNueva}
             onPress={() => enviarOrden(total, idMesa, resumen_orden_productos)}
           >
-            <Text style={styles.btnTextoNuevaCita}>Enviar pedido ${total}</Text>
+            <Text style={styles.btnTextoNueva}>Enviar pedido ${total}</Text>
           </Pressable>
         </View>
       )}
@@ -125,14 +125,14 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 19,
   },
-  btnNuevaCita: {
+  btnNueva: {
     backgroundColor: "orange",
     padding: 15,
     marginTop: 30,
     marginHorizontal: 20,
     borderRadius: 10,
   },
-  btnTextoNuevaCita: {
+  btnTextoNueva: {
     textAlign: "center",
     color: "#FFF",
     fontSize: 20,

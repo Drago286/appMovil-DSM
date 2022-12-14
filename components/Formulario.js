@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
+import RestauranteContext from "./RestauranteContext";
 import mime from "mime";
 import {
   Modal,
@@ -9,22 +10,19 @@ import {
   TextInput,
   ScrollView,
   Pressable,
-  Button,
-  Dropdown,
+
   Alert,
   Image,
-  ViewHorizontal,
+
 } from "react-native";
-//import DatePicker from 'react-native-date-picker';
+
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
-import { categoriasContext } from "../screens/Administrador/AdministradorScreen";
-import axios from "axios";
-import * as FileSystem from "expo-file-system";
 
-const baseURL = "http://192.168.1.82:8000/api/";
+ 
 
-const Formulario = (props, navigation) => {
+const Formulario = (props, navigation) => { 
+  const {baseURL} = useContext(RestauranteContext);
   const [producto, setProducto] = useState("");
   const [nombre, setNombre] = useState("");
   const [categoria, setCategoria] = useState("");
@@ -39,14 +37,15 @@ const Formulario = (props, navigation) => {
   const { modalVisible } = props;
   const { productos } = props;
   const { setProductos } = props;
-  const { productoEditar } = props;
   const { setModalVisible } = props;
   const { producto: productoObj } = props;
   const { setProducto: setProductoApp } = props;
   const { categorias: categorias } = props;
   const [image, setImage] = useState("https://via.placeholder.com/200");
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
-
+  /**
+   * Metodo que permite seleccionar una imagen desde la galeria del dispositivo movil
+   */
   const handleChoosePhoto = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -74,10 +73,15 @@ const Formulario = (props, navigation) => {
       const path = result.uri;
       setImage(path);
       console.log(result.uri);
-      uploadImage(result, result.uri);
+      uploadImage(result.uri);
     }
   };
-  const uploadImage = async (result, uri) => {
+  /**
+   * @param {uri} uri "ubicacion del archivo dentro del dispositivo"
+   * Envia imagen al backend
+   */
+  const uploadImage = async (uri) => {
+    console.log(uri);
     uri = Platform.OS === "android" ? uri : uri.replace("file://", "");
 
     console.log(uri);
@@ -90,13 +94,6 @@ const Formulario = (props, navigation) => {
       type: mime.getType(newImageUri),
       name: newImageUri.split("/").pop(),
     });
-
-    // formData.append("image", {
-    //   uri: uri,
-    //   name: result.uri.split("/").pop(),
-    //   type: result.type,
-    // });
-
     try {
       fetch(baseURL + "upload", {
         method: "POST",
@@ -125,7 +122,17 @@ const Formulario = (props, navigation) => {
       console.log(e);
     }
   };
-
+/**
+ * 
+ * @param {nombre del producto} nombre_ 
+ * @param {descripcion del producto} descripcion_ 
+ * @param {precio del producto} precio_ 
+ * @param {codigo generado del producto} codigo_ 
+ * @param {stock del producto} stock_ 
+ * @param {id de la categoria del producto} categoria_ 
+ * @param {url de la imagen ubicada en el backEnd} urlImagen_ 
+ * Este metodo genera el request POST del nuevo producto
+ */
   let agregarProducto = (
     nombre_,
     descripcion_,
@@ -133,8 +140,8 @@ const Formulario = (props, navigation) => {
     codigo_,
     stock_,
     categoria_,
+    urlImagen_,
     nuevoProducto,
-    urlImagen_
   ) => {
     try {
       fetch(baseURL + "productos", {
@@ -156,12 +163,20 @@ const Formulario = (props, navigation) => {
       })
         .then((res) => res.json())
         .catch((error) => console.error("Error", error))
-        .then((response) => validar(response, nuevoProducto));
+        .then((response) => validar(response,nuevoProducto));
     } catch (e) {
       console.log(e);
     }
   };
-
+/**
+ * 
+ * @param {nombre del producto por el cual se va a cambiar} nombre_ 
+ * @param {descripcion del producto por el cual se va a cambiar} descripcion_ 
+ * @param {precio del producto por el cual se va a cambiar} precio_ 
+ * @param {stock del producto por el cual se va a cambiar} stock_ 
+ * @param {url de la imagen del producto por el cual se va a cambiar} urlImagen
+ * Corresponde al metodo PUT, actulizando los datos en el backEnd 
+ */
   const editarProducto = (
     nombre_,
     descripcion_,
@@ -196,7 +211,12 @@ const Formulario = (props, navigation) => {
       console.log(e);
     }
   };
-  const validar = (response, nuevoProducto) => {
+ /**
+  * 
+  * @param {respuesta obtenida del BackEnd luego de generar el POST del producto} response 
+  * traduce la respuesta del backend.
+  */
+  const validar = (response,nuevoProducto) => {
     //captura de erores del backEnd
     console.log(response);
     if (response.status === 100) {
@@ -221,6 +241,11 @@ const Formulario = (props, navigation) => {
       setImage("https://via.placeholder.com/200");
     }
   };
+   /**
+    * 
+    * @param {respuesta del backend luego de realizar un PUT} response 
+    * traduce la respuesta del backend.
+    */
   const validar_update = (response) => {
     console.log(response);
     //captura de erores del backEnd
@@ -246,8 +271,11 @@ const Formulario = (props, navigation) => {
     }
   };
 
+  /**
+   * Genera destructuring del producto al cual se hace referencia al inicializar este componente.
+   */
   useEffect(() => {
-    console.log("buscando...");
+    
     if (Object.keys(productoObj).length > 0) {
       console.log(productoObj);
       setId(productoObj[0].id);
@@ -262,8 +290,13 @@ const Formulario = (props, navigation) => {
     }
   }, [productoObj]);
 
+  /**
+   * 
+   * valida que los datos de los input sean validos.
+   */
   const ingresarProducto = () => {
-    if ([nombre, descripcion, precio, stock, selectPicker].includes("")) {
+    if ([nombre, descripcion, precio, stock, selectPicker].includes("") 
+    && urlImagen === "https://via.placeholder.com/200") {
       //alerta para validar que todos los campos esten llenos.
       Alert.alert("Error", "Todos los campos son obligatorios.", [
         { text: "Cancelar" },
@@ -318,23 +351,14 @@ const Formulario = (props, navigation) => {
         numeroRandom,
         stock,
         selectPicker,
+        urlImagen,
         nuevoProducto,
-        urlImagen
       );
     }
-
-    // setModalVisible(!modalVisible); //cierro el modal despues de guardar
-
-    // setId("");
-    // setCodigo("");
-    // setNombre("");
-    // setProducto("");
-    // setDescripcion("");
-    // setIdCategoria("");
-    // setPrecio("");
-    // setStock("");
   };
-
+/**
+ * vista.
+ */
   return (
     <Modal animationType="slide" visible={modalVisible}>
       <SafeAreaView style={styles.contenido}>
@@ -402,7 +426,7 @@ const Formulario = (props, navigation) => {
             itemStyle={{ height: 80 }}
           >
             <Picker.Item
-              style={{ color: "white" }}
+              style={{ color: "black" }}
               label="- Seleccione -"
               value=""
             />
@@ -420,7 +444,7 @@ const Formulario = (props, navigation) => {
             onPress={() => handleChoosePhoto()}
           >
             <Text style={styles.btnNuevoProductoTexto}>
-              {id ? "Editar" : "Agregar"}
+              {id ? "Editar" : "Agregar"} imagen
             </Text>
           </Pressable>
 

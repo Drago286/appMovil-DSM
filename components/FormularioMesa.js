@@ -1,6 +1,6 @@
 //rafce
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useEffect,useContext } from "react";
+import RestauranteContext from "./RestauranteContext";
 import {
   Modal,
   Text,
@@ -17,11 +17,11 @@ import {
 //import DatePicker from 'react-native-date-picker';
 import { Picker } from "@react-native-picker/picker";
 
-const baseURL = "http://192.168.1.82:8000/api/";
+  
 
-const Formulario = (props) => {
+const FormularioMesa = (props) => {
   const [numero, setNumero] = useState("");
-
+const {baseURL} = useContext(RestauranteContext);
   const [id, setId] = useState("");
 
   const { modalVisible } = props;
@@ -282,4 +282,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Formulario;
+export default FormularioMesa;

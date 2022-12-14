@@ -17,10 +17,21 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import estilos from "../MyDrawer/style";
 import { RestauranteProvider } from "./RestauranteContext";
+
+/**
+ * Stack de navegacion.
+ */
 const Stack = createNativeStackNavigator();
 
+/**
+ * navegacion en la parte inferior de la pantalla.
+ */
 const Tab = createBottomTabNavigator();
 
+/**
+ * 
+ * @returns navegacion en la parte inferior de la pantalla para la vista de cliente.
+ */
 function MyTabs() {
   return (
     <Tab.Navigator
@@ -60,6 +71,10 @@ function MyTabs() {
     </Tab.Navigator>
   );
 }
+/**
+ * 
+ * @returns navegacion en la parte inferior de la pantalla para la vista de administrador.
+ */
 function MyTabsAdmin() {
   return (
     <Tab.Navigator
@@ -118,6 +133,10 @@ function MyTabsAdmin() {
   );
 }
 
+/**
+ * 
+ * @returns Toda la navegacion de la aplicacion dentro de un solo contenedor.
+ */
 export default function App() {
   return (
     <>

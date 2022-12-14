@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import {
   Text,
   TouchableOpacity,
@@ -16,13 +16,14 @@ import { IconButton, MD3Colors } from "react-native-paper";
 import estilos from "../../MyDrawer/style";
 import FormularioMesa from "../../components/FormularioMesa";
 import Mesa from "../../components/mesa";
+import RestauranteContext from "../../components/RestauranteContext";
 
-const baseURL = "http://192.168.1.82:8000/api/";
 
 const AdministradorScreen = ({ navigation }) => {
   const [mesa, setMesa] = useState([]);
   const [mesas, setMesas] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const {baseURL} = useContext(RestauranteContext);
 
   const mesaEditar = (id) => {
     const mesaEditar = mesas.filter((mesa) => mesa.id === id);
@@ -122,10 +123,10 @@ const AdministradorScreen = ({ navigation }) => {
         />
       )}
       <Pressable
-        style={styles.btnNuevaCita}
+        style={styles.btnNueva}
         onPress={() => setModalVisible(!modalVisible)}
       >
-        <Text style={styles.btnTextoNuevaCita}>Añadir Mesa</Text>
+        <Text style={styles.btnTextoNueva}>Añadir Mesa</Text>
       </Pressable>
       <FormularioMesa
         modalVisible={modalVisible}
@@ -154,14 +155,14 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 19,
   },
-  btnNuevaCita: {
+  btnNueva: {
     backgroundColor: "orange",
     padding: 15,
     marginTop: 30,
     marginHorizontal: 20,
     borderRadius: 10,
   },
-  btnTextoNuevaCita: {
+  btnTextoNueva: {
     textAlign: "center",
     color: "#FFF",
     fontSize: 15,

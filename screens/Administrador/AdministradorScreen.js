@@ -18,13 +18,13 @@ import axios from "axios";
 //import estilos from "../../MyDrawer/style";
 
 import Formulario from "../../components/Formulario";
-import FormularioEditar from "../../components/FormularioEditar";
 import Producto from "../../components/producto";
-const baseURL = "http://192.168.1.82:8000/api/";
+ 
 
 export const categoriasContext = createContext();
 
 const AdministradorScreen = ({ navigation, children }) => {
+   const {baseURL} = useContext(RestauranteContext);
   const [productos, setProductos] = useState([]);
   const [producto, setProducto] = useState([]);
   const [categorias, setCategorias] = useState([]);
@@ -176,14 +176,14 @@ const AdministradorScreen = ({ navigation, children }) => {
           />
         )}
         <Pressable
-          style={styles.btnNuevaCita}
+          style={styles.btnNueva}
           onPress={() => {
             categorias.length > 0
               ? setModalVisible(!modalVisible)
               : alertaNoCategorias();
           }}
         >
-          <Text style={styles.btnTextoNuevaCita}>Añadir producto</Text>
+          <Text style={styles.btnTextoNueva}>Añadir producto</Text>
         </Pressable>
         <Formulario
           modalVisible={modalVisible}
@@ -215,14 +215,14 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 19,
   },
-  btnNuevaCita: {
+  btnNueva: {
     backgroundColor: "orange",
     padding: 15,
     marginTop: 30,
     marginHorizontal: 20,
     borderRadius: 10,
   },
-  btnTextoNuevaCita: {
+  btnTextoNueva: {
     textAlign: "center",
     color: "#FFF",
     fontSize: 15,

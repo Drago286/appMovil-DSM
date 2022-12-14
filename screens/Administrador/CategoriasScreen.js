@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import {
   Text,
   TouchableOpacity,
@@ -13,19 +13,20 @@ import {
   Alert,
 } from "react-native";
 import { IconButton, MD3Colors } from "react-native-paper";
+import RestauranteContext from "../../components/RestauranteContext";
 //import estilos from "../../MyDrawer/style";
 
 import Formulario from "../../components/Formulario";
 import FormularioCategoria from "../../components/FormularioCategoria";
 import Categoria from "../../components/categoria";
-const baseURL = "http://192.168.1.82:8000/api/";
-
+  
 const AdministradorScreen = ({ navigation }) => {
   //const [categorias, setcategorias] = useState([]);
   const [categoria, setCategoria] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [nombreCategoria, setNombreCategoria] = useState("");
+  const {baseURL} = useContext(RestauranteContext);
 
   const categoriaEditar = (id) => {
     const categoriaEditar = categorias.filter((categoria) => categoria.id === id);
@@ -125,10 +126,10 @@ const AdministradorScreen = ({ navigation }) => {
         />
       )}
       <Pressable
-        style={styles.btnNuevaCita}
+        style={styles.btnNueva}
         onPress={() => setModalVisible(!modalVisible)}
       >
-        <Text style={styles.btnTextoNuevaCita}>Añadir categoria</Text>
+        <Text style={styles.btnTextoNueva}>Añadir categoria</Text>
       </Pressable>
       <FormularioCategoria
         modalVisible={modalVisible}
@@ -157,14 +158,14 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 19,
   },
-  btnNuevaCita: {
+  btnNueva: {
     backgroundColor: "orange",
     padding: 15,
     marginTop: 30,
     marginHorizontal: 20,
     borderRadius: 10,
   },
-  btnTextoNuevaCita: {
+  btnTextoNueva: {
     textAlign: "center",
     color: "#FFF",
     fontSize: 15,

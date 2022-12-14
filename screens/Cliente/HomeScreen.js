@@ -16,13 +16,16 @@ import RestauranteContext from "../../components/RestauranteContext";
 
 import estilos from "../../MyDrawer/style";
 
-const baseURL = "http://192.168.1.82:8000/api/";
 
 const HomeScreen = ({ navigation }) => {
   const [valorMesa, inputMesa] = useState("");
   const {idMesa, setIdMesa} = useContext(RestauranteContext);
   const [selectPicker, setSelectPicker] = useState("");
   const [mesas,setMesas]=useState([]);
+  const [categorias,setCategorias]=useState([]);
+  const [productos,setProductos]=useState([]);
+  const {baseURL} = useContext(RestauranteContext);
+
 
   useEffect(() => {
     (async function () {
@@ -40,6 +43,38 @@ const HomeScreen = ({ navigation }) => {
       }
     })();
   }, []);
+  useEffect(() => {
+    (async function () {
+      try {
+        const response = await fetch(baseURL + "categorias", {
+          method: "GET",
+        });
+        const data = await response.json();
+
+        console.log(data);
+        setCategorias(data);
+        
+      } catch (error) {
+        console.log("error categorias");
+      }
+    })();
+  }, []);
+  useEffect(() => {
+    (async function () {
+      try {
+        const response = await fetch(baseURL + "productos", {
+          method: "GET",
+        });
+        const data = await response.json();
+
+        console.log(data);
+        setProductos(data.filter(productos => productos.stock > 0));
+        
+      } catch (error) {
+        console.log("error productos");
+      }
+    })();
+  }, []);
 
 
   const screenMenuProductos = () => {
@@ -49,7 +84,13 @@ const HomeScreen = ({ navigation }) => {
         "Por favor, indique un número de mesa antes de continuar",
         [{ text: "Entendido!" }]
       );
-    } else {
+    } else if(categorias.length === 0 || productos.length === 0){
+      Alert.alert(
+        "Oops!",
+        "No hay productos disponibles, comuniquese con el administrador del restaurante",
+        [{ text: "Entendido!" }]
+      );
+    }else{
         setIdMesa(selectPicker);
         navigation.navigate("MyTabs");
     }
@@ -96,7 +137,7 @@ const HomeScreen = ({ navigation }) => {
         itemStyle={{ height: 80 }}
       >
         <Picker.Item
-          style={{ color: "white" }}
+          style={{ color: "black" }}
           label="- Seleccione -"
           value=""
         />

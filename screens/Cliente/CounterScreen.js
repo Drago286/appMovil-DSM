@@ -19,15 +19,15 @@ import ProductoCarrito from "../../components/ProductoCarrito";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import CountDown from "react-native-countdown-component";
 
-const baseURL = "http://192.168.1.82:8000/api/";
+  
 
 const CounterScreen = ({ navigation }) => {
 
-  const [time,setTime] = useState("");
+  const [time,setTime] = useState(6000);
 
-  const handleFinish = () => {
+  // const handleFinish = () => {
 
-  };
+  // };
 
 
   return (
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 19,
   },
-  btnNuevaCita: {
+  btnNueva: {
     backgroundColor: "orange",
     padding: 15,
     marginTop: 30,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 
-  btnTextoNuevaCita: {
+  btnTextoNueva: {
     textAlign: "center",
     color: "#FFF",
     fontSize: 20,

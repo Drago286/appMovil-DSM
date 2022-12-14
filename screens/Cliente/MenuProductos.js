@@ -17,18 +17,17 @@ import estilos from "../../MyDrawer/style";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import RestauranteContext from "../../components/RestauranteContext";
 import ProductoMenu from "../../components/ProductoMenu";
-import Pedido from "../../components/Pedido";
 
 // import Producto from "../components/producto";
 
-const baseURL = "http://192.168.1.82:8000/api/";
+  
 
 const MenuProductos = ({ navigation, route, props }) => {
   //const {valorMesa} = route.params;
 
   const [categorias, setCategorias] = useState([]);
   // const [productos, setProductos] = useState([]);
-  const [ProductoCarrito, setProductoCarrito] = useState([]);
+ const {baseURL} = useContext(RestauranteContext);
   const {
     carrito,
     setCarrito,
@@ -41,13 +40,7 @@ const MenuProductos = ({ navigation, route, props }) => {
     setProductos,
   } = useContext(RestauranteContext);
   const [productosCategoria, setProductosCategoria] = useState([]);
-  const [arrayCarrito, setArrayCarrito] = useState([]);
-  const [categoriaEscogida, setCategoriaEscogida] = useState("");
-  const [idCategoria_, setIdCategoria] = useState("");
-  const [imagens, setImagens] = useState([]);
-  const [imagenSource, setImagenSource] = useState("");
-
-  const [modalVisible, setModalVisible] = useState(false);
+  
 
 
   
@@ -66,7 +59,7 @@ const MenuProductos = ({ navigation, route, props }) => {
           method: "GET",
         });
         const data = await response.json();
-        setProductos(data);
+        setProductos(data.filter(productos => productos.stock > 0));
         // console.log({productos})
         //modificarArray();
         //console.log(data);

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable,Image } from "react-native";
 import Formulario from "./Formulario";
 
-const baseURL = "http://192.168.1.82:8000/api/";
+ 
 
 const Producto = ({
   item,
@@ -11,37 +11,11 @@ const Producto = ({
   productoEliminar,
   cantidad,
 }) => {
-  const [nombreCategoria, setNombreCategoria] = useState("");
-  const [categorias, setCategorias] = useState([]);
-  const [imagens, setImagens] = useState([]);
-  const [imagenSource, setImagenSource] = useState("");
+  
   const { categoria_id, producto, descripcion, precio, id, nombre,stock,imagen } = item;
   
 
   
-  // useEffect(() => {
-  //   (async function () {
-  //     try {
-  //       const response = await fetch(baseURL + "imagens", {
-  //         method: "GET",
-  //       });
-  //       const data = await response.json();
-  //       setImagens(data);
-        
-        
-  //     } catch (error) {
-  //       console.log("error imagenes");
-  //     }
-  //   })();
-  // }, []);
-  // useEffect(() => {
-  //   for(let i = 0; i <imagens.length; i++) {
-  //     if(imagens[i].id==imagen){
-  //       setImagenSource(imagens[i].url);
-  //     }
-  //   }
-  
-  // },[imagens.length]);
  
   return (
     <View style={styles.contenedor}>

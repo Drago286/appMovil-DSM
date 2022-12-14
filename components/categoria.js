@@ -1,32 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
-const baseURL = "http://192.168.1.82:8000/api/";
 
+ 
+/**
+ * @construct
+ * 
+ */
 const Categoria = ({
   item,
   setModalVisible,
   categoriaEditar,
   categoriaEliminar,
 }) => {
-  const [nombreCategoria, setNombreCategoria] = useState("");
-  const [categorias, setCategorias] = useState([]);
+
   const { nombre,id } = item;
 
-
-  useEffect(() => {
-    (async function () {
-      try {
-        const response = await fetch(baseURL + "categorias", {
-          method: "GET",
-        });
-        const data = await response.json();
-        setCategorias(data);
-      } catch (error) {
-        console.log("error categorias");
-      }
-    })();
-  }, []);
   return (
     <View style={styles.contenedor}>
       <Text style={styles.label}>{nombre}</Text>
