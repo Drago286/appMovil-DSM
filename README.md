@@ -11,7 +11,7 @@ Requisitos previos antes de la clonacion del repositorio:
 
 ---DENTRO DEL ARCHIVO .env--- 
 Identifica y reemplazalo por tus valores:
-DB_HOST=127.0.0.1 
+DB_HOST='direccion IP de tu BD'
 DB_PORT= 'numero del puerto de tu BD' 
 DB_DATABASE= 'nombre del esquema que usaras en tu ABD' DB_USERNAME='USUARIO DE TU ABD' DB_PASSWORD= 'si tu usuario posee una password, ponla aqui, si no, ignora este campo'
 
