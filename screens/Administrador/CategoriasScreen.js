@@ -28,16 +28,30 @@ const AdministradorScreen = ({ navigation }) => {
   const [nombreCategoria, setNombreCategoria] = useState("");
   const {baseURL} = useContext(RestauranteContext);
 
+  /**
+   * 
+   * @param {id de categoria} id 
+   * establece cual es la categoria que se va a editar
+   */
   const categoriaEditar = (id) => {
     const categoriaEditar = categorias.filter((categoria) => categoria.id === id);
     setCategoria(categoriaEditar[0]);
   };
+  /**
+   * Verifica si hay productos asociados a esta categoria antes de eliminar.
+   */
   const alertaContrain = () => {
     Alert.alert("Error", "Existen productos asociados a esta categoria, no se puede eliminar", [
       { text: "OK" },
      
     ]);
   };
+
+  /**
+   * 
+   * @param {id de la categoria} id 
+   * Metodo DELETE para eliminar la categoria
+   */
   const eliminarcategoria = (id) => {
     try {
       const requestOptions = {
@@ -56,7 +70,11 @@ const AdministradorScreen = ({ navigation }) => {
       console.log(e);
     }
   };
-
+/**
+ * 
+ * @param {id categoria} id 
+ * eliminar categoria de la lista
+ */
   const categoriaEliminar = (id) => {
     Alert.alert(
       "Deseas Eliminar?",
@@ -72,7 +90,7 @@ const AdministradorScreen = ({ navigation }) => {
       ]
     );
   };
-
+//GET CATEGORIAS
   useEffect(() => {
     (async function () {
       try {
@@ -88,13 +106,15 @@ const AdministradorScreen = ({ navigation }) => {
     })();
   }, []);
 
-  const screenCliente = () => {
-    navigation.navigate("HomeScreen");
-  };
+ /**
+  * navegacion hacia atras.
+  */
   const volver = () => {
     navigation.navigate("EleccionUsuario");
   };
-
+ /**
+  * vista
+  */
   return (
     <SafeAreaView style={styles.container}>
       <IconButton

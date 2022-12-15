@@ -26,7 +26,7 @@ const HomeScreen = ({ navigation }) => {
   const [productos,setProductos]=useState([]);
   const {baseURL} = useContext(RestauranteContext);
 
-
+/**GET MESAS */
   useEffect(() => {
     (async function () {
       try {
@@ -43,6 +43,9 @@ const HomeScreen = ({ navigation }) => {
       }
     })();
   }, []);
+  /**
+   * GET CATEGORIAS
+   */
   useEffect(() => {
     (async function () {
       try {
@@ -59,6 +62,9 @@ const HomeScreen = ({ navigation }) => {
       }
     })();
   }, []);
+  /**
+   * GET PRODUCTOS
+   */
   useEffect(() => {
     (async function () {
       try {
@@ -76,7 +82,9 @@ const HomeScreen = ({ navigation }) => {
     })();
   }, []);
 
-
+/**
+ * validaciones antes de ingresar al menu de productos.
+ */
   const screenMenuProductos = () => {
     if (selectPicker == "") {
       Alert.alert(
@@ -95,12 +103,18 @@ const HomeScreen = ({ navigation }) => {
         navigation.navigate("MyTabs");
     }
   };
+  /**
+   * navegacion hacia atras.
+   */
   const volver = () => {
     navigation.navigate("EleccionUsuario");
     setIdMesa("");
 
   };
 
+  /**
+   * vista.
+   */
   return (
     <View
       style={{

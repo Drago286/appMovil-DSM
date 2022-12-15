@@ -25,16 +25,30 @@ const AdministradorScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const {baseURL} = useContext(RestauranteContext);
 
+  /**
+   * 
+   * @param {id de la mesa} id 
+   * estable que mesa es la que se va a editar.
+   */
   const mesaEditar = (id) => {
     const mesaEditar = mesas.filter((mesa) => mesa.id === id);
     setMesa(mesaEditar[0]);
   };
+
+  /**
+   * verifica si hay pedidos ascioados a la mesa.
+   */
   const alertaContrain = () => {
     Alert.alert("Error", "Existen pedidos asociados a esta mesa, no se puede eliminar", [
       { text: "OK" },
     ]);
   };
 
+  /**
+   * 
+   * @param {id de la mesa} id 
+   * metodo DELETE que permite eliminar la mesa
+   */
   const eliminarMesa = (id) => {
     try {
       const requestOptions = {
@@ -54,6 +68,11 @@ const AdministradorScreen = ({ navigation }) => {
     }
   };
 
+  /**
+   * 
+   * @param {id de la mesa} id 
+   * elimina la mesa de la lista.
+   */
   const mesaEliminar = (id) => {
     Alert.alert(
       "Deseas Eliminar?",
@@ -69,7 +88,9 @@ const AdministradorScreen = ({ navigation }) => {
       ]
     );
   };
-
+/**
+ * GET MESAS
+ */
   useEffect(() => {
     (async function () {
       try {
@@ -85,13 +106,16 @@ const AdministradorScreen = ({ navigation }) => {
     })();
   }, []);
 
-  const screenCliente = () => {
-    navigation.navigate("HomeScreen");
-  };
+ 
+  /**
+   * Navegacion hacia atras.
+   */
   const volver = () => {
     navigation.navigate("EleccionUsuario");
   };
-
+/**
+ * vista.
+ */
   return (
     <SafeAreaView style={styles.container}>
       <IconButton

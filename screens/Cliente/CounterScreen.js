@@ -23,13 +23,15 @@ import CountDown from "react-native-countdown-component";
 
 const CounterScreen = ({ navigation }) => {
 
-  const [time,setTime] = useState(6000);
+  const [time,setTime] = useState("");
 
   // const handleFinish = () => {
 
   // };
 
-
+/**vista
+ * 
+ */
   return (
     <SafeAreaView>
       <View style={styles.container}>

@@ -30,7 +30,13 @@ const CarritoScreen = ({ navigation }) => {
     baseURL,
   } = useContext(RestauranteContext);
   
-
+/**
+ * 
+ * @param {total del pedido} total_ 
+ * @param {id de la mesa del pedido} idMesa_ 
+ * @param {array con detalle del pedido} resumen_orden_productos_ 
+ * Metodo POST con detalle del pedido.
+ */
   let enviarOrden = (total_, idMesa_, resumen_orden_productos_) => {
     Alert.alert("¿Desea enviar su pedido?", "", [
       { text: "No" },
@@ -64,6 +70,11 @@ const CarritoScreen = ({ navigation }) => {
     ]);
   };
 
+  /**
+   * 
+   * @param {id del producto seleccionado} id 
+   * Elimina el producto del carrito
+   */
   const eliminarDelCarrito = (id) => {
     setCarrito(carrito.filter((item) => item.id != id));
     const array = resumen_orden_productos.filter(
@@ -72,9 +83,9 @@ const CarritoScreen = ({ navigation }) => {
     setResumen_orden_productos(array);
     console.log(resumen_orden_productos);
   };
-
-
-  
+/**
+ * vista.
+ */
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Text>{"   "}</Text>

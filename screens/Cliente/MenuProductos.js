@@ -44,7 +44,9 @@ const MenuProductos = ({ navigation, route, props }) => {
 
 
   
-
+/**
+ * navegacion hacia atras, y restauracion de valores.
+ */
   const volver = () => {
     navigation.navigate("HomeScreen");
     setCarrito([]);
@@ -52,6 +54,9 @@ const MenuProductos = ({ navigation, route, props }) => {
     setResumen_orden_productos([]);
   };
 
+  /**
+   * GET PRODUCTOS
+   */
   useEffect(() => {
     (async function () {
       try {
@@ -70,6 +75,9 @@ const MenuProductos = ({ navigation, route, props }) => {
     })();
   }, []);
 
+  /**
+   * GET CATEGORIAS
+   */
   useEffect(() => {
     (async function () {
       try {
@@ -86,6 +94,9 @@ const MenuProductos = ({ navigation, route, props }) => {
     })();
   }, []);
 
+  /**
+   * Establece el array de productos que posean stock positivo.
+   */
   const modificarArray = (id_categoria) => {
     const array = productos.filter(
       (producto) => producto.categoria_id === id_categoria && producto.stock > 0
@@ -94,6 +105,9 @@ const MenuProductos = ({ navigation, route, props }) => {
     setProductosCategoria(array);
   };
 
+  /**
+   * Aniade el producto seleccionado al carrito.
+   */
   const addToCart = (item) => {
     const busqueda = carrito.some((producto) => producto.id === item.id);
 
@@ -142,6 +156,9 @@ const MenuProductos = ({ navigation, route, props }) => {
     //console.log(carrito);
   };
 
+  /**
+   * BOTONES DE CATEGORIAS
+   */
   var i = -1;
   const botonesCategoria = categorias.map(function (categorias) {
     i++;
@@ -162,7 +179,9 @@ const MenuProductos = ({ navigation, route, props }) => {
       </View>
     );
   });
-
+/**
+ * VISTA
+ */
   return (
     <SafeAreaView style={styles.container}>
       <View>

@@ -37,18 +37,30 @@ const AdministradorScreen = ({ navigation, children }) => {
     navigation.navigate("EleccionUsuario");
   };
 
+  /**
+   * 
+   * @param {ID del producto} id 
+   * establece cual es el producto a editar
+   */
   const productoEditar = (id) => {
     const productoEditar = productos.filter((producto) => producto.id === id);
     console.log(productoEditar);
     setProducto(productoEditar);
   };
+  /**
+   * Verfica si hay pedidos asociados al producto, antes de eliminar.
+   */
   const alertaContrain = () => {
     Alert.alert("Error", "Existen pedidos asociados a este producto, no se puede eliminar", [
       { text: "OK" },
      
     ]);
   };
-
+/**
+ * 
+ * @param {id del producto} id 
+ * Metodo POST que elimina el producto.
+ */
   const eliminarProducto = (id) => {
     console.log(id);
     try {
@@ -68,7 +80,9 @@ const AdministradorScreen = ({ navigation, children }) => {
       console.log(e);
     }
   };
-
+  /**Eliminar el producto de la lista
+   * 
+   */
   const productoEliminar = (id) => {
 
     Alert.alert(
@@ -89,14 +103,10 @@ const AdministradorScreen = ({ navigation, children }) => {
     );
   };
 
-  const buscarNombreCategoria = () => {
-    for (var p = 0; p < categorias.length; p++) {
-      if (categoria_id == categorias[p].id) {
-        setNombreCategoria(categorias[p].nombre);
-      }
-    }
-  };
 
+/**
+ * Verfica si hay categorias antes de crear un producto.
+ */
   const alertaNoCategorias = () => {
     Alert.alert("Error", "No hay registros de categorias. No puedes crear productos sin categorias.", [
       { text: "OK" },
@@ -134,12 +144,7 @@ const AdministradorScreen = ({ navigation, children }) => {
     })();
   }, []);
 
-  //DESPLEGAR CATEGORIAS.
-  const recorrerCaterias = () => {
-    for (var i = 0; i < categorias.length; i++) {
-      console.log(categorias[i]);
-    }
-  };
+ 
 
   //VISTA DE ADMINISTRADOR_SCREEN
   return (

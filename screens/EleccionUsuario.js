@@ -5,6 +5,9 @@ import estilos from "../MyDrawer/style";
 
 
 const EleccionUsuario = ({ navigation }) => {
+  /**
+   * NAVEGACION SEGUN TIPO DE USUARIO
+   */
   const screenCliente = () => {
     navigation.navigate("HomeScreen");
   };
@@ -12,6 +15,9 @@ const EleccionUsuario = ({ navigation }) => {
     navigation.navigate("MyTabsAdmin");
   };
 
+  /**
+   * VISTA.
+   */
   return (
     <View
       style={{

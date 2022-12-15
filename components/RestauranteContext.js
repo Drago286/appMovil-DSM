@@ -5,7 +5,8 @@ const RestauranteContext = createContext();
   
 
 export const RestauranteProvider = ({ children }) => {
-    const baseURL = "http://192.168.1.82:8000/api/";//<---Aqui va tu promedio
+
+    const baseURL = "http://192.168.1.82:8000/api/";//<---Aqui va tu IP http://{tu ip}:8000/api/
 
 
 
@@ -19,42 +20,6 @@ export const RestauranteProvider = ({ children }) => {
     const [total, setTotal] = useState(0);
     const [resumen_orden, setResumen_orden] = useState([]);
     
-    
-    useEffect(() => {
-        (async function () {
-          try {
-            const response = await fetch(baseURL + "mesas", {
-              method: "GET",
-            });
-            const data = await response.json();
-    
-            console.log(data);
-            setMesas(data);
-            console.log(mesas);
-          } catch (error) {
-            console.log("error MESAS");
-          }
-        })();
-      }, []);
-  
-      useEffect(() => {
-        (async function () {
-          try {
-            const response = await fetch(baseURL + "productos", {
-              method: "GET",
-            });
-            const data = await response.json();
-    
-            console.log(data);
-            setMesas(data);
-            console.log(mesas);
-          } catch (error) {
-            console.log("error PRODUCTOS");
-          }
-        })();
-      }, []);
-  
-
     return (
         <RestauranteContext.Provider 
         value={{carrito,setCarrito,categorias,setCategorias,
