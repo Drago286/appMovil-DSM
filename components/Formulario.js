@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import RestauranteContext from "./RestauranteContext";
 import mime from "mime";
 import {
@@ -10,19 +10,15 @@ import {
   TextInput,
   ScrollView,
   Pressable,
-
   Alert,
   Image,
-
 } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 
- 
-
-const Formulario = (props, navigation) => { 
-  const {baseURL} = useContext(RestauranteContext);
+const Formulario = (props, navigation) => {
+  const { baseURL } = useContext(RestauranteContext);
   const [producto, setProducto] = useState("");
   const [nombre, setNombre] = useState("");
   const [categoria, setCategoria] = useState("");
@@ -122,17 +118,17 @@ const Formulario = (props, navigation) => {
       console.log(e);
     }
   };
-/**
- * 
- * @param {nombre del producto} nombre_ 
- * @param {descripcion del producto} descripcion_ 
- * @param {precio del producto} precio_ 
- * @param {codigo generado del producto} codigo_ 
- * @param {stock del producto} stock_ 
- * @param {id de la categoria del producto} categoria_ 
- * @param {url de la imagen ubicada en el backEnd} urlImagen_ 
- * Este metodo genera el request POST del nuevo producto
- */
+  /**
+   *
+   * @param {nombre del producto} nombre_
+   * @param {descripcion del producto} descripcion_
+   * @param {precio del producto} precio_
+   * @param {codigo generado del producto} codigo_
+   * @param {stock del producto} stock_
+   * @param {id de la categoria del producto} categoria_
+   * @param {url de la imagen ubicada en el backEnd} urlImagen_
+   * Este metodo genera el request POST del nuevo producto
+   */
   let agregarProducto = (
     nombre_,
     descripcion_,
@@ -141,7 +137,7 @@ const Formulario = (props, navigation) => {
     stock_,
     categoria_,
     urlImagen_,
-    nuevoProducto,
+    nuevoProducto
   ) => {
     try {
       fetch(baseURL + "productos", {
@@ -163,20 +159,20 @@ const Formulario = (props, navigation) => {
       })
         .then((res) => res.json())
         .catch((error) => console.error("Error", error))
-        .then((response) => validar(response,nuevoProducto));
+        .then((response) => validar(response, nuevoProducto));
     } catch (e) {
       console.log(e);
     }
   };
-/**
- * 
- * @param {nombre del producto por el cual se va a cambiar} nombre_ 
- * @param {descripcion del producto por el cual se va a cambiar} descripcion_ 
- * @param {precio del producto por el cual se va a cambiar} precio_ 
- * @param {stock del producto por el cual se va a cambiar} stock_ 
- * @param {url de la imagen del producto por el cual se va a cambiar} urlImagen
- * Corresponde al metodo PUT, actulizando los datos en el backEnd 
- */
+  /**
+   *
+   * @param {nombre del producto por el cual se va a cambiar} nombre_
+   * @param {descripcion del producto por el cual se va a cambiar} descripcion_
+   * @param {precio del producto por el cual se va a cambiar} precio_
+   * @param {stock del producto por el cual se va a cambiar} stock_
+   * @param {url de la imagen del producto por el cual se va a cambiar} urlImagen
+   * Corresponde al metodo PUT, actulizando los datos en el backEnd
+   */
   const editarProducto = (
     nombre_,
     descripcion_,
@@ -211,16 +207,16 @@ const Formulario = (props, navigation) => {
       console.log(e);
     }
   };
- /**
-  * 
-  * @param {respuesta obtenida del BackEnd luego de generar el POST del producto} response 
-  * traduce la respuesta del backend.
-  */
-  const validar = (response,nuevoProducto) => {
+  /**
+   *
+   * @param {respuesta obtenida del BackEnd luego de generar el POST del producto} response
+   * traduce la respuesta del backend.
+   */
+  const validar = (response, nuevoProducto) => {
     //captura de erores del backEnd
     console.log(response);
     if (response.status === 100) {
-      Alert.alert("Error", response.message.nombre[0].toString(), [
+      Alert.alert("Error","Revise los datos ingresados", [
         { text: "Ok" },
       ]);
     } else {
@@ -241,16 +237,17 @@ const Formulario = (props, navigation) => {
       setImage("https://via.placeholder.com/200");
     }
   };
-   /**
-    * 
-    * @param {respuesta del backend luego de realizar un PUT} response 
-    * traduce la respuesta del backend.
-    */
+  /**
+   *
+   * @param {respuesta del backend luego de realizar un PUT} response
+   * traduce la respuesta del backend.
+   */
   const validar_update = (response) => {
     console.log(response);
     //captura de erores del backEnd
     if (response.status === 100) {
-      Alert.alert("Error", response.message.numero[0].toString(), [
+    
+      Alert.alert("Error","Revise los datos ingresados.", [
         { text: "Ok" },
       ]);
     } else {
@@ -275,7 +272,6 @@ const Formulario = (props, navigation) => {
    * Genera destructuring del producto al cual se hace referencia al inicializar este componente.
    */
   useEffect(() => {
-    
     if (Object.keys(productoObj).length > 0) {
       console.log(productoObj);
       setId(productoObj[0].id);
@@ -291,12 +287,14 @@ const Formulario = (props, navigation) => {
   }, [productoObj]);
 
   /**
-   * 
+   *
    * valida que los datos de los input sean validos.
    */
   const ingresarProducto = () => {
-    if ([nombre, descripcion, precio, stock, selectPicker].includes("") 
-    && urlImagen === "https://via.placeholder.com/200") {
+    if (
+      [nombre, descripcion, precio, stock, selectPicker].includes("") 
+     
+    ) {
       //alerta para validar que todos los campos esten llenos.
       Alert.alert("Error", "Todos los campos son obligatorios.", [
         { text: "Cancelar" },
@@ -352,13 +350,13 @@ const Formulario = (props, navigation) => {
         stock,
         selectPicker,
         urlImagen,
-        nuevoProducto,
+        nuevoProducto
       );
     }
   };
-/**
- * vista.
- */
+  /**
+   * vista.
+   */
   return (
     <Modal animationType="slide" visible={modalVisible}>
       <SafeAreaView style={styles.contenido}>
