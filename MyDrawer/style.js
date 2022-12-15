@@ -58,7 +58,7 @@ const estilos = StyleSheet.create({
   },
   botonCategorias: {
     width: 130,
-    height: 50,
+    height: 35,
     alignItems: "center",
     justifyContent: "center",
     //marginLeft: 150,
@@ -79,7 +79,7 @@ const estilos = StyleSheet.create({
     fontSize: 20,
   },
   textoBoton: {
-    fontSize: 17,
+    fontSize: 14,
     color: "black",
     fontWeight: "bold",
    // alignSelf : "center",

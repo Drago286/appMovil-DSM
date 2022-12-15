@@ -17,8 +17,6 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import RestauranteContext from "../../components/RestauranteContext";
 import ProductoCarrito from "../../components/ProductoCarrito";
 
-  
-
 const CarritoScreen = ({ navigation }) => {
   const {
     carrito,
@@ -29,14 +27,14 @@ const CarritoScreen = ({ navigation }) => {
     setResumen_orden_productos,
     baseURL,
   } = useContext(RestauranteContext);
-  
-/**
- * 
- * @param {total del pedido} total_ 
- * @param {id de la mesa del pedido} idMesa_ 
- * @param {array con detalle del pedido} resumen_orden_productos_ 
- * Metodo POST con detalle del pedido.
- */
+
+  /**
+   *
+   * @param {total del pedido} total_
+   * @param {id de la mesa del pedido} idMesa_
+   * @param {array con detalle del pedido} resumen_orden_productos_
+   * Metodo POST con detalle del pedido.
+   */
   let enviarOrden = (total_, idMesa_, resumen_orden_productos_) => {
     Alert.alert("¿Desea enviar su pedido?", "", [
       { text: "No" },
@@ -53,6 +51,7 @@ const CarritoScreen = ({ navigation }) => {
               },
               body: JSON.stringify({
                 montoTotal: total_,
+                tiempo: 0,
                 mesa_id: idMesa_,
                 resumen_orden_productos: resumen_orden_productos_,
                 estado: "PENDIENTE",
@@ -60,8 +59,13 @@ const CarritoScreen = ({ navigation }) => {
             })
               .then((res) => res.json())
               .catch((error) => console.error("Error", error))
-              .then((response) => console.log("Exito", response));
-              navigation.navigate("CounterScreen");
+              .then((response) => {console.log("Exito", response);
+              if (response.isSuccess) {
+                console.log("navegando...");
+                navigation.navigate("CounterScreen",{ id: response.id });
+              }
+            });
+              
           } catch (e) {
             console.log(e);
           }
@@ -71,21 +75,24 @@ const CarritoScreen = ({ navigation }) => {
   };
 
   /**
-   * 
-   * @param {id del producto seleccionado} id 
+   *
+   * @param {id del producto seleccionado} id
    * Elimina el producto del carrito
    */
   const eliminarDelCarrito = (id) => {
+    console.log(carrito);
     setCarrito(carrito.filter((item) => item.id != id));
+    console.log(carrito);
     const array = resumen_orden_productos.filter(
-      (producto) => producto.id != id
+      (orden) => orden.producto_id != id
     );
     setResumen_orden_productos(array);
     console.log(resumen_orden_productos);
+    console.log(carrito);
   };
-/**
- * vista.
- */
+  /**
+   * vista.
+   */
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Text>{"   "}</Text>

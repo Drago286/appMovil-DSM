@@ -170,6 +170,7 @@ export default function App() {
             name="CounterScreen"
             component={CounterScreen}
             options={{
+              
               title: "Contador",
               unmountOnBlur: true,
               headerStyle: {

@@ -28,6 +28,8 @@ const ProductoMenu = ({ item, eliminarDelCarrito, modificarMonto }) => {
               eliminarDelCarrito(id);
               var subTotal = total;
               setTotal((subTotal -= item.precio * contador));
+              
+            
             },
           },
         ]
