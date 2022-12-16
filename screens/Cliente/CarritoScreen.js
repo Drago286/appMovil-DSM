@@ -101,6 +101,12 @@ const CarritoScreen = ({ navigation }) => {
         <Text style={styles.noProductos}>¡Añade tus productos al carrito!</Text>
       ) : (
         <View>
+          <Pressable
+            style={styles.btnNueva}
+            onPress={() => enviarOrden(total, idMesa, resumen_orden_productos)}
+          >
+            <Text style={styles.btnTextoNueva}>Enviar pedido ${total}</Text>
+          </Pressable>
           <FlatList
             //contentContainerStyle={{paddingBottom: 80,flexGrow: 1,}}
             //ListFooterComponentStyle={{paddingHorizontal: 20, marginTop: 20}}
@@ -116,12 +122,7 @@ const CarritoScreen = ({ navigation }) => {
               );
             }}
           />
-          <Pressable
-            style={styles.btnNueva}
-            onPress={() => enviarOrden(total, idMesa, resumen_orden_productos)}
-          >
-            <Text style={styles.btnTextoNueva}>Enviar pedido ${total}</Text>
-          </Pressable>
+          
         </View>
       )}
     </SafeAreaView>
@@ -165,6 +166,7 @@ const styles = StyleSheet.create({
   },
   listado: {
     marginTop: 10,
+    marginBottom : 100,
     marginHorizontal: 20,
   },
 });
